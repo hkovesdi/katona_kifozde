@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property string $created_at
  * @property string $updated_at
- * @property MegrendelokHetek[] $megrendelokHetek
+ * @property MegrendeloHet[] $megrendelokHetek
  */
 class Het extends Model
 {
@@ -36,6 +36,6 @@ class Het extends Model
      */
     public function megrendelokHetek()
     {
-        return $this->hasMany('App\MegrendelokHetek', 'het_id');
+        return $this->hasMany('App\MegrendeloHet', 'het_id');
     }
 }
