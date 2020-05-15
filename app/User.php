@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nev', 'username', 'password', 'munkakor',
     ];
 
     /**
@@ -36,4 +36,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Visszaadja a user munkakörét
+     */
+    public function munkakor()
+    {
+        return $this->hasOne('App\Munkakor');
+    }
+
+    /**
+     * Visszaadja a userhez tartozó megrendelőket
+     */
+    public function megrendelok()
+    {
+        return $this->hasMany('App\Megrendelo');
+    }
 }
