@@ -16,6 +16,7 @@ class CreateMunkakorokTable extends Migration
         Schema::create('munkakorok', function (Blueprint $table) {
             $table->string('nev');
             $table->primary('nev');
+            $table->integer('privilege_level');
         });
     }
 

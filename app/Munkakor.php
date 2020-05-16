@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $nev
+ * @property int $privilege_level
  * @property User[] $users
  */
 class Munkakor extends Model
@@ -41,7 +42,7 @@ class Munkakor extends Model
     /**
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['nev', 'privilege_level'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

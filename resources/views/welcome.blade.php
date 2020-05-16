@@ -20,7 +20,7 @@
 
     <div class="content">
         <div class="title m-b-md">
-            Laravel
+            You are logged in as {{Auth::user()->nev}}
         </div>
 
         <div class="links">

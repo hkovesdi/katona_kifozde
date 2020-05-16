@@ -17,12 +17,15 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) 
+{    
+    $privLevel = $faker->numberBetween(1,100) > 95 ? 5 : 1;
+
     return [
-        'name' => $faker->name,
+        'nev' => $faker->name,
+        'username' => $faker->userName,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'munkakor' => App\Munkakor::where('privilege_level', $privLevel)->first()->nev,
     ];
 });
