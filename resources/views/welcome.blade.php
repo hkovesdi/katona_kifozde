@@ -3,24 +3,10 @@
 
 @section('content')
 
-<div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @auth
-                <a href="{{ url('/home') }}">Home</a>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif
-            @endauth
-        </div>
-    @endif
-
+<body>
     <div class="content">
-        <div class="title m-b-md">
-            You are logged in as {{Auth::user()->nev}}
+        <div class="title mwelcome">
+            Sikeresen beléptél {{Auth::user()->nev}}!
         </div>
 
         <div class="links">
@@ -34,4 +20,4 @@
             <a href="https://github.com/laravel/laravel">GitHub</a>
         </div>
     </div>
-</div>
+</body>

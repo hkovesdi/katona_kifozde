@@ -68,7 +68,7 @@
             }
 
             .links > a {
-                color: #636b6f;
+                color: white;
                 padding: 0 25px;
                 font-size: 13px;
                 font-weight: 600;
@@ -77,8 +77,8 @@
                 text-transform: uppercase;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
+            .mwelcome {
+                margin:30px 0px 30px;
             }
 
             .form {
@@ -105,15 +105,17 @@
                 font-family: "Roboto", sans-serif;
                 background: #f2f2f2;
                 width: 100%;
-                border: 0;
+                border: 1px solid white;
                 margin: 0 0 16px;
                 padding: 15px;
                 box-sizing: border-box;
                 font-size: 14px;
                 box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+                
             }
 
             .loginbutton {
+                border: 1px solid white;
                 border-radius: 7px;
                 font-family: "Roboto", sans-serif;
                 text-transform: uppercase;
@@ -147,6 +149,12 @@
                 margin-right: auto;
                 width: 100%;
             }
+
+            input:focus {
+                border: 1px solid #6699ff;
+            }
+
+            
 
         </style>
     </head>
