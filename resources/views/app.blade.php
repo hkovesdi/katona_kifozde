@@ -13,6 +13,20 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous">
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+        <script type="text/javascript">
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        </script>
 
         <!-- Styles -->
         <style>
@@ -137,6 +151,28 @@
         </style>
     </head>
     <body>
+        @if (\Session::has('success'))
+            <script type="text/javascript">
+                const success = <?php echo json_encode(\Session::get('success')) ?>;
+                success.forEach((msg) => {
+                    Toast.fire({
+                        icon: 'success',
+                        title: msg
+                    });
+                });
+            </script>
+        @elseif(\Session::has('failure'))
+            <script type="text/javascript">
+                const failure = <?php echo json_encode(\Session::get('failure')) ?>;
+                failure.forEach((msg) => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: msg
+                    });
+                });
+
+            </script>
+        @endif
        @section('content')
     </body>
 </html>

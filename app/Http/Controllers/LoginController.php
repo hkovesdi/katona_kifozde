@@ -29,10 +29,10 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('');
+            return redirect()->intended('')->with('success', ['Sikeres bejelentkezés!']);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('failure', ['Hibás felhasználónév vagy jelszó!']);
 
     }
 }
