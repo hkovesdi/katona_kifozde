@@ -207,8 +207,11 @@
 
             @media screen and (max-width: 600px) {
                 .topnav ul li.right, 
-                .topnav ul li {
+                .topnav ul li,
+                .topnav ul li.dropbtn {
                     float: none;
+                    background-color: #333;
+                    width: 100%;
                 }
             }
 
