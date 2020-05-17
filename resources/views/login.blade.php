@@ -9,7 +9,7 @@
             @csrf
             <input type="text" name="username" placeholder="Felhasználónév" class="logininput">
             <input type="password" name="password" placeholder="Jelszó" class="logininput">
-            <button type="submit" class="loginbutton">Belépés</button>
+            <button type="submit" class="loginbutton buttonhover">Belépés</button>
         </form>
     </div>
 </div>

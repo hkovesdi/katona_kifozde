@@ -4,20 +4,18 @@
 @section('content')
 
 <body>
-    <div class="content">
-        <div class="title mwelcome">
-            Sikeresen beléptél {{Auth::user()->nev}}!
-        </div>
-
-        <div class="links">
-            <a href="https://laravel.com/docs">Docs</a>
-            <a href="https://laracasts.com">Laracasts</a>
-            <a href="https://laravel-news.com">News</a>
-            <a href="https://blog.laravel.com">Blog</a>
-            <a href="https://nova.laravel.com">Nova</a>
-            <a href="https://forge.laravel.com">Forge</a>
-            <a href="https://vapor.laravel.com">Vapor</a>
-            <a href="https://github.com/laravel/laravel">GitHub</a>
-        </div>
-    </div>
+    <nav class="topnav" >
+            <ul>
+                <li><a class="active" href="#home">Főoldal</a></li>
+                <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">Futárok</a>
+                    <div class="dropdown-content">
+                        <a href="#1">Futar1</a>
+                        <a href="#2">Futar2</a>
+                        <a href="#3">Futar3</a>
+                    </div>
+                </li>
+                <li><a href="#diagrams">Diagramok</a></li>
+                <li class="right"><a href="#logout">Kijelentkezés</a></li>
+            </ul>
+</nav>
 </body>
