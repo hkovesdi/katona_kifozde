@@ -7,8 +7,8 @@
     <nav class="topnav" >
             <ul>
                 <li><a class="active" href="#home">Főoldal</a></li>
-                <li class="dropdown"><a href="javascript:void(0)" class="dropbtn">Futárok</a>
-                    <div class="dropdown-content">
+                <li onclick="myFunction()" class="dropdown"><a href="javascript:void(0)" class="dropbtn">Futárok</a>
+                    <div id="myDropdown" class="dropdown-content">
                         <a href="#1">Futar1</a>
                         <a href="#2">Futar2</a>
                         <a href="#3">Futar3</a>
