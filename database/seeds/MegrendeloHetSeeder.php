@@ -14,14 +14,12 @@ class MegrendeloHetSeeder extends Seeder
         foreach(\App\Het::all() as $het) {
                 
             foreach(\App\Megrendelo::all() as $megrendelo) {
-                if(rand(0,100) > 50) {
-                    \App\MegrendeloHet::create([
-                        'megrendelo_id' => $megrendelo->id,
-                        'het_id' => $het->id,
-                        'fizetett' => rand(0,1),
-                        'szepkartya' => rand(0,1),
-                    ]);
-                }
+                \App\MegrendeloHet::create([
+                    'megrendelo_id' => $megrendelo->id,
+                    'het_id' => $het->id,
+                    'fizetett' => rand(0,1),
+                    'szepkartya' => rand(0,1),
+                ]);
             }
 
         }

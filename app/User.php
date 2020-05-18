@@ -42,7 +42,7 @@ class User extends Authenticatable
      */
     public function munkakor()
     {
-        return $this->hasOne('App\Munkakor');
+        return $this->belongsTo('App\Munkakor', 'munkakor', 'nev');
     }
 
     /**
@@ -50,6 +50,6 @@ class User extends Authenticatable
      */
     public function megrendelok()
     {
-        return $this->hasMany('App\Megrendelo');
+        return $this->hasMany('App\Megrendelo', 'kiszallito_id', 'id');
     }
 }

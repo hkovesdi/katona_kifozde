@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
+    Route::get('/', 'MegrendelesController@show')->name('home');
 });
 Route::get('/login', 'LoginController@show')->name('login');
 Route::post('/login', 'LoginController@authenticate')->name('login');

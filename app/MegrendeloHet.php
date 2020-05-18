@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean $szepkartya
  * @property string $created_at
  * @property string $updated_at
- * @property Het $hetek
- * @property Megrendelo $megrendelok
+ * @property Het $het
+ * @property Megrendelo $megrendelo
  * @property MegrendeloHetTetelek[] $megrendeloHetTeteleks
  */
 class MegrendeloHet extends Model

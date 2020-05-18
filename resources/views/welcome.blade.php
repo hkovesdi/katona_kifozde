@@ -1,4 +1,5 @@
-@extends('app') @section('content')
+@extends('app') 
+@section('content')
 
 <body>
     <nav class="topnav">
@@ -59,7 +60,7 @@
 
             <tr role="row">
                 <td role="cell" class="centercell">2
-                    <button id="menusorbtn" class="menubtn">Menüsor</button>
+                    <button id="menusorbtn" class="menubtn" data-toggle="modal" data-target="#exampleModal">Menüsor</button>
                 </td>
                 <td role="cell" id="name">Tóth Zsombor Gábor</td>
                 <td role="cell">Miskolc, Világ vége utca 26.</td>
@@ -229,6 +230,156 @@
 
         </tbody>
     </table>
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+        })
+    </script>
 
+    <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table id="myTable">
+                    <tr>
+                        <td>21. hét</td>
+                        <td>A Menü</td>
+                        <td>B Menü</td>
+                        <td>Leves</td>
+                        <td>A második</td>
+                        <td>B második</td>
+                        <td>T menü</td>
+                        <td>Doboz</td>
+                        <td>A1</td>
+                        <td>A2</td>
+                        <td>A3</td>
+                        <td>A4</td>
+                        <td>A5</td>
+                        <td>S1</td>
+                        <td>S2</td>
+                        <td>S3</td>
+                        <td>S4</td>
+                    </tr>
+
+                    <tr>
+                        <td>Hétfő</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Kedd</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Szerda</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Csütörtök</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Péntek</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+         
+                </table>
+
+            </tr>
+
+        </tbody>
+    </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 </body>

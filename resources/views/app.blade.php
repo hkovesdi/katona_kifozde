@@ -498,25 +498,5 @@
             });
         </script>
 
-
-
-
-        <script>
-            $( "#menusorbtn" ).on( "click", function() {
-                if($("#myTable").is(':hidden')) {
-                    $("#myTable").show(500);
-                } else {
-                    $("#myTable").hide(500);
-                }
-            });
-        </script>
-
-
-        <script>
-            $('#myModal').on('shown.bs.modal', function () {
-            $('#myInput').trigger('focus')
-            })
-        </script>
-
     </body>
 </html>
