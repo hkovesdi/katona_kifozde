@@ -287,7 +287,7 @@
 
             /* table */
 
-            table { 
+            .maintable { 
                 width: 98%;
                 margin-top: 20px;
                 border-collapse: collapse;
@@ -328,7 +328,7 @@
                 border: 1px solid white;
                 font-family: "Roboto", sans-serif;
                 text-transform: uppercase;
-                background: #6699ff;
+                background: green;
                 color: #ffffff;
                 font-size: 14px;
                 font-weight: bold;
@@ -345,13 +345,13 @@
             .fizetve-button:hover,
             .fizetve-button:active,
             .fizetve-button:focus {
-                background: #4d88ff;
+                background: #155115;
             }
 
             /* table resp */
 
             @media only screen and (max-width: 600px) {
-                table,
+                table.maintable,
                 thead,
                 tbody,
                 th,
@@ -409,31 +409,41 @@
                 }
 
                 td:nth-of-type(5):before {
-                    content: "Készpénz";
+                    content: "Fizetési mód";
                 }
 
                 td:nth-of-type(6):before {
-                    content: "Bankkártya";
+                    content: "Összeg";
                 }
 
                 td:nth-of-type(7):before {
-                    content: "Szépkártya";
-                }
-
-                td:nth-of-type(8):before {
-                    content: "Baptista";
-                }
-
-                td:nth-of-type(9):before {
-                    content: "Tartozás";
-                }
-
-                td:nth-of-type(10):before {
                     content: "Fizetett";
                 }
 
             }
 
+            .menubtn {
+                border: 1px solid white;
+                font-family: "Roboto", sans-serif;
+                text-transform: uppercase;
+                background: #6699ff;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
+                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            }
+
+            .menubtn:hover,
+            .menubtn:active,
+            .menubtn:focus {
+                background: #4d88ff;
+            }
+
+            #myTable {
+                display: inline-block;
+            }
         </style>
     </head>
     <body>
@@ -487,5 +497,26 @@
             $("input:checkbox").not(":checked").attr("disabled",bol);
             });
         </script>
+
+
+
+
+        <script>
+            $( "#menusorbtn" ).on( "click", function() {
+                if($("#myTable").is(':hidden')) {
+                    $("#myTable").show(500);
+                } else {
+                    $("#myTable").hide(500);
+                }
+            });
+        </script>
+
+
+        <script>
+            $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+            })
+        </script>
+
     </body>
 </html>

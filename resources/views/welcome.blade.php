@@ -21,76 +21,59 @@
         </ul>
     </nav>
     <div class="flex-center">
-    <table role="table">
+    <table role="table" class="maintable">
         <thead role="rowgroup">
             <tr role="row">
                 <th role="columnheader" class="fejlec-center">ID</th>
                 <th role="columnheader" class="fejlec-center">Név</th>
                 <th role="columnheader" class="fejlec-center">Cim</th>
                 <th role="columnheader" class="fejlec-center">Tel</th>
-                <th role="columnheader" class="fejlec-center">Készpénz</th>
-                <th role="columnheader" class="fejlec-center">Bankkártya</th>
-                <th role="columnheader" class="fejlec-center">Szépkártya</th>
-                <th role="columnheader" class="fejlec-center">Baptista</th>
-                <th role="columnheader" class="fejlec-center">Tartozás</th>
+                <th role="columnheader" class="fejlec-center">Fizetési mód</th>
+                <th role="columnheader" class="fejlec-center">Összeg</th>
                 <th role="columnheader" class="fejlec-center">Fizetett</th>
             </tr>
         </thead>
         <tbody role="rowgroup">
             <tr role="row">
-                <td role="cell" class="centercell">1</td>
-                <td role="cell">Katona Bence</td>
+                <td role="cell" class="centercell">1
+                    <button id="menusorbtn" class="menubtn">Menüsor</button>
+                </td>
+                <td role="cell" id="name">Katona Bence</td>
                 <td role="cell">Cegléd, Csengeri szél 46.</td>
                 <td role="cell">+36309737274</td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="KP" id="check1" >
-                    <label class="layout" for="check1"></label>
+                    <select>
+                        <option value="KP">Készpénz</option>
+                        <option value="BK">Bankkártya</option>
+                        <option value="SZK">Szépkártya</option>
+                        <option value="BP">Baptista</option>
+                    </select>
                 </td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BK" id="check2" >
-                    <label class="layout" for="check2"></label>
+                    15000Ft
                 </td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="SZK" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BAP" id="check4" >
-                    <label class="layout" for="check4"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="TART" id="check5" >
-                    <label class="layout" for="check5"></label>
-                </td>
-                <td role="cell" class="centercell">
-                <button type="submit" class="fizetve-button buttonhover">Fizetve</button>
+                    <button type="submit" class="fizetve-button buttonhover">Fizetve</button>
                 </td>
             </tr>
 
             <tr role="row">
-                <td role="cell" class="centercell">2</td>
-                <td role="cell">Tóth Zsombor Gábor</td>
+                <td role="cell" class="centercell">2
+                    <button id="menusorbtn" class="menubtn">Menüsor</button>
+                </td>
+                <td role="cell" id="name">Tóth Zsombor Gábor</td>
                 <td role="cell">Miskolc, Világ vége utca 26.</td>
                 <td role="cell">+36704657876</td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="KP" id="check1" >
-                    <label class="layout" for="check1"></label>
+                    <select>
+                        <option value="KP">Készpénz</option>
+                        <option value="BK">Bankkártya</option>
+                        <option value="SZK">Szépkártya</option>
+                        <option value="BP">Baptista</option>
+                    </select>
                 </td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BK" id="check2" >
-                    <label class="layout" for="check2"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="SZK" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BAP" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="TART" id="check3" >
-                    <label class="layout" for="check3"></label>
+                    3600Ft
                 </td>
                 <td role="cell" class="centercell">
                 <button type="submit" class="fizetve-button buttonhover">Fizetve</button>
@@ -98,36 +81,154 @@
             </tr>
 
             <tr role="row">
-                <td role="cell" class="centercell">3</td>
-                <td role="cell">Kövesdi Hunor</td>
-                <td role="cell">Tápiószentmárton, Halál fasza 12 3.Em 14cs</td>
-                <td role="cell">+369987657</td>
+                <td role="cell" class="centercell">3
+                    <button id="menusorbtn" class="menubtn">Menüsor</button>
+                </td>
+                <td role="cell" id="name">Kövesdi Hunor</td>
+                <td role="cell">TSZMárton, Halál fasza 12 3.Em 14cs</td>
+                <td role="cell">+36209987657</td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="KP" id="check1" >
-                    <label class="layout" for="check1"></label>
+                    <select>
+                        <option value="KP">Készpénz</option>
+                        <option value="BK">Bankkártya</option>
+                        <option value="SZK">Szépkártya</option>
+                        <option value="BP">Baptista</option>
+                    </select>
                 </td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BK" id="check2" >
-                    <label class="layout" for="check2"></label>
+                    5200Ft
                 </td>
                 <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="SZK" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="BAP" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                    <input type="checkbox" class="check" name="TART" id="check3" >
-                    <label class="layout" for="check3"></label>
-                </td>
-                <td role="cell" class="centercell">
-                <button type="submit" class="fizetve-button buttonhover">Fizetve</button>
+                    <button type="submit" class="fizetve-button buttonhover">Fizetve</button>
                 </td>
 
+                <table id="myTable" style="display: none">
+                    <tr>
+                        <td>21. hét</td>
+                        <td>A Menü</td>
+                        <td>B Menü</td>
+                        <td>Leves</td>
+                        <td>A második</td>
+                        <td>B második</td>
+                        <td>Takarék menü</td>
+                        <td>Doboz</td>
+                        <td>A1</td>
+                        <td>A2</td>
+                        <td>A3</td>
+                        <td>A4</td>
+                        <td>A5</td>
+                        <td>S1</td>
+                        <td>S2</td>
+                        <td>S3</td>
+                        <td>S4</td>
+                    </tr>
+
+                    <tr>
+                        <td>Hétfő</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Kedd</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Szerda</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Csütörtök</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Péntek</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+         
+                </table>
+
             </tr>
+
         </tbody>
     </table>
+
 </div>
 </body>
