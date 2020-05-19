@@ -11,13 +11,19 @@ class MegrendelesController extends Controller
     public function show()
     {
         $megrendelok = \App\Megrendelo::where('kiszallito_id',Auth::user()->id)
-            ->with('megrendeloHetek.megrendeloHetTetelek.tetel')
-            ->whereHas('megrendeloHetek.het', function($query) {
-                $query->where('id', $this->getCurrentHet());
-            })
-            ->get()->toArray();
-
-        return view('welcome')->compact($megrendelok);
+            ->with(['megrendeloHetek' => function($query){
+                $query->where('het_id', $this->getCurrentHet())->with('megrendeloHetTetelek.tetel');
+            }])
+            ->get()
+            ->toArray();
+        
+        $data = [
+            'megrendelok' => $megrendelok,
+            'het' => $this->getCurrentHet(),
+            'tetelek' => \App\Tetel::all(),
+        ];
+        
+        return view('welcome', $data);
     }
 
     private function getCurrentHet() {

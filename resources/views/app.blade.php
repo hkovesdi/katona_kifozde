@@ -351,7 +351,7 @@
             /* table resp */
 
             @media only screen and (max-width: 600px) {
-                table.maintable,
+/*                 table.maintable,
                 thead,
                 tbody,
                 th,
@@ -390,9 +390,9 @@
                     width: 45%;
                     padding-right: 10px;
                     white-space: nowrap;
-                }
+                } */
 
-                td:nth-of-type(1):before {
+/*                 td:nth-of-type(1):before {
                     content: "ID";
                 }
 
@@ -418,7 +418,7 @@
 
                 td:nth-of-type(7):before {
                     content: "Fizetett";
-                }
+                } */
 
             }
 
@@ -467,7 +467,9 @@
                 });
             });
         </script>
-        @endif @section('content')
+        @endif 
+        
+        @yield('content')
 
         <script>
             function myFunction() {
