@@ -53,400 +53,69 @@
             });
         </script>
 
-        <!-- Styles -->
-        <style>
-            html,
-            body {
-                background-color: #6699ff;
-                font-family: "Roboto", sans-serif;
-                font-weight: 250;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 30px;
-            }
-
-            .links > a {
-                color: white;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            /* login page */
-
-            .form {
-                border-radius: 7px;
-                position: relative;
-                z-index: 1;
-                background: #ffffff;
-                max-width: 360px;
-                margin: 0 auto 100px;
-                padding: 30px;
-                text-align: center;
-                border: 0;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .login-page {
-                width: 360px;
-                padding: 8% 0 0;
-                margin: auto;
-            }
-
-            .logininput {
-                border-radius: 7px;
-                font-family: "Roboto", sans-serif;
-                background: #f2f2f2;
-                width: 100%;
-                border: 1px solid white;
-                margin: 0 0 16px;
-                padding: 15px;
-                box-sizing: border-box;
-                font-size: 14px;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .loginbutton {
-                border: 1px solid white;
-                border-radius: 7px;
-                font-family: "Roboto", sans-serif;
-                text-transform: uppercase;
-                background: #6699ff;
-                width: 50%;
-                border: 0;
-                padding: 15px;
-                color: #ffffff;
-                font-size: 14px;
-                font-weight: bold;
-                -webkit-transition: all 0.3 ease;
-                transition: all 0.3 ease;
-                cursor: pointer;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .loginbutton:hover,
-            .loginbutton:active,
-            .loginbutton:focus {
-                background: #4d88ff;
-            }
-
-            .loginlogo {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%;
-            }
-
-            .center {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%;
-            }
-
-            input:focus {
-                border: 1px solid #6699ff;
-            }
-
-            /* menu */
-
-            .topnav ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                height: 48px;
-                background-color: #333333;
-                font-size: 14px;
-                font-weight: bold;
-                z-index: 1;
-            }
-
-            .topnav ul li {
-                float: left;
-            }
-
-            .topnav ul li a {
-                display: block;
-                color: white;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-            }
-
-            .topnav ul li a:hover:not(.active) {
-                background-color: #111;
-            }
-
-            .topnav ul li a.active {
-                background-color: #6699ff;
-            }
-
-            .topnav ul li a:hover {
-                background-color: #111111;
-            }
-
-            .topnav ul li.right {
-                float: right;
-            }
-
-            /* menu resp */
-
-            @media screen and (max-width: 600px) {
-                .topnav ul li.right,
-                .topnav ul li,
-                .topnav ul li.dropbtn {
-                    float: none;
-                    background-color: #333;
-                    width: 100%;
-                    display: inline-block;
-                }
-            }
-
-            .dropbtn {
-                display: inline-block;
-                color: white;
-                text-align: center;
-                text-decoration: none;
-            }
-
-            li a:hover,
-            .dropdown:hover .dropbtn {
-                background-color: #111;
-            }
-
-            li.dropdown {
-                display: inline-block;
-            }
-
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-                z-index: 1;
-            }
-
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                text-align: left;
-                background-color: #333333;
-            }
-
-            .dropdown-content a:hover {
-                background-color: #f1f1f1;
-            }
-
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
-
-            .dropdown:click .dropdown-content {
-                display: block;
-            }
-
-            .show {
-                display: block;
-            }
-
-            /* table */
-
-            .maintable { 
-                width: 98%;
-                margin-top: 20px;
-                border-collapse: collapse;
-            }
-
-            tr { 
-                background: #eee; 
-            }
-
-            .fejlec-center {
-                text-align: center;
-                vertical-align: middle;
-            }
-
-            th { 
-                background: #333; 
-                color: white; 
-                font-weight: bold; 
-                text-align: center; 
-            }
-
-            td {
-                text-align: left; 
-            }
-
-            td, th { 
-                padding: 6px; 
-                border: 1px solid #ccc; 
-            }
-
-            .centercell {
-                text-align: center;
-                vertical-align: middle;
-                 
-            }
-
-            .fizetve-button {
-                border: 1px solid white;
-                font-family: "Roboto", sans-serif;
-                text-transform: uppercase;
-                background: green;
-                color: #ffffff;
-                font-size: 14px;
-                font-weight: bold;
-                cursor: pointer;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .check {
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .fizetve-button:hover,
-            .fizetve-button:active,
-            .fizetve-button:focus {
-                background: #155115;
-            }
-
-            /* table resp */
-
-            @media only screen and (max-width: 600px) {
-/*                 table.maintable,
-                thead,
-                tbody,
-                th,
-                td,
-                tr {
-                    display: block;
-                }
-
-                table {
-                    margin-top: 160px;
-                    width: 95%;
-                }
-
-                thead tr {
-                    position: absolute;
-                    top: -9999px;
-                    left: -9999px;
-                }
-
-                tr {
-                    margin: 0 0 1rem 0;
-                    background: #eee;
-                }
-
-                td {
-                    border: 1px solid #ccc;
-                    border-bottom: 0;
-                    position: relative;
-                    padding-left: 50%;
-                    text-align: center;
-                }
-
-                td:before {
-                    position: absolute;
-                    left: 6px;
-                    width: 45%;
-                    padding-right: 10px;
-                    white-space: nowrap;
-                } */
-
-/*                 td:nth-of-type(1):before {
-                    content: "ID";
-                }
-
-                td:nth-of-type(2):before {
-                    content: "Név";
-                }
-
-                td:nth-of-type(3):before {
-                    content: "Cim";
-                }
-
-                td:nth-of-type(4):before {
-                    content: "Tel";
-                }
-
-                td:nth-of-type(5):before {
-                    content: "Fizetési mód";
-                }
-
-                td:nth-of-type(6):before {
-                    content: "Összeg";
-                }
-
-                td:nth-of-type(7):before {
-                    content: "Fizetett";
-                } */
-
-            }
-
-            .menubtn {
-                border: 1px solid white;
-                font-family: "Roboto", sans-serif;
-                text-transform: uppercase;
-                background: #6699ff;
-                color: #ffffff;
-                font-size: 14px;
-                font-weight: bold;
-                cursor: pointer;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
-                    0 5px 5px 0 rgba(0, 0, 0, 0.24);
-            }
-
-            .menubtn:hover,
-            .menubtn:active,
-            .menubtn:focus {
-                background: #4d88ff;
-            }
-
-            #myTable {
-                display: inline-block;
-            }
-        </style>
     </head>
     <body>
+        @auth
+{{-- 
+        regi nav
+        <nav class="topnav">
+            <ul>
+                <li><a class="active" href="#home">Főoldal</a></li>
+                <li onclick="myFunction()" class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">Futárok</a>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="#1">Futar1</a>
+                        <a href="#2">Futar2</a>
+                        <a href="#3">Futar3</a>
+                        <a href="#4">Futar4</a>
+                        <a href="#5">Futar5</a>
+                        <a href="#6">Futar6</a>
+                        <a href="#7">Futar7</a>
+                    </div>
+                </li>
+                <li><a href="#diagrams">Diagramok</a></li>
+                <li class="right"><a href="#logout">Kijelentkezés</a></li>
+            </ul>
+        </nav> 
+        --}}
+
+
+        
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#home">Főoldal <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#diagrams">Diagramok</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#print">Nyomtatás</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Futárok
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#Futár1">Futár1</a>
+                    <a class="dropdown-item" href="#Futár2">Futár2</a>
+                    <a class="dropdown-item" href="#Futár3">Futár3</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#logout">Kijelentkezés</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          @endauth
+
         @if (\Session::has('success'))
         <script type="text/javascript">
             const success = <?php echo json_encode(\Session::get('success')) ?>;
@@ -471,34 +140,6 @@
         
         @yield('content')
 
-        <script>
-            function myFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
-            }
-
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
-                if (!event.target.matches(".dropbtn")) {
-                    var dropdowns = document.getElementsByClassName(
-                        "dropdown-content"
-                    );
-                    var i;
-                    for (i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains("show")) {
-                            openDropdown.classList.remove("show");
-                        }
-                    }
-                }
-            };
-        </script>
-
-        <script>
-            $("input:checkbox").click(function() {
-            var bol = $("input:checkbox:checked").length >= 1;     
-            $("input:checkbox").not(":checked").attr("disabled",bol);
-            });
-        </script>
 
     </body>
 </html>
