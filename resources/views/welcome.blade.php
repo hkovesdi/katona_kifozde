@@ -12,11 +12,11 @@
 
         <p id="week-counter">{{$het}}. hét</p>
 
-            <button class="btn-basic">Hozzáadás</button>
+        <button class="btn-basic">Hozzáadás</button>
 
-            <button class="btn-basic">Módosítás</button>
+        <button class="btn-basic">Módosítás</button>
 
-            <button class="btn-basic">Törlés</button>
+        <button class="btn-basic">Törlés</button>
 
     </div>
 
@@ -35,28 +35,31 @@
             </tr>
         </thead>
         <tbody role="rowgroup" class="main-tbody">
-            <tr role="row">
-                <td role="cell" class="centercell">
-                    <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-1-modal">Menüsor</button>
-                </td>
-                <td role="cell" id="name">Katona Bence</td>
-                <td role="cell">Cegléd, Csengeri szél 46.</td>
-                <td role="cell">+36309737274</td>
-                <td role="cell" class="centercell">
-                    <select>
-                        <option value="KP">Készpénz</option>
-                        <option value="BK">Bankkártya</option>
-                        <option value="SZK">Szépkártya</option>
-                        <option value="BP">Baptista</option>
-                    </select>
-                </td>
-                <td role="cell" class="centercell">
-                    15000Ft
-                </td>
-                <td role="cell" class="centercell">
-                    <button type="submit" class="fizetve-button">Fizetve</button>
-                </td>
-            </tr>
+
+            @foreach($megrendelok as $megrendelo)
+                <tr role="row" id="megrendelo-{{$megrendelo['id']}}">
+                    <td role="cell" class="centercell">
+                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendelo['id']}}-modal">Menüsor</button>
+                    </td>
+                    <td role="cell" name="nev">{{$megrendelo['nev']}}</td>
+                    <td role="cell" name="szallitasi-cim">{{$megrendelo['szallitasi_cim']}}</td>
+                    <td role="cell" name="telefonszam">{{$megrendelo['telefonszam']}}</td>
+                    <td role="cell" class="centercell" name="fizetesi-mod">
+                        <select>
+                            <option value="KP">Készpénz</option>
+                            <option value="BK">Bankkártya</option>
+                            <option value="SZK">Szépkártya</option>
+                            <option value="BP">Baptista</option>
+                        </select>
+                    </td>
+                    <td role="cell" class="centercell">
+                        15000Ft
+                    </td>
+                    <td role="cell" class="centercell">
+                        <button type="submit" class="fizetve-button">Fizetve</button>
+                    </td>
+                </tr>
+            @endforeach
 
         </tbody>
     </table>
@@ -67,26 +70,23 @@
         })
     </script>
 
-    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-1-modal">
+    @foreach($megrendelok as $megrendelo)
+    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendelo['id']}}-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{$het}}. hét | Katona Bence</h5>
+                    <h5 class="modal-title">{{$megrendelo['nev']}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" style="text-align: center">
-                    <table id="myTable" class="megrendelo-table">
+                    <table id="megrendelo-{{$megrendelo['id']}}-table" class="megrendelo-table">
                         <tr>
-                            <td style="width: 100px">{{$het}}. hét</td>
-                            <td style="width: 50px">A</td>
-                            <td style="width: 50px">B</td>
-                            <td style="width: 50px">L</td>
-                            <td style="width: 50px">A m</td>
-                            <td style="width: 50px">B m</td>
-                            <td style="width: 50px">T</td>
-                            <td style="width: 50px">Dz</td>
+                            <th style="width: 100px">{{$het}}. hét</td>
+                            @foreach($tetelek as $tetel)
+                                <th style="width: 50px">{{$tetel->nev}}</th>
+                            @endforeach
     {{--                         <td>A1</td>
                             <td>A2</td>
                             <td>A3</td>
@@ -98,105 +98,23 @@
                             <td>S4</td> --}}
                         </tr>
 
-                        <tr>
-                            <td>Hétfő</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-    {{--                         <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> --}}
-                        </tr>
-
-                        <tr>
-                            <td>Kedd</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-    {{--                         <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> --}}
-                        </tr>
-
-                        <tr>
-                            <td>Szerda</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-    {{--                        <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> --}}
-                        </tr>
-
-                        <tr>
-                            <td>Csütörtök</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-    {{--                         <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> --}}
-                        </tr>
-
-                        <tr>
-                            <td>Péntek</td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-    {{--                         <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td> --}}
-                        </tr>
+                        @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $nap)
+                            <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}">
+                                <th>{{$nap}}</th>
+                                @foreach($tetelek as $tetel)
+                                    <td><input type="number" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetel->nev}}" class="megrendeles-table-input"></td>
+                                @endforeach
+        {{--                         <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td> --}}
+                            </tr>
+                        @endforeach
          
                     </table>
 
@@ -208,6 +126,7 @@
                 </div>
             </div>
         </div>
+        @endforeach
     </div>
 </body>
 @stop

@@ -8,6 +8,7 @@
         />
 
         <title>Laravel</title>
+        <script src="https://kit.fontawesome.com/6b162f348b.js" crossorigin="anonymous"></script>
 
         <!-- Fonts -->
         <link
@@ -107,11 +108,16 @@
                     <a class="dropdown-item" href="#Futár3">Futár3</a>
                   </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#logout">Kijelentkezés</a>
-                </li>
               </ul>
             </div>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Kijelentkezés</a>
+                </li>
+              </ul>
           </nav>
 
           @endauth

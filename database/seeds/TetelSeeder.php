@@ -14,19 +14,31 @@ class TetelSeeder extends Seeder
         $tetelek = [
             [
                 'nev' => 'A',
-                'ar' => 2500
+                'ar' => 1290
             ],
             [
                 'nev' => 'B',
-                'ar' => 2700
+                'ar' => 1290
             ],
             [
-                'nev' => 'L',
-                'ar' => 1000
+                'nev' => 'A m',
+                'ar' => 950
             ],
             [
-                'nev' => 'F',
-                'ar' => 3000
+                'nev' => 'B m',
+                'ar' => 950
+            ],
+            [
+                'nev' => 'L', //Pénteki leves 650 good luck
+                'ar' => 500
+            ],
+            [
+                'nev' => 'T',
+                'ar' => 950
+            ],
+            [
+                'nev' => 'Dz',
+                'ar' => 80
             ],
         ];
         
