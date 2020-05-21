@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHetekTable extends Migration
+class CreateDatumokTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateHetekTable extends Migration
      */
     public function up()
     {
-        Schema::create('hetek', function (Blueprint $table) {
+        Schema::create('datumok', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->date('datum');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateHetekTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hetek');
+        Schema::dropIfExists('datum');
     }
 }

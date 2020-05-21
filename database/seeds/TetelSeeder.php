@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Carbon;
 class TetelSeeder extends Seeder
 {
     /**
@@ -10,38 +10,17 @@ class TetelSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
-        $tetelek = [
-            [
-                'nev' => 'A',
-                'ar' => 1290
-            ],
-            [
-                'nev' => 'B',
-                'ar' => 1290
-            ],
-            [
-                'nev' => 'A m',
-                'ar' => 950
-            ],
-            [
-                'nev' => 'B m',
-                'ar' => 950
-            ],
-            [
-                'nev' => 'L', //Pénteki leves 650 good luck
-                'ar' => 500
-            ],
-            [
-                'nev' => 'T',
-                'ar' => 950
-            ],
-            [
-                'nev' => 'Dz',
-                'ar' => 80
-            ],
-        ];
-        
-        \App\Tetel::insert($tetelek);
+    {
+        $date = Carbon::today();
+        while($date->lt(Carbon::today()->addYears(1))){
+            foreach(\App\TetelNev::all() as $tetelNev) {
+                \App\Tetel::create([
+                    'tetel_nev' => $tetelNev->nev,
+                    'datum_id' => \App\Datum::where('datum', $date->format('Y-m-d'))->first()->id,
+                    'ar' => random_int(1000,3000),
+                ]);
+            }
+            $date = $date->addDays(1);
+        }
     }
 }

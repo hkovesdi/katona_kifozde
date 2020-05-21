@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class HetSeeder extends Seeder
+class MegrendelesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -10,9 +10,7 @@ class HetSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
-        for($i = 0; $i < 30; $i++){
-            \App\Het::create();
-        }
+    {
+        //
     }
 }
