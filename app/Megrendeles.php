@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $fizetesi_mod
  * @property string $created_at
  * @property string $updated_at
- * @property Datum $datum
  * @property FizetesiMod $fizetesiMod
  * @property Megrendelok $megrendelo
  * @property Tetel $tetel
@@ -36,15 +35,8 @@ class Megrendeles extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'datum_id', 'tetel_id', 'fizetesi_mod', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'created_at', 'updated_at'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function datum()
-    {
-        return $this->belongsTo('App\Datum', 'datum_id');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

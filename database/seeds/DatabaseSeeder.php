@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DatumSeeder::class);
         $this->call(FizetesiModokSeeder::class);
         $this->call(TetelSeeder::class);
+        $this->call(MegrendelesSeeder::class);
     }
 }
