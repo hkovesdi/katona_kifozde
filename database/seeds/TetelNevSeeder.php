@@ -25,7 +25,7 @@ class TetelNevSeeder extends Seeder
                 'nev' => 'B m',
             ],
             [
-                'nev' => 'L', //Pénteki leves 650 good luck
+                'nev' => 'L',
             ],
             [
                 'nev' => 'T',
@@ -33,8 +33,37 @@ class TetelNevSeeder extends Seeder
             [
                 'nev' => 'Dz',
             ],
+            [
+                'nev' => 'A1',
+            ],
+            [
+                'nev' => 'A2',
+            ],
+            [
+                'nev' => 'A3',
+            ],
+            [
+                'nev' => 'A4',
+            ],
+            [
+                'nev' => 'A5',
+            ],
+            [
+                'nev' => 'S1',
+            ],
+            [
+                'nev' => 'S2',
+            ],
+            [
+                'nev' => 'S3',
+            ],
+            [
+                'nev' => 'S4',
+            ],
         ];
         
-        \App\TetelNev::insert($tetelek);
+        foreach($tetelek as $tetel) {
+            \App\TetelNev::create($tetel);
+        }
     }
 }

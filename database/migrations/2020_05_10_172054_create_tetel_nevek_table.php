@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateTetelNevekTable extends Migration
 {
@@ -14,8 +15,8 @@ class CreateTetelNevekTable extends Migration
     public function up()
     {
         Schema::create('tetel_nevek', function (Blueprint $table) {
-            $table->string('nev');
-            $table->primary('nev');
+            $table->id();
+            $table->string('nev')->unique();
             $table->timestamps();
         });
     }
@@ -27,9 +28,6 @@ class CreateTetelNevekTable extends Migration
      */
     public function down()
     {   
-        Schema::table('tetel_nevek', function (Blueprint $table) {
-            $table->dropPrimary('tetel_nevek_nev_primary');
-        });
         Schema::dropIfExists('tetel_nevek');
     }
 }

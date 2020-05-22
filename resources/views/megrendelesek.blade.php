@@ -146,48 +146,80 @@
                     
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                </button>
 
                 </div>
                 
-                <div class="modal-body table-responsive" style="text-align: center">
+                <div class="modal-body" style="text-align: center">
+
+                    <div class="table-responsive">
                     
-                    <table id="megrendelo-{{$megrendelo['id']}}-table" class="megrendelo-table table-striped">
-                        
-                        <thead>
+                        <table id="megrendelo-{{$megrendelo['id']}}-table" class="megrendelo-table table-striped">
                             
-                            <tr>
+                            <thead>
                                 
-                                <th class="megrendelo-thead" scope="col">{{$het}}. hét</td>
-                                
-                                @foreach($tetelek as $tetel)
-                                
-                                <th class="megrendelo-thead" scope="col" style="text-align: center">{{$tetel->nev}}</th>
-                            
-                                @endforeach
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-                            
-                            @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $nap)
-                                
-                            <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
+                                <tr>
                                     
-                                <th scope="row">{{$nap}}</th>
-                                @foreach($tetelek as $tetel)
-                                    <td><input min="1" type="number" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetel->nev}}" class="megrendeles-table-input"></td>
+                                    <th class="megrendelo-thead" scope="col">{{$het}}. hét</td>
+                                    
+                                    @foreach($tetelek as $tetel)
+                                    
+                                    <th class="megrendelo-thead" scope="col" style="text-align: center">{{$tetel->nev}}</th>
+                                
+                                    @endforeach
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+                                
+                                @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
+                                    
+                                <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
+                                        
+                                    <th scope="row">{{$nap}}</th>
+                                    @foreach($tetelek as $tetelNev)
+                                        @php
+                                        $feladagCount=0;
+                                        $normalAdagCount=0;
+                                        if($megrendelo->megrendelesek != null) {
+                                            $megrendelo->megrendelesek->each(function($megrendeles) use ($tetelNev,$idx,&$feladagCount,&$normalAdagCount){
+                                                if(($megrendeles->tetel->datum->dayOfWeek == $idx+1) && ($megrendeles->tetel->tetel_nev == $tetelNev->nev)){
+                                                    if($megrendeles->feladag){
+                                                        $feladagCount++;
+                                                    }
+                                                    else {
+                                                        $normalAdagCount++;
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if($feladagCount > 0 && $normalAdagCount > 0){
+                                            $rendelesValue = $normalAdagCount.'X'.$feladagCount.'F';
+                                        }
+                                        else if($feladagCount > 0){
+                                            $rendelesValue = $feladagCount.'F';
+                                        }
+                                        else if($normalAdagCount > 0) {
+                                            $rendelesValue = $normalAdagCount;
+                                        }
+                                        else {
+                                            $rendelesValue = null;
+                                        }
+                                        @endphp
+                                        <td>
+                                            <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input"></td>
+                                    @endforeach
+
+                                </tr>
+                                
                                 @endforeach
 
-                            </tr>
-                            
-                            @endforeach
+                            </tbody>
 
-                        </tbody>
-
-                    </table>
+                        </table>
+                    </div>
 
                     </div>
 
@@ -207,4 +239,16 @@
     </div>
 
 </body>
+
+<script>
+    $('.megrendelo-table tbody tr td .megrendeles-table-input').on('change', function() {
+        
+        if($(this).val() < $(this).attr('min')){
+            $(this).val($(this).attr('min'));
+        }
+        if($(this).val() == 0){
+            $(this).val("");
+        }
+    });
+</script>
 @stop

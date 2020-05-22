@@ -17,15 +17,15 @@ class MegrendelesController extends Controller
                     $query->where(DB::raw("WEEK(`datum`)"), $this->getCurrentHet());
                 })->with('tetel.datum');
             }])
-            ->get()
-            ->toArray();
-        
+            ->get();
+            //->toArray(); 
+
         $data = [
             'megrendelok' => $megrendelok,
             'het' => $this->getCurrentHet(),
             'tetelek' => \App\TetelNev::all(),
         ];
-        
+
         return view('megrendelesek', $data);
     }
 

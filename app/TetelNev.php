@@ -24,7 +24,7 @@ class TetelNev extends Model
      * 
      * @var string
      */
-    protected $primaryKey = 'nev';
+    protected $primaryKey = 'id';
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -38,7 +38,7 @@ class TetelNev extends Model
      * 
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * @var array

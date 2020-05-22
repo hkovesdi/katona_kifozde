@@ -35,4 +35,13 @@ class LoginController extends Controller
         return redirect()->back()->with('failure', ['Hibás felhasználónév vagy jelszó!']);
 
     }
+
+    public function logout()
+    {
+        if(Auth::check()){
+            Auth::logout();
+        }
+
+        return redirect('login')->with('success', ['Kijelentkezve']);
+    }
 }

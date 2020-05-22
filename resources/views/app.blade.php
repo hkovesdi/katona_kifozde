@@ -115,7 +115,10 @@
                     <a class="nav-link disabled" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Kijelentkezés</a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button class="nav-link" type="submit">Kijelentkezés</button>
+                    </form>
                 </li>
               </ul>
           </nav>

@@ -23,6 +23,8 @@ class Datum extends Model
 
     public $timestamps = false;
 
+    protected $appends = ['day_of_week','week_of_year','year'];
+
     /**
      * The "type" of the auto-incrementing ID.
      * 
@@ -49,5 +51,17 @@ class Datum extends Model
     public function tetelek()
     {
         return $this->hasMany('App\Tetel', 'datum_id');
+    }
+
+    public function getDayOfWeekAttribute() {
+        return \Carbon\Carbon::parse($this->datum)->dayOfWeek;
+    }
+
+    public function getWeekOfYearAttribute() {
+        return \Carbon\Carbon::parse($this->datum)->weekOfYear;
+    }
+    
+    public function getYearAttribute() {
+        return \Carbon\Carbon::parse($this->datum)->year;
     }
 }
