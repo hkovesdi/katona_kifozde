@@ -120,109 +120,6 @@ input:focus {
 	border: 1px solid #6699ff;
 }
 
-/* menu 
-
-.topnav ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	height: 48px;
-	background-color: #424242;
-	font-size: 14px;
-	font-weight: bold;
-	z-index: 1;
-}
-
-.topnav ul li {
-	float: left;
-}
-
-.topnav ul li a {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-}
-
-.topnav ul li a:hover:not(.active) {
-	background-color: #111;
-}
-
-.topnav ul li a.active {
-	background-color: #6699ff;
-}
-
-.topnav ul li a:hover {
-	background-color: #111111;
-}
-
-.topnav ul li.right {
-	float: right;
-}
-
-/* menu resp */
-
-/* @media screen and (max-width: 600px) {
-	.topnav ul li.right,
-	.topnav ul li,
-	.topnav ul li.dropbtn {
-		float: none;
-		background-color: #424242;
-		width: 100%;
-		display: inline-block;
-	}
-}
-
-.dropbtn {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	text-decoration: none;
-}
-
-li a:hover,
-.dropdown:hover .dropbtn {
-	background-color: #111;
-}
-
-li.dropdown {
-	display: inline-block;
-}
-
-.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
-}
-
-.dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-	text-align: left;
-	background-color: #424242;
-}
-
-.dropdown-content a:hover {
-	background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-	display: block;
-}
-
-.dropdown:click .dropdown-content {
-	display: block;
-}
-
-.show {
-	display: block;
-} */
 /* table */
 
 .main-table {
@@ -290,7 +187,6 @@ li.dropdown {
 	font-size: 14px;
 	font-weight: bold;
 	cursor: pointer;
-	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 .fizetve-button:hover,
@@ -330,6 +226,11 @@ li.dropdown {
 .row-fiz {
 	width: 7%;
 }
+
+.main-table tr:nth-child(even) {
+	background-color: #e4e4e4;
+}
+
 /* table resp */
 
 @media only screen and (max-width: 600px) {
@@ -344,7 +245,7 @@ li.dropdown {
 	}
 
 	.main-table {
-		margin-top: 0px;
+		margin-top: 20px;
 		width: 95%;
 	}
 
@@ -385,7 +286,7 @@ li.dropdown {
 		content: "Név";
 	}
 
-	.main-tbodytd:nth-of-type(3):before {
+	.main-tbody td:nth-of-type(3):before {
 		content: "Cim";
 	}
 
@@ -414,17 +315,15 @@ li.dropdown {
 #week-counter {
 	width: 100px;
 	padding: 10px;
+	margin-right: 2%;
 	text-align: center;
 	margin-left: 1%;
 	margin-top: 1%;
-	border: 1px solid white;
 	font-family: "Arial", sans-serif;
 	text-transform: uppercase;
-	background: #424242;
 	color: #ffffff;
 	font-size: 20px;
 	font-weight: bold;
-	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 	display: inline-block;
 }
 
@@ -465,7 +364,6 @@ li.dropdown {
 	font-size: 14px;
 	font-weight: bold;
 	cursor: pointer;
-	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 .btn-rend:hover,
@@ -499,5 +397,45 @@ li.dropdown {
 .megrendelo-table td {
 	text-align: left;
 	padding: 6px;
+	border: 1px solid #ccc;
+}
+
+.megrendeles-table-input {
+	background-color: transparent;
+	margin: 0px;
+	width: 50px;
+	border: 0px;
+	padding: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+.buttonrows {
+	margin-left: 2%;
+}
+
+@media only screen and (min-width: 601px) {
+	p.buttonrows {
+		display: inline;
+	}
+}
+
+.megrendelo-thead {
+	background: #424242;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #424242;
+}
+
+.megrendelo-napok {
 	border: 1px solid #ccc;
 }
