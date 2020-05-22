@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MegrendelesController extends Controller
 {
     public function show()
     {
         $megrendelok = \App\Megrendelo::where('kiszallito_id',Auth::user()->id)
-            ->with(['megrendeloHetek' => function($query){
-                $query->where('het_id', $this->getCurrentHet())->with('megrendeloHetTetelek.tetel');
+            ->with(['megrendelesek' => function($query){
+                $query->whereHas('tetel.datum', function($query){
+                    $query->where(DB::raw("WEEK(`datum`)"), $this->getCurrentHet());
+                })->with('tetel.datum');
             }])
             ->get()
             ->toArray();
@@ -20,10 +23,10 @@ class MegrendelesController extends Controller
         $data = [
             'megrendelok' => $megrendelok,
             'het' => $this->getCurrentHet(),
-            'tetelek' => \App\Tetel::all(),
+            'tetelek' => \App\TetelNev::all(),
         ];
         
-        return view('welcome', $data);
+        return view('megrendelesek', $data);
     }
 
     private function getCurrentHet() {

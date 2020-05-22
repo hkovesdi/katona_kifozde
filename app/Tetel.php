@@ -40,7 +40,7 @@ class Tetel extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function datumok()
+    public function datum()
     {
         return $this->belongsTo('App\Datum', 'datum_id');
     }

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property User $user
- * @property MegrendeloHet[] $megrendeloHetek
+ * @property Megrendeles[] $megrendelesek
  */
 class Megrendelo extends Model
 {
@@ -48,8 +48,8 @@ class Megrendelo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function megrendeloHetek()
+    public function megrendelesek()
     {
-        return $this->hasMany('App\MegrendeloHet', 'megrendelo_id');
+        return $this->hasMany('App\Megrendeles', 'megrendelo_id');
     }
 }
