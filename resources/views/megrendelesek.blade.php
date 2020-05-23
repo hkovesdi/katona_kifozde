@@ -173,49 +173,58 @@
                             </thead>
 
                             <tbody>
-                                
-                                @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
-                                    
-                                <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
+                            <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form">
+                                    @csrf
+                                    <input type="hidden" name="megrendelo-id" value="{{$megrendelo['id']}}">
+
+                                    @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
                                         
-                                    <th scope="row">{{$nap}}</th>
-                                    @foreach($tetelek as $tetelNev)
-                                        @php
-                                        $feladagCount=0;
-                                        $normalAdagCount=0;
-                                        if($megrendelo->megrendelesek != null) {
-                                            $megrendelo->megrendelesek->each(function($megrendeles) use ($tetelNev,$idx,&$feladagCount,&$normalAdagCount){
-                                                if(($megrendeles->tetel->datum->dayOfWeek == $idx+1) && ($megrendeles->tetel->tetel_nev == $tetelNev->nev)){
-                                                    if($megrendeles->feladag){
-                                                        $feladagCount++;
+                                    <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
+                                        {{-- <input type="hidden" name="megrendelesek[]" value="{{$idx}}"> --}}
+                                            
+                                        <th scope="row">{{$nap}}</th>
+                                        @foreach($tetelek as $tetelIdx => $tetelNev)
+                                            
+                                            {{--  <input type="hidden" name="megrendelesek[{{$idx}}][]" value="{{$tetelIdx}}"> --}}
+                                            @php
+                                            $feladagCount=0;
+                                            $normalAdagCount=0;
+                                            if($megrendelo->megrendelesek != null) {
+                                                $megrendelo->megrendelesek->each(function($megrendeles) use ($tetelNev,$idx,&$feladagCount,&$normalAdagCount){
+                                                    if(($megrendeles->tetel->datum->dayOfWeek == $idx+1) && ($megrendeles->tetel->tetel_nev == $tetelNev->nev)){
+                                                        if($megrendeles->feladag){
+                                                            $feladagCount++;
+                                                        }
+                                                        else {
+                                                            $normalAdagCount++;
+                                                        }
                                                     }
-                                                    else {
-                                                        $normalAdagCount++;
-                                                    }
-                                                }
-                                            });
-                                        }
-                                        if($feladagCount > 0 && $normalAdagCount > 0){
-                                            $rendelesValue = $normalAdagCount.'X'.$feladagCount.'F';
-                                        }
-                                        else if($feladagCount > 0){
-                                            $rendelesValue = $feladagCount.'F';
-                                        }
-                                        else if($normalAdagCount > 0) {
-                                            $rendelesValue = $normalAdagCount;
-                                        }
-                                        else {
-                                            $rendelesValue = null;
-                                        }
-                                        @endphp
-                                        <td>
-                                            <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input"></td>
+                                                });
+                                            }
+                                            if($feladagCount > 0 && $normalAdagCount > 0){
+                                                $rendelesValue = $normalAdagCount.'x'.$feladagCount.'F';
+                                            }
+                                            else if($feladagCount > 0){
+                                                $rendelesValue = $feladagCount.'F';
+                                            }
+                                            else if($normalAdagCount > 0) {
+                                                $rendelesValue = $normalAdagCount;
+                                            }
+                                            else {
+                                                $rendelesValue = null;
+                                            }
+                                            @endphp
+                                            <td>
+                                                <input type="hidden" class="normal-adag-input" value={{$normalAdagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}]['normal']">
+                                                <input type="hidden" class="feladag-input" value={{$feladagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}]['fel']">
+                                                <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input">
+                                            </td>
+                                        @endforeach
+
+                                    </tr>
+                                    
                                     @endforeach
-
-                                </tr>
-                                
-                                @endforeach
-
+                                </form>
                             </tbody>
 
                         </table>
@@ -225,7 +234,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <button type="button" class="btn btn-primary">Mentés</button>
+                        <button type="button" class="btn btn-primary megrendeles-modositas-button">Mentés</button>
                     </div>
 
                 </div>
@@ -241,13 +250,53 @@
 </body>
 
 <script>
-    $('.megrendelo-table tbody tr td .megrendeles-table-input').on('change', function() {
-        
-        if($(this).val() < $(this).attr('min')){
-            $(this).val($(this).attr('min'));
+    $('.megrendeles-modositas-button').on('click', function(){
+        //console.log($(this).closest('.modal').find('.megrendeles-modositas-form'));
+        $(this).closest('.modal').find('.megrendeles-modositas-form').submit();
+    });
+
+    function selectValidInputs(inp, ref) {
+        let ret = {'normal' : 0, 'fel': 0, 'err':false};
+        console.log(inp);
+        if(inp == null || inp[0] !== ref){
+            ret['err']=true;
         }
-        if($(this).val() == 0){
-            $(this).val("");
+        else if(inp[2] !== undefined){
+            console.log("X")
+             if(inp[1] !== undefined && inp[3] !== undefined){
+                 ret['normal'] = inp[1];
+                 ret['fel'] = inp[3];
+             }
+             else {
+                 ret['err'] = true;
+             }
+        }
+        else if(inp[4] !== undefined) {
+            console.log("F");
+            ret['fel'] = inp[1];
+        }
+        else {
+            ret['normal'] = inp[1];
+        }
+
+        return ret;
+        
+    }
+
+    $('.megrendelo-table tbody tr td .megrendeles-table-input').on('change', function() {
+        let val = $(this).val().trim();
+        let re = /(^\d+)((?:x|X)|\s)?(\d+)?(f$|F$)?/g;
+        let groups = re.exec(val);
+        let validInputs = selectValidInputs(groups,val);
+        console.log(validInputs);
+        if(validInputs['err']){
+            $(this).val(JSON.parse(<?php echo json_encode($rendelesValue) ?>));
+            //invalid input notification
+        }
+        else {
+            //console.log( $(this).siblings(".normal-adag-input"));
+            $(this).siblings('.normal-adag-input').val(validInputs['normal']);
+            $(this).siblings('.feladag-input').val(validInputs['fel']);
         }
     });
 </script>

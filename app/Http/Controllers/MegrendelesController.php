@@ -29,6 +29,23 @@ class MegrendelesController extends Controller
         return view('megrendelesek', $data);
     }
 
+    public function modositas(Request $request)
+    {
+        $data = $request->all();
+
+        foreach($data['megrendelesek'] as $nap => $tetelek) {
+            foreach($tetelek as $tetelNev => $adagok) {
+                //Check how many megrendeles exists and compute difference
+                //Iff existing > proposed 
+                    //Check If user has sufficient privileges
+                //if proposed > existing
+                    //Create the new records
+            }
+        }
+
+        return 0;
+    }
+
     private function getCurrentHet() {
         return Carbon::now()->weekOfYear;
     }
