@@ -52,6 +52,47 @@
                     toast.addEventListener("mouseleave", Swal.resumeTimer);
                 }
             });
+
+
+            $(document).on('submit', 'form.ajax', function(e){
+                e.preventDefault();
+                let submitButton = $(this).find("input[type='submit']");
+                submitButton.attr('disabled', true);
+
+                const form = $(this);
+                const url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    statusCode: {
+                        500: function() {
+                                Toast.fire({
+                                icon: 'error',
+                                title: 'Kérem frissítse az oldalt és próbálja újra később!'
+                            });
+                        }
+                    },
+                    success: function(data)
+                    {   
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.message
+                        });
+                    },
+                    error: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.message
+                        });
+                    },
+                    complete: function(){
+                        submitButton.removeAttr('disabled');
+                    }
+                });
+            });
         </script>
 
     </head>

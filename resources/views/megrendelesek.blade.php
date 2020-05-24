@@ -149,7 +149,8 @@
                 </button>
 
                 </div>
-                
+                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form ajax">
+                    @csrf
                 <div class="modal-body" style="text-align: center">
 
                     <div class="table-responsive">
@@ -173,8 +174,6 @@
                             </thead>
 
                             <tbody>
-                            <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form">
-                                    @csrf
                                     <input type="hidden" name="megrendelo-id" value="{{$megrendelo['id']}}">
 
                                     @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
@@ -184,7 +183,6 @@
                                             
                                         <th scope="row">{{$nap}}</th>
                                         @foreach($tetelek as $tetelIdx => $tetelNev)
-                                            
                                             {{--  <input type="hidden" name="megrendelesek[{{$idx}}][]" value="{{$tetelIdx}}"> --}}
                                             @php
                                             $feladagCount=0;
@@ -224,7 +222,6 @@
                                     </tr>
                                     
                                     @endforeach
-                                </form>
                             </tbody>
 
                         </table>
@@ -234,8 +231,9 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <button type="button" class="btn btn-primary megrendeles-modositas-button">Mentés</button>
+                        <input type="submit" class="btn btn-primary megrendeles-modositas-button" value="Mentés">
                     </div>
+                    </form>
 
                 </div>
 
@@ -252,7 +250,7 @@
 <script>
     $('.megrendeles-modositas-button').on('click', function(){
         //console.log($(this).closest('.modal').find('.megrendeles-modositas-form'));
-        $(this).closest('.modal').find('.megrendeles-modositas-form').submit();
+       // $(this).closest('.modal').find('.megrendeles-modositas-form').submit();
     });
 
     function selectValidInputs(inp, ref) {
