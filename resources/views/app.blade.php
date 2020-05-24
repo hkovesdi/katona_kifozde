@@ -83,10 +83,10 @@
                         });
                     },
                     error: function(data)
-                    {
+                    {   
                         Toast.fire({
                             icon: 'error',
-                            title: data.message
+                            title: data.responseJSON.message
                         });
                     },
                     complete: function(){
