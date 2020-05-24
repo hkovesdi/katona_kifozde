@@ -132,13 +132,13 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#home">Főoldal <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{route('home')}}">Megrendelések <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#diagrams">Diagramok</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#print">Nyomtatás</a>
+                <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
