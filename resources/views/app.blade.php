@@ -7,6 +7,7 @@
             name="viewport"
         />
 
+        <link href="css/style.css" rel="stylesheet" />
         <title>Laravel</title>
         <script src="https://kit.fontawesome.com/6b162f348b.js" crossorigin="anonymous"></script>
 

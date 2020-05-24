@@ -21,7 +21,7 @@ class MegrendelesController extends Controller
                 })->with('tetel.datum');
             }])
             ->get();
-            //->toArray(); 
+            //->toArray();
 
         $data = [
             'megrendelok' => $megrendelok,

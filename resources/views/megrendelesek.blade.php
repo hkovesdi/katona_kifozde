@@ -1,14 +1,6 @@
-<!DOCTYPE html>
 @extends('app') 
 @section('content')
 
-<head>
-
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
-</head>
-
-<body>
     {{-- Buttons --}}
     <div>
 
@@ -244,8 +236,6 @@
         @endforeach
 
     </div>
-
-</body>
 
 <script>
     $('.megrendeles-modositas-button').on('click', function(){
