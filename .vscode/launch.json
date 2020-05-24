@@ -13,6 +13,9 @@
             "pathMappings": {
                 "/var/www": "${workspaceFolder}"
             },
+            "xdebugSettings": {
+                "max_children": 400
+            }
         }
     ]
 }
