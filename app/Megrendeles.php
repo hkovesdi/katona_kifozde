@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $datum_id
  * @property integer $tetel_id
  * @property string $fizetesi_mod
+ * @property bool $feladag
  * @property string $created_at
  * @property string $updated_at
  * @property FizetesiMod $fizetesiMod
@@ -25,6 +26,9 @@ class Megrendeles extends Model
      */
     protected $table = 'megrendelesek';
 
+
+    protected $appends = ['day_of_week','week_of_year','year'];
+
     /**
      * The "type" of the auto-incrementing ID.
      * 
@@ -35,7 +39,7 @@ class Megrendeles extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'feladag', 'created_at', 'updated_at'];
 
 
     /**
@@ -60,5 +64,17 @@ class Megrendeles extends Model
     public function tetel()
     {
         return $this->belongsTo('App\Tetel', 'tetel_id');
+    }
+
+    public function getDayOfWeekAttribute() {
+        return $this->tetel->datum->day_of_week;
+    }
+
+    public function getWeekOfYearAttribute() {
+        return $this->tetel->datum->week_of_year;
+    }
+    
+    public function getYearAttribute() {
+        return $this->tetel->datum->year;
     }
 }

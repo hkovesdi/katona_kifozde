@@ -215,8 +215,8 @@
                                             }
                                             @endphp
                                             <td>
-                                                <input type="hidden" class="normal-adag-input" value={{$normalAdagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}]['normal']">
-                                                <input type="hidden" class="feladag-input" value={{$feladagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}]['fel']">
+                                                <input type="hidden" class="normal-adag-input" value={{$normalAdagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}][normal]">
+                                                <input type="hidden" class="feladag-input" value={{$feladagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}][fel]">
                                                 <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input">
                                             </td>
                                         @endforeach

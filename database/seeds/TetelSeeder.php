@@ -11,8 +11,8 @@ class TetelSeeder extends Seeder
      */
     public function run()
     {
-        $date = Carbon::today();
-        while($date->lt(Carbon::today()->addYears(1))){
+        $date = Carbon::today()->startOfWeek();;
+        while($date->lt(Carbon::today()->addYears(1)->endOfWeek())){
             foreach(\App\TetelNev::all() as $tetelNev) {
                 \App\Tetel::create([
                     'tetel_nev' => $tetelNev->nev,

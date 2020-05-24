@@ -25,6 +25,8 @@ class Tetel extends Model
      */
     protected $table = 'tetelek';
 
+    protected $appends = ['day_of_week','week_of_year','year'];
+
     /**
      * The "type" of the auto-incrementing ID.
      * 
@@ -59,5 +61,17 @@ class Tetel extends Model
     public function megrendelesek()
     {
         return $this->hasMany('App\Megrendeles', 'tetel_id');
+    }
+
+    public function getDayOfWeekAttribute() {
+        return $this->datum->day_of_week;
+    }
+
+    public function getWeekOfYearAttribute() {
+        return $this->datum->week_of_year;
+    }
+    
+    public function getYearAttribute() {
+        return $this->datum->year;
     }
 }
