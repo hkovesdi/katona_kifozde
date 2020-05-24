@@ -1,5 +1,5 @@
 body {
-	background-color: #6699ff;
+	background-color: #6699ff !important;
 	font-family: "Arial", sans-serif;
 	font-weight: 250;
 	height: 100vh;
@@ -378,6 +378,10 @@ input:focus {
 
 .modal-row-size-s {
 	width: 10%;
+}
+
+.modal-lg{
+	max-width: 80.5rem !important;
 }
 
 .float-right {

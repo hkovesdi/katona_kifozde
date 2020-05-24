@@ -7,6 +7,7 @@
             name="viewport"
         />
 
+        <link href="css/style.css" rel="stylesheet" />
         <title>Laravel</title>
         <script src="https://kit.fontawesome.com/6b162f348b.js" crossorigin="anonymous"></script>
 
@@ -51,6 +52,47 @@
                     toast.addEventListener("mouseenter", Swal.stopTimer);
                     toast.addEventListener("mouseleave", Swal.resumeTimer);
                 }
+            });
+
+
+            $(document).on('submit', 'form.ajax', function(e){
+                e.preventDefault();
+                let submitButton = $(this).find("input[type='submit']");
+                submitButton.attr('disabled', true);
+
+                const form = $(this);
+                const url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    statusCode: {
+                        500: function() {
+                                Toast.fire({
+                                icon: 'error',
+                                title: 'Kérem frissítse az oldalt és próbálja újra később!'
+                            });
+                        }
+                    },
+                    success: function(data)
+                    {   
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.message
+                        });
+                    },
+                    error: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.message
+                        });
+                    },
+                    complete: function(){
+                        submitButton.removeAttr('disabled');
+                    }
+                });
             });
         </script>
 
@@ -115,7 +157,10 @@
                     <a class="nav-link disabled" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Kijelentkezés</a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button class="nav-link" type="submit">Kijelentkezés</button>
+                    </form>
                 </li>
               </ul>
           </nav>
