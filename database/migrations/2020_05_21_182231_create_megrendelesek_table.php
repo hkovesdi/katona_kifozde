@@ -20,6 +20,7 @@ class CreateMegrendelesekTable extends Migration
             $table->string('fizetesi_mod');
             $table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok');
             $table->boolean('feladag')->default(0);
+            $table->integer('fizetes_group');
             $table->timestamps();
         });
     }

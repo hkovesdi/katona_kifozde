@@ -39,7 +39,7 @@ class Megrendeles extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'feladag', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'feladag', 'fizetes_group', 'created_at', 'updated_at'];
 
 
     /**

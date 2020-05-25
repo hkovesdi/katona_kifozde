@@ -19,6 +19,7 @@ class MegrendelesSeeder extends Seeder
                         'megrendelo_id' => $megrendelo->id,
                         'tetel_id' => App\Tetel::where('datum_id', $datum->id)->inRandomOrder()->first()->id,
                         'fizetesi_mod' => 'Tartozás',
+                        'fizetes_group' => 1,
                     ]);
                 }
             }

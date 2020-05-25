@@ -103,7 +103,7 @@
                     </td>
 
                     <td role="cell" class="centercell">
-                        15000Ft
+                        {{$megrendelo['heti_osszeg']}} Ft
                     </td>
 
                     <td role="cell" class="centercell">
