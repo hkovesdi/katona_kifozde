@@ -15,49 +15,6 @@
         </p>
 
     </div>
-{{-- 
-    <div>
-        <table class="table table-sm table-dark table-responsive">
-            <thead>
-                <tr>
-                    <th scope="col">Rendelések</th>
-                    <th scope="col">Név</th>
-                    <th scope="col">Cim</th>
-                    <th scope="col">Tel</th>
-                    <th scope="col">Fizetési mód</th>
-                    <th scope="col">Összeg</th>
-                    <th scope="col">Fizetett</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach($megrendelok as $megrendelo)
-                <tr role="row" id="megrendelo-{{$megrendelo['id']}}">
-                    <th scope="row">
-                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendelo['id']}}-modal">Menüsor</button>
-                    </th>
-                    <td name="nev">{{$megrendelo['nev']}}</td>
-                    <td name="szallitasi-cim">{{$megrendelo['szallitasi_cim']}}</td>
-                    <td name="telefonszam">{{$megrendelo['telefonszam']}}</td>
-                    <td class="centercell" name="fizetesi-mod">
-                        <select>
-                            <option value="KP">Készpénz</option>
-                            <option value="BK">Bankkártya</option>
-                            <option value="SZK">Szépkártya</option>
-                            <option value="BP">Baptista</option>
-                        </select>
-                    </td>
-                    <td class="centercell">
-                        15000Ft
-                    </td>
-                    <td class="centercell">
-                        <button type="submit" class="fizetve-button">Fizetve</button>
-                    </td>
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div> --}}
 
     <div class="flex-center">
         

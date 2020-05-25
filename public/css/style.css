@@ -1,6 +1,6 @@
 body {
 	background-color: #6699ff !important;
-	font-family: "Arial", sans-serif;
+	font-family: "Arial", sans-serif !important;
 	font-weight: 250;
 	height: 100vh;
 	margin: 0;
@@ -97,8 +97,7 @@ body {
 }
 
 .loginbutton:hover,
-.loginbutton:active,
-.loginbutton:focus {
+.loginbutton:active {
 	background: #4d88ff;
 }
 
@@ -190,8 +189,7 @@ input:focus {
 }
 
 .fizetve-button:hover,
-.fizetve-button:active,
-.fizetve-button:focus {
+.fizetve-button:active {
 	background: #300c0c;
 }
 
@@ -345,8 +343,7 @@ input:focus {
 }
 
 .btn-basic:hover,
-.btn-basic:active,
-.btn-basic:focus {
+.btn-basic:active {
 	background: #111;
 }
 
@@ -367,8 +364,7 @@ input:focus {
 }
 
 .btn-rend:hover,
-.btn-rend:active,
-.btn-rend:focus {
+.btn-rend:active {
 	background: #111;
 }
 
@@ -380,7 +376,7 @@ input:focus {
 	width: 10%;
 }
 
-.modal-lg{
+.modal-lg {
 	max-width: 80.5rem !important;
 }
 
@@ -434,7 +430,7 @@ input[type=number] {
 
 .megrendelo-thead {
 	background: #424242;
-	color: white;
+	color: white !important;
 	font-weight: bold;
 	text-align: center;
 	border: 1px solid #424242;
@@ -442,4 +438,95 @@ input[type=number] {
 
 .megrendelo-napok {
 	border: 1px solid #ccc;
+}
+
+.szakacs-table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	width: 200px !important;
+	font-weight: bold !important;
+	text-align: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.szakacs-thead {
+	background: #424242;
+	color: white !important;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #424242;
+}
+
+.szakacs-thead > tr > th {
+	font-size: 25px !important;
+}
+
+.szakacs-table > tbody > tr > td {
+	font-size: 20px !important;
+}
+
+.szakacs-table > tbody > tr {
+	border: 1px solid #424242 !important;
+}
+
+.datum {
+	color: white;
+	background: #424242;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #424242;
+	margin-top: 1%;
+	width: 202px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@page {
+	size: auto;
+	margin: 0mm;
+}
+
+.futar-table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	width: auto !important;
+	font-weight: bold !important;
+	text-align: center;
+	align-items: center;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+.futar-thead {
+	background: #424242;
+	color: white !important;
+	border: 1px solid #424242;
+}
+
+.futar-thead > tr > th {
+	font-size: 18px !important;
+	text-align: center;
+	font-weight: bold;
+	padding-right: 10px !important;
+	padding-left: 10px !important;
+}
+
+.futar-table > tbody > tr > td {
+	font-size: 14px !important;
+	padding-right: 10px !important;
+	padding-left: 10px !important;
+}
+
+.futar-table > tbody > tr {
+	border: 1px solid #424242 !important;
+}
+
+.flex-container {
+	display: flex;
+}
+
+table tr .page-break {
+	page-break-after: always;
 }
