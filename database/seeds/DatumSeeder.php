@@ -12,9 +12,12 @@ class DatumSeeder extends Seeder
      */
     public function run()
     {
-        $date = Carbon::today()->startOfWeek();
-        while($date->lt(Carbon::today()->addYears(1)->endOfWeek())){
-            App\Datum::create(['datum' => $date->format('Y-m-d')]);
+        $date = Carbon::now()->startOfYear();
+        while($date->lte(Carbon::today())){
+            App\Datum::create([
+                'datum' => $date->format('Y-m-d'),
+                'het' => $date->weekOfYear,
+            ]);
             $date = $date->addDays(1);
         }
     }

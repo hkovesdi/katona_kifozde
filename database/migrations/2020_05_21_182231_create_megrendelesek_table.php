@@ -15,12 +15,15 @@ class CreateMegrendelesekTable extends Migration
     {
         Schema::create('megrendelesek', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('megrendelo_id')->constrained('megrendelok');
+
+            $table->foreignId('megrendelo_het_id')->constrained('megrendelok_hetek');
+            //$table->foreignId('megrendelo_id')->constrained('megrendelok');
             $table->foreignId('tetel_id')->constrained('tetelek');
-            $table->string('fizetesi_mod');
-            $table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok');
+           // $table->string('fizetesi_mod');
+            //$table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok');
             $table->boolean('feladag')->default(0);
-            $table->integer('fizetes_group');
+            //$table->integer('fizetes_group');
+            //$table->dateTime('fizetve_at')->nullable();
             $table->timestamps();
         });
     }
@@ -33,7 +36,7 @@ class CreateMegrendelesekTable extends Migration
     public function down()
     {
         Schema::table('megrendelesek', function (Blueprint $table) {
-            $table->dropForeign(['megrendelo_id','tetel_id','fizetesi_mod']);
+            $table->dropForeign(['tetel_id','megrendelo_het_id']);
         });
     }
 }

@@ -9,28 +9,44 @@ use Illuminate\Support\Facades\DB;
 
 class MegrendelesController extends Controller
 {
-    public function show()
+    public function show(String $evHet = null)
     {
-        $megrendelok = \App\Megrendelo::when(Auth::user()->munkakor == "Kiszállító", function($query){
-            return $query->where('kiszallito_id',Auth::user()->id);
-        })
-        ->with(['megrendelesek' => function($query){
-            $query->whereHas('tetel.datum', function($query){
-                $query->where(DB::raw("WEEK(datum,1)"), $this->getCurrentHet())
-                    ->whereYear('datum', Carbon::now()->year);
-            })->with('tetel.datum');
-        }])
-        ->get();
+        if($evHet === null) {
+            $ev = Carbon::now()->year;
+            $het = Carbon::now()->weekOfYear;
+        }
+        else {
+            $temp = explode("-", $evHet);
+            $ev = $temp[0];
+            $het = $temp[1];
+        }
 
-        $megrendelok->each(function($megrendelo){
-            $megrendelo['heti_osszeg'] = $megrendelo->megrendelesek->sum('tetel.ar');
-        });
-        //Todo: előző heti tartozás
+        $megrendeloHetek = \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
+            ->whereHas('datum', function($query) use($ev, $het) {
+                $query->whereYear('datum', $ev)->where('het', $het);
+            })
+            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
+                return $query->whereHas('megrendelo', function($query){
+                    $query->where('kiszallito_id', Auth::user()->id);
+                });
+            })
+            ->get()
+            ->each(function($megrendeloHet){
+                $megrendeloHet['tartozas'] = \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
+                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
+                ->whereHas('datum', function($query) use($megrendeloHet) {
+                    $query->where('datum', '<', $megrendeloHet->datum->datum);
+                })
+                ->get()
+                ->sum('osszeg');
+            });
 
         $data = [
-            'megrendelok' => $megrendelok,
-            'het' => $this->getCurrentHet(),
+            'megrendeloHetek' => $megrendeloHetek,
+            'het' => $het,
+            'ev' => $ev,
             'tetelek' => \App\TetelNev::all(),
+            'fizetesiModok' => \App\FizetesiMod::where('nev', '!=', 'Tartozás')->get(),
         ];
 
         return view('megrendelesek', $data);
@@ -40,19 +56,12 @@ class MegrendelesController extends Controller
     {
         $data = $request->all();
 
-        $megrendelo = \App\Megrendelo::when(Auth::user()->munkakor == "Kiszállító", function($query){
-            return $query->where('kiszallito_id',Auth::user()->id);
+        $megrendeloHet = \App\MegrendeloHet::when(Auth::user()->munkakor == "Kiszállító", function($query){
+            return $query->whereHas('megrendelo', function($query){
+                $query->where('kiszallito_id', Auth::user()->id);
+            });
         })
-        ->with(['megrendelesek' => function($query){
-            $query
-                ->whereHas('tetel.datum', function($query){
-                    $query->where(DB::raw("WEEK(datum,1)"), $this->getCurrentHet())
-                        ->whereYear('datum', Carbon::now()->year);
-                })->with('tetel.datum');
-        }])
-        ->whereHas('megrendelesek', function($query) use($data){
-            $query->where('megrendelo_id', $data['megrendelo-id']);
-        })
+        ->where('id', $data['megrendelo-het-id'])
         ->first();
 
         foreach($data['megrendelesek'] as $nap => $tetelek) {
@@ -61,7 +70,7 @@ class MegrendelesController extends Controller
 
                 $tetelNev = \App\TetelNev::where('nev', $tetel)->first();
 
-                $currentMegrendelesek = $megrendelo->megrendelesek
+                $currentMegrendelesek = $megrendeloHet->megrendelesek
                     ->where('tetel.tetel_nev', $tetelNev->nev)
                     ->where('day_of_week', $nap+1);
 
@@ -73,9 +82,9 @@ class MegrendelesController extends Controller
                 }
 
 
-                $this->megrendelesHozzaadas(true, $adagok, 'fel', $currentMegrendelesek, $tetelNev, $nap, $data['megrendelo-id']);
+                $this->megrendelesHozzaadas(true, $adagok, 'fel', $currentMegrendelesek, $tetelNev, $nap, $megrendeloHet);
                 
-                $this->megrendelesHozzaadas(false, $adagok, 'normal', $currentMegrendelesek, $tetelNev, $nap, $data['megrendelo-id']);
+                $this->megrendelesHozzaadas(false, $adagok, 'normal', $currentMegrendelesek, $tetelNev, $nap, $megrendeloHet);
 
             }
         }
@@ -86,9 +95,51 @@ class MegrendelesController extends Controller
         ]);
     }
 
-    public function changeFizetesiStatusz()
-    {
-        
+    public function changeFizetesiStatusz(Request $request, \App\MegrendeloHet $megrendeloHet)
+    {   
+        $data = $request->only('megrendelo-het-id', 'torles', 'fizetesi-mod');
+        if(Auth::user()->munkakor == 'Kiszállító' && !Auth::user()->megrendelok->contains($megrendeloHet->megrendelo)){
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Csak az önhöz tartozó megrendelők fizetési státuszának változtatása lehetséges'
+            ], 403);
+        }
+
+        if($data['torles']){
+            if(Auth::user()->munkakor == 'Kiszállító'){
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'Fizetési státusz törlése a kiszállítóknak nem lehetséges'
+                ], 403);
+            }
+
+            \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
+                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
+                ->get()
+                ->each(function($megrendeloHet) {
+                    $megrendeloHet->update([
+                        'fizetesi_mod' => 'Tartozás',
+                        'fizetve_at' => NULL,
+                    ]);
+                });
+        }
+        else {
+            $fizetesiMod = \App\FizetesiMod::where('nev', $data['fizetesi-mod'])->first()->nev;
+            \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
+                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
+                ->get()
+                ->each(function($megrendeloHet) {
+                    $megrendeloHet->update([
+                        'fizetesi_mod' => $fizetesiMod,
+                        'fizetve_at' => Carbon::now(),
+                    ]);
+                });
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Fizetési státusz sikeresen módosítva!'
+        ]);
     }
 
     private function getCurrentHet() {
@@ -116,35 +167,24 @@ class MegrendelesController extends Controller
 
     }
 
-    private function megrendelesHozzaadas($isFeladag, $adagok, $key, &$currentMegrendelesek, $tetelNev, $nap, $megrendeloId)
+    private function megrendelesHozzaadas($isFeladag, $adagok, $key, &$currentMegrendelesek, $tetelNev, $nap, $megrendeloHet)
     {   
         $adagCount = $currentMegrendelesek->where('feladag', $isFeladag)->count();
         
         if($adagCount < intval($adagok[$key])){
                     
             $tetel = $tetelNev->tetelek
-                ->where('week_of_year', $this->getCurrentHet())
+                ->where('week_of_year', $megrendeloHet->datum->het)
                 ->where('day_of_week',$nap+1)
-                ->where('year', Carbon::now()->year)
+                ->where('year', $megrendeloHet->datum->year)
                 ->first();
             
-            $latestTartozas = \App\Megrendeles::where('megrendelo_id', $megrendeloId)->where('fizetesi_mod', 'Tartozás')->latest()->first();
-            
-            if($latestTartozas === null){
-                $latestMegrendeles = \App\Megrendeles::where('megrendelo_id', $megrendeloId)->latest()->first();
-                $fizetesGroup = $latestMegrendeles === null ? 1 : $latestMegrendeles->fizetes_group+1; 
-            }
-            else {
-                $fizetesGroup = $latestTartozas->fizetes_group;
-            }
 
             while($adagCount < intval($adagok[$key])) {
                 \App\Megrendeles::create([
-                    'megrendelo_id' => $megrendeloId,
+                    'megrendelo_het_id' => $megrendeloHet->id,
                     'tetel_id' => $tetel->id,
-                    'fizetesi_mod' => 'Tartozás',
                     'feladag' => $isFeladag,
-                    'fizetes_group' => $fizetesGroup,
                 ]);
 
                 $adagCount++;
