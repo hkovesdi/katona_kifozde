@@ -2,18 +2,21 @@
 @section('content')
 
     {{-- Buttons --}}
-    <div>
+    <div class="buttonrows">
 
-        <p id="week-counter">{{$het}}. hét</p>
+        <div id="week-counter">{{$het}}. hét</div>
 
-        <p class="buttonrows">
-            <button class="btn-basic">Hozzáadás</button>
-
-            <button class="btn-basic">Módosítás</button>
+        
+        <div style="position:relative; margin-left: 1%; display: inline-block;">
+            <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
 
             <button class="btn-basic">Törlés</button>
-        </p>
-
+            
+            <div class="input-hide" id="hozzaadas-btn">
+                <input type="text" class="hozzaadas-input">
+            </div>
+        </div>
+        
     </div>
 
     <div class="flex-center">
@@ -100,7 +103,7 @@
                 </div>
                 <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form ajax">
                     @csrf
-                <div class="modal-body" style="text-align: center">
+                <div class="modal-body">
 
                     <div class="table-responsive">
                     
@@ -171,9 +174,22 @@
                                     </tr>
                                     
                                     @endforeach
+
+
                             </tbody>
 
                         </table>
+
+                    <div class="megrendelo-megjegyzes">
+
+                        <h4 style="text-align: left">Megjegyzés</h4>
+
+                        <div style="width: 100%">
+                            <textarea name="" id="" class="megrendelo-textarea"></textarea>
+                        </div>
+
+                    </div>
+
                     </div>
 
                     </div>
@@ -244,5 +260,9 @@
             $(this).siblings('.feladag-input').val(validInputs['fel']);
         }
     });
+
+    function hozzaadasFunction() {
+        $('#hozzaadas-btn').toggleClass('input-hide');
+    }
 </script>
 @stop

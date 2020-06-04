@@ -115,7 +115,7 @@ body {
 	width: 100%;
 }
 
-input:focus {
+.login-page input:focus {
 	border: 1px solid #6699ff;
 }
 
@@ -231,7 +231,7 @@ input:focus {
 
 /* table resp */
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 680px) {
 	.main-table,
 	.main-thead,
 	.main-tbody,
@@ -316,7 +316,6 @@ input:focus {
 	margin-right: 2%;
 	text-align: center;
 	margin-left: 1%;
-	margin-top: 1%;
 	font-family: "Arial", sans-serif;
 	text-transform: uppercase;
 	color: #ffffff;
@@ -420,6 +419,8 @@ input[type=number] {
 
 .buttonrows {
 	margin-left: 2%;
+	display: flex;
+	margin-top: 1%;
 }
 
 @media only screen and (min-width: 601px) {
@@ -483,10 +484,10 @@ input[type=number] {
 	margin-right: auto;
 }
 
-@page {
+/* @page {
 	size: auto;
 	margin: 0mm;
-}
+} */
 
 .futar-table {
 	margin-top: 20px;
@@ -529,4 +530,20 @@ input[type=number] {
 
 table tr .page-break {
 	page-break-after: always;
+}
+
+.megrendelo-megjegyzes {
+	margin-top: 30px;
+}
+
+.megrendelo-textarea {
+	width: 98%;
+	border: 1px solid #ccc !important;
+}
+
+.input-hide {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
