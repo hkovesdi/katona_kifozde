@@ -21,6 +21,10 @@ class MegrendelesController extends Controller
             $het = $temp[1];
         }
 
+        if(Auth::user()->munkakor == 'Kiszállító' && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1))){
+            return redirect('/');
+        }
+
         $name = $request->query('name');
         $searchedMegrendelok = null;
         if($name) {
@@ -156,8 +160,47 @@ class MegrendelesController extends Controller
         ]);
     }
 
-    private function getCurrentHet() {
-        return Carbon::now()->weekOfYear;
+    public function megrendeloHetLetrehozas(Request $request) {
+        $data = $request->only('ev','het','megrendelo-id');
+
+        $this->createMegrendeloHet($data['megrendelo-id'], $data['ev'], $data['het']);
+
+        return redirect()->back()->with([
+            'status' => 'Success',
+            'message' => 'Személy sikeresen hozzáadva a héthez'
+        ]);
+    }
+
+    public function megrendeloLetrehozas(Request $request) {
+        $data = $request->only('kiszallito-id', 'nev', 'cim', 'telefonszam', 'ev', 'het');
+
+        $megrendelo = \App\Megrendelo::create([
+            'kiszallito_id' => $data['kiszallito_id'],
+            'nev' => $data['nev'],
+            'szallitasi_cim' => $data['cim'],
+            'telefonszam' => $data['telefonszam']
+        ]);
+
+        $this->createMegrendeloHet($megrendelo->id, $data['ev'], $data['het']);
+
+        return redirect()->back()->with([
+            'status' => 'Success',
+            'message' => 'Új megrendelő sikeresen létrehozva és hozzáadva a héthez'
+        ]);
+    }
+
+    private function createMegrendeloHet($megrendelo_id, $ev, $het) 
+    {
+        $hetStartDatum = \App\Datum::whereYear('datum', $ev)->where('het', $het)->orderBy('datum', 'asc')->first();
+        if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null){
+            \App\MegrendeloHet::create([
+                'megrendelo_id' => $data['megrendelo_id'],
+                'het_start_datum_id' => $hetStartDatum->id,
+                'fizetes_group' => 1, //Change this
+                'fizetesi_mod' => 'Tartozás',
+                'fizetve_at' => NULL
+            ]);
+        }
     }
 
     private function megrendelesTorles($isFeladag, $adagok, $key, &$currentMegrendelesek)
