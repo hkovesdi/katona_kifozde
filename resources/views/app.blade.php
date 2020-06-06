@@ -100,48 +100,35 @@
 
     </head>
     <body>
-        @auth
-{{-- 
-        regi nav
-        <nav class="topnav">
-            <ul>
-                <li><a class="active" href="#home">Főoldal</a></li>
-                <li onclick="myFunction()" class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">Futárok</a>
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="#1">Futar1</a>
-                        <a href="#2">Futar2</a>
-                        <a href="#3">Futar3</a>
-                        <a href="#4">Futar4</a>
-                        <a href="#5">Futar5</a>
-                        <a href="#6">Futar6</a>
-                        <a href="#7">Futar7</a>
-                    </div>
-                </li>
-                <li><a href="#diagrams">Diagramok</a></li>
-                <li class="right"><a href="#logout">Kijelentkezés</a></li>
-            </ul>
-        </nav> 
-        --}}
+        @auth        
 
-
-        
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-print-none">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#home">Főoldal <span class="sr-only">(current)</span></a>
+                <li class="nav-item {{Route::current()->getName()  == 'home' ? "active" : ""}}">
+                <a class="nav-link" href="{{route('home')}}">Megrendelések <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#diagrams">Diagramok</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#print">Nyomtatás</a>
+                <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
+                <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Nyomtatványok
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/2020-05-25">Szakács összesitő</a>
+                      <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti">Futár heti</a>
+                      <a class="dropdown-item" href="#">Heti statisztika</a>
+                      <a class="dropdown-item" href="#">Havi statisztika</a>
+                      <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
+                    </div>
+                  </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Futárok

@@ -2,62 +2,23 @@
 @section('content')
 
     {{-- Buttons --}}
-    <div>
+    <div class="buttonrows">
 
         <p id="week-counter">{{$ev}} - {{$het}}. hét</p>
 
-        <p class="buttonrows">
-            <button class="btn-basic">Hozzáadás</button>
 
-            <button class="btn-basic">Módosítás</button>
+        
+        <div style="position:relative; margin-left: 1%; display: inline-block;">
+            <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
 
             <button class="btn-basic">Törlés</button>
-        </p>
-
+            
+            <div class="input-hide" id="hozzaadas-btn">
+                <input type="text" class="hozzaadas-input">
+            </div>
+        </div>
+        
     </div>
-{{-- 
-    <div>
-        <table class="table table-sm table-dark table-responsive">
-            <thead>
-                <tr>
-                    <th scope="col">Rendelések</th>
-                    <th scope="col">Név</th>
-                    <th scope="col">Cim</th>
-                    <th scope="col">Tel</th>
-                    <th scope="col">Fizetési mód</th>
-                    <th scope="col">Összeg</th>
-                    <th scope="col">Fizetett</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach($megrendelok as $megrendelo)
-                <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
-                    <th scope="row">
-                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">Menüsor</button>
-                    </th>
-                    <td name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
-                    <td name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
-                    <td name="telefonszam">{{$megrendeloHet->megrendelo['telefonszam']}}</td>
-                    <td class="centercell" name="fizetesi-mod">
-                        <select>
-                            <option value="KP">Készpénz</option>
-                            <option value="BK">Bankkártya</option>
-                            <option value="SZK">Szépkártya</option>
-                            <option value="BP">Baptista</option>
-                        </select>
-                    </td>
-                    <td class="centercell">
-                        15000Ft
-                    </td>
-                    <td class="centercell">
-                        <button type="submit" class="fizetve-button">Fizetve</button>
-                    </td>
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div> --}}
 
     <div class="flex-center">
         
@@ -146,7 +107,7 @@
                 </div>
                 <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form ajax">
                     @csrf
-                <div class="modal-body" style="text-align: center">
+                <div class="modal-body">
 
                     <div class="table-responsive">
                     
@@ -218,9 +179,22 @@
                                     </tr>
                                     
                                     @endforeach
+
+
                             </tbody>
 
                         </table>
+
+                    <div class="megrendelo-megjegyzes">
+
+                        <h4 style="text-align: left">Megjegyzés</h4>
+
+                        <div style="width: 100%">
+                            <textarea name="" id="" class="megrendelo-textarea"></textarea>
+                        </div>
+
+                    </div>
+
                     </div>
 
                     </div>
@@ -291,5 +265,9 @@
             $(this).siblings('.feladag-input').val(validInputs['fel']);
         }
     });
+
+    function hozzaadasFunction() {
+        $('#hozzaadas-btn').toggleClass('input-hide');
+    }
 </script>
 @stop
