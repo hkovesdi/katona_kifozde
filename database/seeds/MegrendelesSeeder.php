@@ -12,14 +12,22 @@ class MegrendelesSeeder extends Seeder
      */
     public function run()
     {
-        foreach(\App\Megrendelo::all() as $megrendelo) {
-            foreach(\App\Datum::all() as $datum) {
-                if((bool)random_int(0,1) && Carbon::parse($datum->datum)->isWeekDay()) {
-                    App\Megrendeles::create([
-                        'megrendelo_id' => $megrendelo->id,
-                        'tetel_id' => App\Tetel::where('datum_id', $datum->id)->inRandomOrder()->first()->id,
-                        'fizetesi_mod' => 'Tartozás',
-                    ]);
+        foreach(\App\MegrendeloHet::all() as $megrendeloHet) {
+            foreach(\App\Datum::where('het', $megrendeloHet->datum->het)->get() as $datum) {
+                if(Carbon::parse($datum->datum)->isWeekDay()) {
+                    if($megrendeloHet->fizetve_at == NULL || Carbon::parse($megrendeloHet->fizetve_at)->lte(Carbon::parse($datum->datum))) {
+                        $tetel = \App\Tetel::whereHas('datum', function($query) use($datum) {
+                            $query->where('datum', $datum->datum);
+                        })
+                        ->inRandomOrder()
+                        ->first();
+
+                        \App\Megrendeles::create([
+                            'megrendelo_het_id' => $megrendeloHet->id,
+                            'tetel_id' => $tetel->id,
+                            'feladag' => random_int(0,1)
+                        ]);
+                    }
                 }
             }
         }

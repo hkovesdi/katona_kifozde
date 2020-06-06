@@ -11,16 +11,17 @@ class TetelSeeder extends Seeder
      */
     public function run()
     {
-        $date = Carbon::today()->startOfWeek();;
-        while($date->lt(Carbon::today()->addYears(1)->endOfWeek())){
-            foreach(\App\TetelNev::all() as $tetelNev) {
-                \App\Tetel::create([
-                    'tetel_nev' => $tetelNev->nev,
-                    'datum_id' => \App\Datum::where('datum', $date->format('Y-m-d'))->first()->id,
-                    'ar' => random_int(1000,3000),
-                ]);
+        
+        foreach(\App\Datum::all() as $datum) {
+            if(Carbon::parse($datum->datum)->isWeekDay()) {
+                foreach(\App\TetelNev::all() as $tetelNev) {
+                    \App\Tetel::create([
+                        'tetel_nev' => $tetelNev->nev,
+                        'datum_id' => $datum->id,
+                        'ar' => random_int(1000,3000),
+                    ]);
+                }
             }
-            $date = $date->addDays(1);
         }
     }
 }

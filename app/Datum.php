@@ -35,7 +35,7 @@ class Datum extends Model
     /**
      * @var array
      */
-    protected $fillable = ['datum', 'created_at', 'updated_at'];
+    protected $fillable = ['datum', 'het', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

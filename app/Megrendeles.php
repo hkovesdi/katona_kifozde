@@ -39,24 +39,7 @@ class Megrendeles extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'tetel_id', 'fizetesi_mod', 'feladag', 'created_at', 'updated_at'];
-
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function fizetesiMod()
-    {
-        return $this->belongsTo('App\FizetesiMod', 'fizetesi_mod', 'nev');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function megrendelo()
-    {
-        return $this->belongsTo('App\Megrendelo', 'megrendelo_id');
-    }
+    protected $fillable = ['tetel_id', 'megrendelo_het_id', 'feladag', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -64,6 +47,14 @@ class Megrendeles extends Model
     public function tetel()
     {
         return $this->belongsTo('App\Tetel', 'tetel_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function megrendeloHet()
+    {
+        return $this->belongsTo('App\MegrendeloHet', 'megrendelo_het_id');
     }
 
     public function getDayOfWeekAttribute() {

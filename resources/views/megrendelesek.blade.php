@@ -4,7 +4,8 @@
     {{-- Buttons --}}
     <div class="buttonrows">
 
-        <div id="week-counter">{{$het}}. hét</div>
+        <p id="week-counter">{{$ev}} - {{$het}}. hét</p>
+
 
         
         <div style="position:relative; margin-left: 1%; display: inline-block;">
@@ -39,31 +40,30 @@
             
             <tbody role="rowgroup" class="main-tbody">
     
-                @foreach($megrendelok as $megrendelo)
+                @foreach($megrendeloHetek as $megrendeloHet)
                     
-                <tr role="row" id="megrendelo-{{$megrendelo['id']}}">
+                <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                         
                     <td role="cell" class="centercell">
-                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendelo['id']}}-modal">Menüsor</button>
+                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">Menüsor</button>
                     </td>
                     
-                    <td role="cell" name="nev">{{$megrendelo['nev']}}</td>
+                    <td role="cell" name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
                     
-                    <td role="cell" name="szallitasi-cim">{{$megrendelo['szallitasi_cim']}}</td>
+                    <td role="cell" name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
                     
-                    <td role="cell" name="telefonszam">{{$megrendelo['telefonszam']}}</td>
+                    <td role="cell" name="telefonszam">{{$megrendeloHet->megrendelo['telefonszam']}}</td>
                     
                     <td role="cell" class="centercell" name="fizetesi-mod">
                         <select>
-                            <option value="KP">Készpénz</option>
-                            <option value="BK">Bankkártya</option>
-                            <option value="SZK">Szépkártya</option>
-                            <option value="BP">Baptista</option>
+                            @foreach($fizetesiModok as $fizetesiMod)
+                                <option {{$fizetesiMod->nev == "Készpénz" ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
+                            @endforeach
                         </select>
                     </td>
 
                     <td role="cell" class="centercell">
-                        15000Ft
+                        {{$megrendeloHet->osszeg + $megrendeloHet->tartozas}} Ft
                     </td>
 
                     <td role="cell" class="centercell">
@@ -82,11 +82,15 @@
         $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
         })
+
+        $(document).on('ajaxSuccess', '.megrendeles-modositas-form', function(){
+            console.log('ajax success');
+        });
     </script>
 
-    @foreach($megrendelok as $megrendelo)
+    @foreach($megrendeloHetek as $megrendeloHet)
     
-    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendelo['id']}}-modal">
+    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">
         
         <div class="modal-dialog modal-lg" role="document">
             
@@ -94,7 +98,7 @@
                 
                 <div class="modal-header">
                     
-                    <h5 class="modal-title">{{$megrendelo['nev']}}</h5>
+                    <h5 class="modal-title">{{$megrendeloHet->megrendelo['nev']}}</h5>
                     
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -107,7 +111,7 @@
 
                     <div class="table-responsive">
                     
-                        <table id="megrendelo-{{$megrendelo['id']}}-table" class="megrendelo-table table-striped">
+                        <table id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table" class="megrendelo-table table-striped">
                             
                             <thead>
                                 
@@ -126,11 +130,12 @@
                             </thead>
 
                             <tbody>
-                                    <input type="hidden" name="megrendelo-id" value="{{$megrendelo['id']}}">
+                                    <input type="hidden" name="megrendelo-id" value="{{$megrendeloHet->megrendelo['id']}}">
+                                    <input type="hidden" name="megrendelo-het-id" value="{{$megrendeloHet->id}}">
 
                                     @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
                                         
-                                    <tr id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
+                                    <tr id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
                                         {{-- <input type="hidden" name="megrendelesek[]" value="{{$idx}}"> --}}
                                             
                                         <th scope="row">{{$nap}}</th>
@@ -139,8 +144,8 @@
                                             @php
                                             $feladagCount=0;
                                             $normalAdagCount=0;
-                                            if($megrendelo->megrendelesek != null) {
-                                                $megrendelo->megrendelesek->each(function($megrendeles) use ($tetelNev,$idx,&$feladagCount,&$normalAdagCount){
+                                            if($megrendeloHet->megrendelesek != null) {
+                                                $megrendeloHet->megrendelesek->each(function($megrendeles) use ($tetelNev,$idx,&$feladagCount,&$normalAdagCount){
                                                     if(($megrendeles->tetel->datum->dayOfWeek == $idx+1) && ($megrendeles->tetel->tetel_nev == $tetelNev->nev)){
                                                         if($megrendeles->feladag){
                                                             $feladagCount++;
@@ -167,7 +172,7 @@
                                             <td>
                                                 <input type="hidden" class="normal-adag-input" value={{$normalAdagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}][normal]">
                                                 <input type="hidden" class="feladag-input" value={{$feladagCount}} name="megrendelesek[{{$idx}}][{{$tetelNev->nev}}][fel]">
-                                                <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input">
+                                                <input value="{{$rendelesValue}}" data-min-adag="{{$normalAdagCount}}" data-min-feladag="{{$feladagCount}}" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$nap}}-input-{{$tetelNev->nev}}" class="megrendeles-table-input">
                                             </td>
                                         @endforeach
 

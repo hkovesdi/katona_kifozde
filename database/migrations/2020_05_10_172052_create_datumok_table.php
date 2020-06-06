@@ -16,6 +16,7 @@ class CreateDatumokTable extends Migration
         Schema::create('datumok', function (Blueprint $table) {
             $table->id();
             $table->date('datum');
+            $table->integer('het');
         });
     }
 

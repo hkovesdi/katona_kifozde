@@ -311,11 +311,12 @@ body {
 }
 
 #week-counter {
-	width: 100px;
+	width: fit-content;
 	padding: 10px;
-	margin-right: 2%;
+	margin-right: 10px;
 	text-align: center;
-	margin-left: 1%;
+	margin-left: 12px;
+	margin-top: 5px;
 	font-family: "Arial", sans-serif;
 	text-transform: uppercase;
 	color: #ffffff;

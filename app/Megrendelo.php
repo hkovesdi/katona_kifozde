@@ -48,8 +48,8 @@ class Megrendelo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function megrendelesek()
+    public function megrendeloHetek()
     {
-        return $this->hasMany('App\Megrendeles', 'megrendelo_id');
+        return $this->hasMany('App\MegrendeloHet', 'megrendelo_id');
     }
 }
