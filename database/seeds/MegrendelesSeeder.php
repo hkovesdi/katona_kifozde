@@ -15,7 +15,7 @@ class MegrendelesSeeder extends Seeder
         foreach(\App\MegrendeloHet::all() as $megrendeloHet) {
             foreach(\App\Datum::where('het', $megrendeloHet->datum->het)->get() as $datum) {
                 if(Carbon::parse($datum->datum)->isWeekDay()) {
-                    if(Carbon::parse($megrendeloHet->fizetve_at)->lte(Carbon::parse($datum->datum))) {
+                    if($megrendeloHet->fizetve_at == NULL || Carbon::parse($megrendeloHet->fizetve_at)->lte(Carbon::parse($datum->datum))) {
                         $tetel = \App\Tetel::whereHas('datum', function($query) use($datum) {
                             $query->where('datum', $datum->datum);
                         })

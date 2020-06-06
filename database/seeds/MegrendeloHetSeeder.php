@@ -23,13 +23,14 @@ class MegrendeloHetSeeder extends Seeder
             $fizetesiGroup = 1;
             foreach($hetStartDatumok as $hetStartDatum){
                 $datum = \App\Datum::where('datum', $hetStartDatum->datum)->first();
+                $parsedDatum = \Carbon\Carbon::parse($datum->datum);
                 if((bool)random_int(0,1)){
                     \App\MegrendeloHet::create([
                         'megrendelo_id' => $megrendelo->id,
                         'het_start_datum_id' => $datum->id,
                         'fizetesi_group' => $fizetesiGroup++,
-                        'fizetesi_mod' => $fizetesiModok->random()->nev,
-                        'fizetve_at' => \Carbon\Carbon::parse($datum->datum)->addDays(random_int(1,4))->toDateTimeString()
+                        'fizetesi_mod' =>  $parsedDatum->weekOfYear == \Carbon\Carbon::now()->weekOfYear ? 'Tartozás' : $fizetesiModok->random()->nev,
+                        'fizetve_at' => $parsedDatum->weekOfYear == \Carbon\Carbon::now()->weekOfYear ? NULL : $parsedDatum->addDays(random_int(1,4))->toDateTimeString()
                     ]);
                 }
             }

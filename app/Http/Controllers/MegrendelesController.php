@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class MegrendelesController extends Controller
 {
-    public function show(String $evHet = null)
+    public function show(Request $request, String $evHet = null)
     {
         if($evHet === null) {
             $ev = Carbon::now()->year;
@@ -19,6 +19,12 @@ class MegrendelesController extends Controller
             $temp = explode("-", $evHet);
             $ev = $temp[0];
             $het = $temp[1];
+        }
+
+        $name = $request->query('name');
+        $searchedMegrendelok = null;
+        if($name) {
+            $searchedMegrendelok = \App\Megrendelo::where('nev', 'LIKE', "%$name%")->get();
         }
 
         $megrendeloHetek = \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
@@ -43,6 +49,7 @@ class MegrendelesController extends Controller
 
         $data = [
             'megrendeloHetek' => $megrendeloHetek,
+            'searchedMegrendelok' => $searchedMegrendelok,
             'het' => $het,
             'ev' => $ev,
             'tetelek' => \App\TetelNev::all(),
@@ -63,6 +70,13 @@ class MegrendelesController extends Controller
         })
         ->where('id', $data['megrendelo-het-id'])
         ->first();
+
+        if($megrendeloHet->fizetve_at != null) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'A már kifizetett hét megrendeléseinek módosítása nem lehetséges'
+            ], 403);
+        }
 
         foreach($data['megrendelesek'] as $nap => $tetelek) {
 

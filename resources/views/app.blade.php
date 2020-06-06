@@ -71,7 +71,7 @@
                         500: function() {
                                 Toast.fire({
                                 icon: 'error',
-                                title: 'Kérem frissítse az oldalt és próbálja újra később!'
+                                title: 'Váratlan hiba történt'
                             });
                         }
                     },
@@ -81,6 +81,8 @@
                             icon: 'success',
                             title: data.message
                         });
+
+                        $( form ).trigger("ajaxSuccess");
                     },
                     error: function(data)
                     {   

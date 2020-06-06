@@ -121,6 +121,10 @@
         $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
         })
+
+        $(document).on('ajaxSuccess', '.megrendeles-modositas-form', function(){
+            console.log('ajax success');
+        });
     </script>
 
     @foreach($megrendeloHetek as $megrendeloHet)
