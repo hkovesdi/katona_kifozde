@@ -1,31 +1,115 @@
-@extends('app') 
+@extends('app')
 @section('content')
 
-    {{-- Buttons --}}
-    <div class="buttonrows">
-
-        <p id="week-counter">{{$ev}} - {{$het}}. hét</p>
-
-
-        
-        <div style="position:relative; margin-left: 1%; display: inline-block;">
-            <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
-
-            <button class="btn-basic">Törlés</button>
-            
-            <div class="input-hide" id="hozzaadas-btn">
-                <input type="text" class="hozzaadas-input">
-            </div>
-        </div>
-        
+    <div id="week-counter">
+        <form style="display:inline-block" action="/megrendelesek/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
+            <button type="submit" class="btn-basic"><</button>
+        </form>
+        <span>{{$ev}} - {{$het}}. hét</span>
+        <form style="display:inline-block" action="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
+            <button type="submit" class="btn-basic">></button>
+        </form>
     </div>
 
+    <div id="buttons">
+        <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
+        <button class="btn-basic">Törlés</button>
+        @if (Request::get('name'))
+            <div id="hozzaadas-btn">
+        @else
+            <div class="input-hide" id="hozzaadas-btn">
+        @endif
+            <div class="card">
+                <div class="card-body">
+                    @if (Request::get('name'))
+                        <div class="modal fade" id="hozzaadasModal" tabindex="-1" role="dialog" aria-labelledby="hozzaadasModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="hozzaadasModalLabel">Új személy hozzáadása</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="hozzaadas-form" method="post">
+                                            <div class="form-group">
+                                                <label for="nev-hozzaadas" class="col-form-label">Név</label>
+                                                <input name="nev" type="text" class="form-control" id="nev-hozzaadas" value="{{ Request::get('name') }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cim-hozzaadas" class="col-form-label">Cím</label>
+                                                <input name="cim" type="text" class="form-control" id="cim-hozzaadas">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tel-hozzaadas" class="col-form-label">Telefonszám</label>
+                                                <input name="tel" type="text" class="form-control" id="tel-hozzaadas">
+                                            </div>
+                                            <input type="hidden" name="ev" value="{{$ev}}">
+                                            <input type="hidden" name="het" value="{{$het}}">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                                        <button type="submit" class="btn btn-primary" form="hozzaadas-form">Hozzáadás</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-title">
+                            {{ Request::get('name') }}
+                        </div>
+                        @if ($searchedMegrendelok && count($searchedMegrendelok) === 0)
+                            <p>Ez a személy még nincs az adatbázisunkban.</p>
+                        @else
+                            <table id="search-table">
+                                <thead>
+                                    <tr>
+                                        <th>Név</th>
+                                        <th>Cim</th>
+                                        <th>Tel</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody role="rowgroup" class="main-tbody">
+                                    @foreach($searchedMegrendelok as $searchedMegrendelo)
+                                        <tr>
+                                            <td>{{$searchedMegrendelo['nev']}}</td>
+                                            <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
+                                            <td>{{$searchedMegrendelo['telefonszam']}}</td>
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" name="nev" value="{{ $searchedMegrendelo['nev'] }}">
+                                                    <input type="hidden" name="cim" value="{{ $searchedMegrendelo['szallitasi_cim'] }}">
+                                                    <input type="hidden" name="tel" value="{{ $searchedMegrendelo['telefonszam'] }}">
+                                                    <input type="hidden" name="ev" value="{{ $ev }}">
+                                                    <input type="hidden" name="het" value="{{ $het }}">
+                                                    <button type="submit" class="btn btn-sm inner-hozzaadas-btn">Hozzáadás</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                        <button type="button" class="btn btn-sm inner-hozzaadas-btn" data-toggle="modal" data-target="#hozzaadasModal">Új személy hozzáadása</button>
+                        <div id="new-search">Újabb keresés indítása:</div>
+                    @endif
+                    <div class="card-text">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <input type="text" for="name" name="name" class="form-control" placeholder="Adja meg a kívánt nevet">
+                            </div>
+                            <button type="submit" id="search-btn" class="btn btn-sm">Keresés</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="flex-center">
-        
         <table role="table" class="main-table">
-            
             <thead role="rowgroup" class="main-thead">
-                
                 <tr role="row">
                     <th role="columnheader" class="fejlec-center row-rend">Rendelések</th>
                     <th role="columnheader" class="fejlec-center row-nev">Név</th>
@@ -35,49 +119,41 @@
                     <th role="columnheader" class="fejlec-center row-ossz">Összeg</th>
                     <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
                 </tr>
-
             </thead>
-            
             <tbody role="rowgroup" class="main-tbody">
-    
                 @foreach($megrendeloHetek as $megrendeloHet)
-                    
-                <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
-                        
-                    <td role="cell" class="centercell">
-                        <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">Menüsor</button>
-                    </td>
-                    
-                    <td role="cell" name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
-                    
-                    <td role="cell" name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
-                    
-                    <td role="cell" name="telefonszam">{{$megrendeloHet->megrendelo['telefonszam']}}</td>
-                    
-                    <td role="cell" class="centercell" name="fizetesi-mod">
-                        <select>
-                            @foreach($fizetesiModok as $fizetesiMod)
-                                <option {{$fizetesiMod->nev == "Készpénz" ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td role="cell" class="centercell">
-                        {{$megrendeloHet->osszeg + $megrendeloHet->tartozas}} Ft
-                    </td>
-
-                    <td role="cell" class="centercell">
-                        <button type="submit" class="fizetve-button">Fizetve</button>
-                    </td>
-
-                </tr>
-
+                <form method="post">
+                    <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
+                        <td role="cell" class="centercell">
+                            <button id="menusorbtn" class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">Menüsor</button>
+                        </td>
+                        <td role="cell" name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
+                        <td role="cell" name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
+                        <td role="cell" name="telefonszam">{{$megrendeloHet->megrendelo['telefonszam']}}</td>
+                        <td role="cell" class="centercell" name="fizetesi-mod">
+                            <select name="fizetesi-mod">
+                                @foreach($fizetesiModok as $fizetesiMod)
+                                    <option {{$fizetesiMod->nev == "Készpénz" ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td role="cell" class="centercell">
+                            {{$megrendeloHet->osszeg + $megrendeloHet->tartozas}} Ft
+                        </td>
+                        <td role="cell" class="centercell">
+                                <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
+                                <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
+                                @if ($megrendeloHet['fizetve_at'] !== null)
+                                <button type="submit" class="fizetve-button-kifizetve">Fizetve</button>
+                                @else
+                                <button type="submit" class="fizetve-button">Fizetve</button>
+                                @endif
+                        </td>
+                    </tr>
+                </form>
                 @endforeach
-    
             </tbody>
-
         </table>
-
     <script>
         $('#myModal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
@@ -89,17 +165,17 @@
     </script>
 
     @foreach($megrendeloHetek as $megrendeloHet)
-    
+
     <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">
-        
+
         <div class="modal-dialog modal-lg" role="document">
-            
+
             <div class="modal-content">
-                
+
                 <div class="modal-header">
-                    
+
                     <h5 class="modal-title">{{$megrendeloHet->megrendelo['nev']}}</h5>
-                    
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                 </button>
@@ -110,19 +186,19 @@
                 <div class="modal-body">
 
                     <div class="table-responsive">
-                    
+
                         <table id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table" class="megrendelo-table table-striped">
-                            
+
                             <thead>
-                                
+
                                 <tr>
-                                    
+
                                     <th class="megrendelo-thead" scope="col">{{$het}}. hét</td>
-                                    
+
                                     @foreach($tetelek as $tetel)
-                                    
+
                                     <th class="megrendelo-thead" scope="col" style="text-align: center">{{$tetel->nev}}</th>
-                                
+
                                     @endforeach
 
                                 </tr>
@@ -134,10 +210,10 @@
                                     <input type="hidden" name="megrendelo-het-id" value="{{$megrendeloHet->id}}">
 
                                     @foreach(array('Hétfő','Kedd','Szerda','Csütörtök','Péntek') as $idx => $nap)
-                                        
+
                                     <tr id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$nap}}" class="megrendelo-napok">
                                         {{-- <input type="hidden" name="megrendelesek[]" value="{{$idx}}"> --}}
-                                            
+
                                         <th scope="row">{{$nap}}</th>
                                         @foreach($tetelek as $tetelIdx => $tetelNev)
                                             {{--  <input type="hidden" name="megrendelesek[{{$idx}}][]" value="{{$tetelIdx}}"> --}}
@@ -177,7 +253,7 @@
                                         @endforeach
 
                                     </tr>
-                                    
+
                                     @endforeach
 
 
@@ -246,7 +322,7 @@
         }
 
         return ret;
-        
+
     }
 
     $('.megrendelo-table tbody tr td .megrendeles-table-input').on('change', function() {

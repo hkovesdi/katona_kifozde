@@ -154,10 +154,7 @@ body {
 	text-align: center;
 	vertical-align: middle;
 }
-
-/* zöld fizetve button
-
-.fizetve-button {
+.fizetve-button-kifizetve {
     border: 1px solid white;
     font-family: "Arial", sans-serif;
     text-transform: uppercase;
@@ -169,7 +166,7 @@ body {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2),
         0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-
+/*
 .fizetve-button:hover,
 .fizetve-button:active,
 .fizetve-button:focus {
@@ -311,18 +308,46 @@ body {
 }
 
 #week-counter {
-	width: fit-content;
-	padding: 10px;
-	margin-right: 10px;
-	text-align: center;
-	margin-left: 12px;
-	margin-top: 5px;
+	margin-left: 1.5%;
+	margin-top: 2%;
+	margin-bottom: 1%;
 	font-family: "Arial", sans-serif;
 	text-transform: uppercase;
 	color: #ffffff;
-	font-size: 20px;
+	font-size: 24px;
 	font-weight: bold;
-	display: inline-block;
+}
+
+#buttons {
+	position:relative;
+	margin-left: 1%
+}
+
+#new-search {
+	margin-top: 15px;
+	margin-bottom: 5px;
+	font-style: italic;
+}
+
+#hozzaadas-btn > div {
+	width: fit-content;
+	margin-top: 1%;
+	margin-right: 2%;
+}
+
+.inner-hozzaadas-btn {
+	color: #fff !important;
+	background-color: #424242 !important;
+}
+
+#search-btn {
+	margin-left: 10px;
+	color: #fff;
+	background-color: #424242;
+}
+
+#search-table {
+	margin-bottom: 15px;
 }
 
 .btn-basic {
@@ -330,7 +355,6 @@ body {
 	padding: 10px;
 	text-align: center;
 	display: inline-block;
-	margin-top: 1%;
 	border: 1px solid white;
 	font-family: "Arial", sans-serif;
 	text-transform: uppercase;
@@ -416,18 +440,6 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
 	-moz-appearance: textfield;
-}
-
-.buttonrows {
-	margin-left: 2%;
-	display: flex;
-	margin-top: 1%;
-}
-
-@media only screen and (min-width: 601px) {
-	p.buttonrows {
-		display: inline;
-	}
 }
 
 .megrendelo-thead {
