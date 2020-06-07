@@ -20,7 +20,7 @@ class MegrendeloHet extends Model
 {
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'megrendelok_hetek';
@@ -29,7 +29,7 @@ class MegrendeloHet extends Model
 
     /**
      * The "type" of the auto-incrementing ID.
-     * 
+     *
      * @var string
      */
     protected $keyType = 'integer';
@@ -37,7 +37,7 @@ class MegrendeloHet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'fizetesi_group', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
 
 
     /**

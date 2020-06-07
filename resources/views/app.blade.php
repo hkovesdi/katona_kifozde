@@ -76,16 +76,16 @@
                         }
                     },
                     success: function(data)
-                    {   
+                    {
                         Toast.fire({
                             icon: 'success',
                             title: data.message
                         });
 
-                        $( form ).trigger("ajaxSuccess");
+                        $( form ).trigger("ajaxSuccess", data);
                     },
                     error: function(data)
-                    {   
+                    {
                         Toast.fire({
                             icon: 'error',
                             title: data.responseJSON.message
@@ -100,7 +100,7 @@
 
     </head>
     <body>
-        @auth        
+        @auth
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-print-none">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,8 +176,8 @@
                 });
             });
         </script>
-        @endif 
-        
+        @endif
+
         @yield('content')
 
 
