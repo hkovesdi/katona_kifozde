@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
 
 class MegrendelesController extends Controller
 {
@@ -25,34 +26,46 @@ class MegrendelesController extends Controller
             return redirect('/');
         }
 
-        $name = $request->query('name');
-        $searchedMegrendelok = null;
-        if($name) {
-            $searchedMegrendelok = \App\Megrendelo::where('nev', 'LIKE', "%$name%")->get();
-        }
+        $searchedMegrendelok = $this->searchMegrendeloByName($request->query('name'));
 
-        $megrendeloHetek = \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
-            ->whereHas('datum', function($query) use($ev, $het) {
-                $query->whereYear('datum', $ev)->where('het', $het);
+        $emptyMegrendelesTablazat = Helper::constructEmptyMegrendelesTablazat();
+
+        $tartozasok = collect();
+        $megrendeloHetek = collect();
+
+        \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
+            ->where(function($query) use($ev, $het){
+                $query->whereHas('datum', function($query) use($ev, $het) {
+                    $query->whereYear('datum', $ev)->where('het', $het);
+                });
             })
+            ->orWhere('fizetve_at', NULL)
             ->when(Auth::user()->munkakor == "Kiszállító", function($query){
                 return $query->whereHas('megrendelo', function($query){
                     $query->where('kiszallito_id', Auth::user()->id);
                 });
             })
             ->get()
-            ->each(function($megrendeloHet){
-                $megrendeloHet['tartozas'] = \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
-                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
-                ->whereHas('datum', function($query) use($megrendeloHet) {
-                    $query->where('datum', '<', $megrendeloHet->datum->datum);
-                })
-                ->get()
-                ->sum('osszeg');
+            ->each(function($megrendeloHet) use($emptyMegrendelesTablazat, $ev, $het, $tartozasok, $megrendeloHetek){
+                $megrendelesTablazat = $emptyMegrendelesTablazat;
+                $megrendeloHet->megrendelesek->each(function($megrendeles) use(&$megrendelesTablazat){
+                    $adag = $megrendeles->feladag ? 'fel' : 'egesz';
+                    $tetel = $megrendeles->tetel;
+                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev][$adag]++;
+                });
+                $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
+                
+                if($megrendeloHet->datum->het != $het || Carbon::parse($megrendeloHet->datum->datum)->year != $ev){
+                    $tartozasok->push($megrendeloHet);
+                }
+                else {
+                    $megrendeloHetek->push($megrendeloHet);
+                }
             });
 
         $data = [
             'megrendeloHetek' => $megrendeloHetek,
+            'tartozasok' => $tartozasok,
             'searchedMegrendelok' => $searchedMegrendelok,
             'het' => $het,
             'ev' => $ev,
@@ -64,6 +77,19 @@ class MegrendelesController extends Controller
         return view('megrendelesek', $data);
     }
 
+    /**
+     * Handles the search for megrendelok
+     * @param name The name of the megrendelo
+     * Returns null if the $name param is null otherwise returns the search results
+     */
+    private function searchMegrendeloByName($name)
+    {
+        return $name == null ? null : \App\Megrendelo::where('nev', 'LIKE', "%$name%")->get();
+    }
+
+    /**
+     * 
+     */
     public function modositas(Request $request)
     {
         $data = $request->all();
@@ -201,7 +227,6 @@ class MegrendelesController extends Controller
             \App\MegrendeloHet::create([
                 'megrendelo_id' => $megrendelo_id,
                 'het_start_datum_id' => $hetStartDatum->id,
-                'fizetesi_group' => 1, //Change this
                 'fizetesi_mod' => 'Tartozás',
                 'fizetve_at' => NULL
             ]);

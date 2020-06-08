@@ -17,7 +17,6 @@ class CreateMegrendelokHetekTable extends Migration
             $table->id();
             $table->foreignId('megrendelo_id')->constrained('megrendelok');
             $table->foreignId('het_start_datum_id')->constrained('datumok');
-            $table->integer('fizetesi_group');
             $table->string('fizetesi_mod');
             $table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok');
             $table->dateTime('fizetve_at')->nullable();

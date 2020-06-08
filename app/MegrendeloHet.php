@@ -37,7 +37,7 @@ class MegrendeloHet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'fizetesi_group', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
 
 
     /**
@@ -76,6 +76,8 @@ class MegrendeloHet extends Model
      * Visszaadja a heti rendelések összegét
      */
     public function getOsszegAttribute() {
-        return $this->megrendelesek->sum('tetel.ar');
+        return $this->megrendelesek->sum(function($megrendeles) {
+            return $megrendeles->feladag ? $megrendeles->tetel->ar*0.6 : $megrendeles->tetel->ar;
+        });
     }
 }
