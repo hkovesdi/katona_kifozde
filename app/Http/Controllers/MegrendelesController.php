@@ -158,27 +158,17 @@ class MegrendelesController extends Controller
                 ], 403);
             }
 
-            \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
-                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
-                ->get()
-                ->each(function($megrendeloHet) {
-                    $megrendeloHet->update([
-                        'fizetesi_mod' => 'Tartozás',
-                        'fizetve_at' => NULL,
-                    ]);
-                });
+                $megrendeloHet->update([
+                    'fizetesi_mod' => 'Tartozás',
+                    'fizetve_at' => NULL,
+                ]);
         }
         else {
             $fizetesiMod = \App\FizetesiMod::where('nev', $data['fizetesi-mod'])->first()->nev;
-            \App\MegrendeloHet::where('megrendelo_id', $megrendeloHet->megrendelo_id)
-                ->where('fizetesi_group', $megrendeloHet->fizetesi_group)
-                ->get()
-                ->each(function($megrendeloHet) use ($fizetesiMod) {
-                    $megrendeloHet->update([
-                        'fizetesi_mod' => $fizetesiMod,
-                        'fizetve_at' => Carbon::now(),
-                    ]);
-                });
+            $megrendeloHet->update([
+                'fizetesi_mod' => $fizetesiMod,
+                'fizetve_at' => Carbon::now(),
+            ]);
         }
 
         return response()->json([

@@ -151,7 +151,7 @@
                             </select>
                         </td>
                         <td role="cell" class="centercell">
-                            {{$megrendeloHet->osszeg + $megrendeloHet->tartozas}} Ft
+                            {{$megrendeloHet->osszeg}} Ft
                         </td>
                         <td role="cell" class="centercell">
                                 <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
@@ -232,7 +232,7 @@
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
         $(event.currentTarget[5]).toggleClass('fizetve-button-kifizetve');
-        $(event.currentTarget[2]).prop('disabled', 'disabled');
+        $(event.currentTarget[2]).prop('disabled', !$(event.currentTarget[2]).is(":disabled"));
         $(event.currentTarget[3]).val( $(event.currentTarget[3]).val() == 0 ? 1 : 0);
     });
     $('.megrendeles-modositas-button').on('click', function(){
