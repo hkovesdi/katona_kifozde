@@ -94,16 +94,21 @@
                                         <td>{{$searchedMegrendelo['nev']}}</td>
                                         <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
                                         <td>{{$searchedMegrendelo['telefonszam']}}</td>
-                                        <td>
-                                            <form method="post">
-                                                <input type="hidden" name="nev" value="{{ $searchedMegrendelo['nev'] }}">
-                                                <input type="hidden" name="cim" value="{{ $searchedMegrendelo['szallitasi_cim'] }}">
-                                                <input type="hidden" name="tel" value="{{ $searchedMegrendelo['telefonszam'] }}">
-                                                <input type="hidden" name="ev" value="{{ $ev }}">
-                                                <input type="hidden" name="het" value="{{ $het }}">
-                                                <button type="submit" class="btn btn-sm inner-hozzaadas-btn">Hozzáadás</button>
-                                            </form>
-                                        </td>
+                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id))
+                                            <td>
+                                                <form method="post" action="{{route('megrendeloHetLetrehozas')}}">
+                                                    @csrf
+                                                    <input type="hidden" name="ev" value="{{ $ev }}">
+                                                    <input type="hidden" name="het" value="{{ $het }}">
+                                                    <input type="hidden" name="megrendelo-id" value="{{$searchedMegrendelo->id}}">
+                                                    <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important;">Hozzáadás</button>
+                                                </form>
+                                            </td>
+                                        @else
+                                            <td>
+                                                <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Hozzáadva</button>
+                                            </td>
+                                        @endif 
                                     </tr>
                                 @endforeach
                             </tbody>

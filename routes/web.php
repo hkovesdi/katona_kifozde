@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/megrendelesek/{evHet?}', 'MegrendelesController@show')->name('home');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendelesController@megrendeloLetrehozas')->name('megrendeloLetrehozas');
+    Route::post('/megrendelo-het-letrehozas', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');
     Route::post('/logout', 'LoginController@logout')->name('logout');
     Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
     Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');

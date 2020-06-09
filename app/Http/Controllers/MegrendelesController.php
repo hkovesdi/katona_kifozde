@@ -52,6 +52,7 @@ class MegrendelesController extends Controller
                     $adag = $megrendeles->feladag ? 'fel' : 'egesz';
                     $tetel = $megrendeles->tetel;
                     $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev][$adag]++;
+                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] = $tetel->ar;
                 });
                 $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
                 
@@ -64,6 +65,7 @@ class MegrendelesController extends Controller
             });
 
         $data = [
+            'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::where('munkakor', 'Kiszállító')->get(),
             'megrendeloHetek' => $megrendeloHetek,
             'tartozasok' => $tartozasok,
             'searchedMegrendelok' => $searchedMegrendelok,
@@ -84,7 +86,11 @@ class MegrendelesController extends Controller
      */
     private function searchMegrendeloByName($name)
     {
-        return $name == null ? null : \App\Megrendelo::where('nev', 'LIKE', "%$name%")->get();
+        return $name == null ? null : \App\Megrendelo::where('nev', 'LIKE', "%$name%")
+            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
+              $query->where('kiszallito_id', Auth::user()->id);  
+            })
+            ->get();
     }
 
     /**
@@ -181,41 +187,51 @@ class MegrendelesController extends Controller
         ]);*/
     }
 
-    public function megrendeloHetLetrehozas(Request $request) {
+    public function megrendeloHetLetrehozas(Request $request) 
+    {
         $data = $request->only('ev','het','megrendelo-id');
 
         $this->createMegrendeloHet($data['megrendelo-id'], $data['ev'], $data['het']);
 
-        return redirect()->back()->with([
-            'status' => 'Success',
-            'message' => 'Személy sikeresen hozzáadva a héthez'
-        ]);
+        return redirect()->back()->with('success', ['Személy sikeresen hozzáadva a héthez']);
     }
 
-    public function megrendeloLetrehozas(Request $request) {
+    public function megrendeloLetrehozas(Request $request) 
+    {
         $data = $request->only('nev', 'cim', 'tel', 'ev', 'het');
 
+        if(Auth::user()->munkakor == 'Kiszállító'){
+            $kiszallito_id = Auth::user()->id;
+        }
+        else {
+            $kiszallito_id = \App\User::find($request->input('kiszallito-id'))->id;
+        }
+
         $megrendelo = \App\Megrendelo::create([
-            'kiszallito_id' => Auth::user()->id,
+            'kiszallito_id' => $kiszallito_id,
             'nev' => $data['nev'],
             'szallitasi_cim' => $data['cim'],
             'telefonszam' => $data['tel']
         ]);
 
-        $this->createMegrendeloHet($megrendelo->id, $data['ev'], $data['het']);
+        if(boolval($request->input('hozzaadas')))
+            $this->createMegrendeloHet($megrendelo->id, $data['ev'], $data['het']);
 
-        return redirect()->back()->with([
-            'status' => 'Success',
-            'message' => 'Új megrendelő sikeresen létrehozva és hozzáadva a héthez'
-        ]);
+        return redirect()->back()->with('success', ['Új megrendelő sikeresen létrehozva '.(boolval($request->input('hozzaadas')) ? 'és hozzáadva a héthez!' : '!')]);
     }
 
     private function createMegrendeloHet($megrendelo_id, $ev, $het)
     {
         $hetStartDatum = \App\Datum::whereYear('datum', $ev)->where('het', $het)->orderBy('datum', 'asc')->first();
-        if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null){
+
+        $megrendelo = \App\Megrendelo::when(Auth::user()->munkakor == "Kiszállító", function($query){
+            $query->where('kiszallito_id', Auth::user()->id);  
+        })
+        ->find($megrendelo_id);
+
+        if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null && $megrendelo !== null){
             \App\MegrendeloHet::create([
-                'megrendelo_id' => $megrendelo_id,
+                'megrendelo_id' => $megrendelo->id,
                 'het_start_datum_id' => $hetStartDatum->id,
                 'fizetesi_mod' => 'Tartozás',
                 'fizetve_at' => NULL

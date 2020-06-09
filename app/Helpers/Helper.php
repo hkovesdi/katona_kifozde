@@ -46,7 +46,7 @@ class Helper
      */
     public static function constructEmptyMegrendelesTablazat() 
     {
-        $tetelNevek = array_fill_keys(\App\TetelNev::all()->pluck('nev')->toArray(), array_fill_keys(array('egesz','fel'),0));
+        $tetelNevek = array_fill_keys(\App\TetelNev::all()->pluck('nev')->toArray(), array_fill_keys(array('egesz','fel','ar'),0));
         $hetkoznapok = array_fill_keys(array(1,2,3,4,5), null);
 
         foreach($hetkoznapok as &$hetkoznap) {
