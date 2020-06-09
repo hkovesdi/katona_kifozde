@@ -298,16 +298,7 @@ body {
 	margin-right: auto;
 }
 
-#week-counter {
-	margin-left: 1.5%;
-	margin-top: 2%;
-	margin-bottom: 1%;
-	font-family: "Arial", sans-serif;
-	text-transform: uppercase;
-	color: #ffffff;
-	font-size: 24px;
-	font-weight: bold;
-}
+
 
 #buttons {
 	position:relative;
@@ -550,4 +541,45 @@ table tr .page-break {
 	position: absolute;
 	top: 0;
 	left: 0;
+}
+
+.baljobbgomb {
+	text-align: center;
+	border: 1px solid white;
+	background: #424242;
+	color: #ffffff;
+	font-size: 15px;
+	height: 27px;
+	cursor: pointer;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#het-text {
+	margin: 0 7px;
+}
+
+.baljobbgombA {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#week-counter {
+	margin-left: 1.5%;
+	margin-top: 2%;
+	margin-bottom: 1%;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	display: flex;
+}
+
+#asd {
+	background: none;
+	border: none;
+	padding: 15px;
+	cursor: pointer;
+	outline: inherit;
 }

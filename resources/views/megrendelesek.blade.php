@@ -3,13 +3,13 @@
 
 <div id="week-counter">
     @if((Auth::user()->munkakor != 'Kiszállító') || (Auth::user()->munkakor == 'Kiszállító' && $het > $currentHet))
-    <a style="display:inline-block" href="/megrendelesek/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
-        <button type="button" class="btn-basic"><</button>
-    </a>
+        <a class="baljobbgombA" href="/megrendelesek/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
+            <button type="button" class="baljobbgomb"><i class="fas fa-arrow-left"></i></button>
+        </a>
     @endif
-    <span>{{$ev}} - {{$het}}. hét</span>
-    <a style="display:inline-block" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
-        <button type="button" class="btn-basic">></button>
+    <span id="het-text">{{$ev}} - {{$het}}. hét</span>
+    <a class="baljobbgombA" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
+        <button type="button" class="baljobbgomb"><i class="fas fa-arrow-right"></i></button>
     </a>
 </div>
 
@@ -108,7 +108,7 @@
                                             <td>
                                                 <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Hozzáadva</button>
                                             </td>
-                                        @endif 
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

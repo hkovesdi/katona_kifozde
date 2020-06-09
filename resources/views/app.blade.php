@@ -141,15 +141,19 @@
                 </li>
               </ul>
             </div>
-            <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link disabled" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
-                </li>
-                <li class="nav-item">
-                    <form action="{{route('logout')}}" method="post">
-                        @csrf
-                        <button class="nav-link" type="submit">Kijelentkezés</button>
-                    </form>
+            <ul class="navbar-nav nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="logout-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
+                    <div class="dropdown-menu" aria-labelledby="logout-dropdown">
+                        <a class="dropdown-item" style="padding: 0px">
+                            <form action="{{route('logout')}}" id="logout-form" method="post">
+                                @csrf
+                                <button id="asd" type="submit">
+                                    Kijelentkezés
+                                </button>
+                            </form>
+                        </a>
+                    </div>
                 </li>
               </ul>
           </nav>
