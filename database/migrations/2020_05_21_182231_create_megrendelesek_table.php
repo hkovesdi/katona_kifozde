@@ -16,9 +16,9 @@ class CreateMegrendelesekTable extends Migration
         Schema::create('megrendelesek', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('megrendelo_het_id')->constrained('megrendelok_hetek');
+            $table->foreignId('megrendelo_het_id')->constrained('megrendelok_hetek')->onDelete("cascade");
             //$table->foreignId('megrendelo_id')->constrained('megrendelok');
-            $table->foreignId('tetel_id')->constrained('tetelek');
+            $table->foreignId('tetel_id')->constrained('tetelek')->onDelete("cascade");
            // $table->string('fizetesi_mod');
             //$table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok');
             $table->boolean('feladag')->default(0);

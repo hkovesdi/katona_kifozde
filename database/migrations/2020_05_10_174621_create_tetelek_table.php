@@ -16,8 +16,8 @@ class CreateTetelekTable extends Migration
         Schema::create('tetelek', function (Blueprint $table) {
             $table->id();
             $table->string('tetel_nev');
-            $table->foreign('tetel_nev')->references('nev')->on('tetel_nevek');
-            $table->foreignId('datum_id')->constrained('datumok');
+            $table->foreign('tetel_nev')->references('nev')->on('tetel_nevek')->onDelete("cascade");
+            $table->foreignId('datum_id')->constrained('datumok')->onDelete("cascade");
             $table->string('leiras')->nullable();
             $table->integer('ar');
             $table->timestamps();

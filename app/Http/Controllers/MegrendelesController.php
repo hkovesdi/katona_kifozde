@@ -137,6 +137,10 @@ class MegrendelesController extends Controller
 
                 $this->megrendelesHozzaadas(false, $adagok, 'normal', $currentMegrendelesek, $tetelNev, $nap, $megrendeloHet);
 
+                $megrendeloHet->update([
+                    'megjegyzes' => $data['megjegyzes'];
+                ]);
+
             }
         }
 
