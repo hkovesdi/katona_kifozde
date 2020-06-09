@@ -37,7 +37,7 @@ class MegrendeloHet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'megjegyzes', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
 
 
     /**

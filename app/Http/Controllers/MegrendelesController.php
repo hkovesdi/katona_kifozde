@@ -64,6 +64,11 @@ class MegrendelesController extends Controller
                 }
             });
 
+            //if(Auth::user()->munkakor != 'Kiszállító') {
+           //     $tartozasok = $tartozasok->groupBy('megrendelo.kiszallito_id');
+            //    $megrendeloHetek = $megrendeloHetek->groupBy('megrendelo.kiszallito_id');
+           // }
+
         $data = [
             'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::where('munkakor', 'Kiszállító')->get(),
             'megrendeloHetek' => $megrendeloHetek,
@@ -137,12 +142,12 @@ class MegrendelesController extends Controller
 
                 $this->megrendelesHozzaadas(false, $adagok, 'normal', $currentMegrendelesek, $tetelNev, $nap, $megrendeloHet);
 
-                $megrendeloHet->update([
-                    'megjegyzes' => $data['megjegyzes'];
-                ]);
-
             }
         }
+
+        $megrendeloHet->update([
+            'megjegyzes' => $data['megjegyzes']
+        ]);
 
         return response()->json([
             'status' => 'success',
