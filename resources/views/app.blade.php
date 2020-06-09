@@ -180,6 +180,7 @@
 
         @yield('content')
 
-
+        <footer style="height: 7%;">
+        </footer>
     </body>
 </html>

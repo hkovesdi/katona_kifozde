@@ -28,7 +28,6 @@ class MegrendeloHetSeeder extends Seeder
                     \App\MegrendeloHet::create([
                         'megrendelo_id' => $megrendelo->id,
                         'het_start_datum_id' => $datum->id,
-                        'fizetesi_group' => $fizetesiGroup++,
                         'fizetesi_mod' =>  $parsedDatum->weekOfYear == \Carbon\Carbon::now()->weekOfYear ? 'Tartozás' : $fizetesiModok->random()->nev,
                         'fizetve_at' => $parsedDatum->weekOfYear == \Carbon\Carbon::now()->weekOfYear ? NULL : $parsedDatum->addDays(random_int(1,4))->toDateTimeString()
                     ]);
