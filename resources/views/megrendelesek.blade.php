@@ -48,6 +48,20 @@
                                             <label for="tel-hozzaadas" class="col-form-label">Telefonszám</label>
                                             <input name="tel" type="text" class="form-control" id="tel-hozzaadas">
                                         </div>
+                                        @if (Auth::user()->munkakor == "Bo$$")
+                                        <div class="form-group">
+                                            <label for="kiszallito-hozzaadas">Kiszállító</label>
+                                            <select name="kiszallito-id" class="form-control" id="kiszallito-hozzaadas">
+                                                @foreach ($kiszallitok as $kiszallito)
+                                                    <option value="{{$kiszallito->id}}">{{$kiszallito->nev}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @endif
+                                        <div class="form-check">
+                                            <input name="hozzaadas" class="form-check-input" type="checkbox" id="hozzaadas-hethez-check">
+                                            <label class="form-check-label" for="hozzaadas-hethez-check">Hozzáadás a héthez</label>
+                                        </div>
                                         <input type="hidden" name="ev" value="{{$ev}}">
                                         <input type="hidden" name="het" value="{{$het}}">
                                     </form>
