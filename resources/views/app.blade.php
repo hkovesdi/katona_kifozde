@@ -148,7 +148,7 @@
                         <a class="dropdown-item" style="padding: 0px">
                             <form action="{{route('logout')}}" id="logout-form" method="post">
                                 @csrf
-                                <button id="asd" type="submit">
+                                <button class="text-button" type="submit">
                                     Kijelentkezés
                                 </button>
                             </form>

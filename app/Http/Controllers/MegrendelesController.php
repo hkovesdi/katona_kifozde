@@ -34,16 +34,15 @@ class MegrendelesController extends Controller
         $megrendeloHetek = collect();
 
         \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
-            ->where(function($query) use($ev, $het){
-                $query->whereHas('datum', function($query) use($ev, $het) {
-                    $query->whereYear('datum', $ev)->where('het', $het);
-                });
-            })
-            ->orWhere('fizetve_at', NULL)
-            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
+            ->when(Auth::user()->munkakor == "Kiszállító", function($query){ //NOT WORKING FIX
                 return $query->whereHas('megrendelo', function($query){
                     $query->where('kiszallito_id', Auth::user()->id);
                 });
+            })
+            ->where(function($query) use($ev, $het){
+                $query->whereHas('datum', function($query) use($ev, $het) {
+                    $query->whereYear('datum', $ev)->where('het', $het);
+                })->orWhere('fizetve_at', NULL);
             })
             ->get()
             ->each(function($megrendeloHet) use($emptyMegrendelesTablazat, $ev, $het, $tartozasok, $megrendeloHetek){
@@ -64,13 +63,14 @@ class MegrendelesController extends Controller
                 }
             });
 
-            //if(Auth::user()->munkakor != 'Kiszállító') {
-           //     $tartozasok = $tartozasok->groupBy('megrendelo.kiszallito_id');
-            //    $megrendeloHetek = $megrendeloHetek->groupBy('megrendelo.kiszallito_id');
-           // }
+            if(Auth::user()->munkakor != 'Kiszállító') {
+                $tartozasok = $tartozasok->groupBy('megrendelo.kiszallito_id');
+                $megrendeloHetek = $megrendeloHetek->groupBy('megrendelo.kiszallito_id');
+            }
 
+            $test = $megrendeloHetek->flatten(1)->pluck('megrendelo_id');
         $data = [
-            'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::where('munkakor', 'Kiszállító')->get(),
+            'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::all(),
             'megrendeloHetek' => $megrendeloHetek,
             'tartozasok' => $tartozasok,
             'searchedMegrendelok' => $searchedMegrendelok,

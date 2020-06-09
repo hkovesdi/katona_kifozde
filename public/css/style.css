@@ -576,9 +576,9 @@ table tr .page-break {
 	display: flex;
 }
 
-#asd {
-	background: none;
-	border: none;
+.text-button {
+	background: none !important;
+	border: none !important;
 	padding: 15px;
 	cursor: pointer;
 	outline: inherit;

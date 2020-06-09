@@ -66,13 +66,13 @@ class Helper
     public static function adagokToString(int $egesz, int $fel) 
     {
         if($egesz > 0 && $fel > 0) {
-            return $egesz.'x'.$fel.'f';
+            return $egesz.'x'.$fel.'F';
         }
         else if($egesz > 0) {
             return strval($egesz);
         }
         else if($fel > 0) {
-            return $fel.'f';
+            return $fel.'F';
         }
         else {
             return "";

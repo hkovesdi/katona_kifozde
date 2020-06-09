@@ -48,7 +48,7 @@
                                             <label for="tel-hozzaadas" class="col-form-label">Telefonszám</label>
                                             <input name="tel" type="text" class="form-control" id="tel-hozzaadas">
                                         </div>
-                                        @if (Auth::user()->munkakor == "Bo$$")
+                                        @if (Auth::user()->munkakor != "Kiszállító")
                                         <div class="form-group">
                                             <label for="kiszallito-hozzaadas">Kiszállító</label>
                                             <select name="kiszallito-id" class="form-control" id="kiszallito-hozzaadas">
@@ -77,7 +77,7 @@
                         {{ Request::get('name') }}
                     </div>
                     @if ($searchedMegrendelok && count($searchedMegrendelok) === 0)
-                        <p>Ez a személy még nincs az adatbázisunkban.</p>
+                        <p>Ez a személy még nincs az adatbázisunkban {{Auth::user()->munkakor == 'Kiszállító?' ? ", vagy nem ön a kiszállítója.": "."}} </p>
                     @else
                         <table id="search-table">
                             <thead>
@@ -85,6 +85,9 @@
                                     <th>Név</th>
                                     <th>Cim</th>
                                     <th>Tel</th>
+                                    @if(!$kiszallitok->isEmpty())
+                                        <th>Kiszállító</th>
+                                    @endif
                                     <th></th>
                                 </tr>
                             </thead>
@@ -94,7 +97,10 @@
                                         <td>{{$searchedMegrendelo['nev']}}</td>
                                         <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
                                         <td>{{$searchedMegrendelo['telefonszam']}}</td>
-                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id))
+                                        @if(!$kiszallitok->isEmpty())
+                                            <td>{{$kiszallitok->where('id', $searchedMegrendelo['kiszallito_id'])->first()->nev}}</td>
+                                        @endif
+                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && !$megrendeloHetek->flatten(1)->pluck('megrendelo_id')->contains($searchedMegrendelo->id))
                                             <td>
                                                 <form method="post" action="{{route('megrendeloHetLetrehozas')}}">
                                                     @csrf
@@ -130,19 +136,45 @@
     </div>
 </div>
 
-<div class="flex-center">
-   <x-megrendelok-het-table :megrendeloHetek="$megrendeloHetek" :het="$het"/>
+@if(Auth::user()->munkakor != 'Kiszállító')
+
+<div class="">
+    @foreach($megrendeloHetek as $idx => $megrendeloHet)
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header collapsed" id="heading-rendeles-{{$idx}}" data-toggle="collapse" data-target="#collapse-rendeles-{{$idx}}" aria-expanded="false" aria-controls="collapse-rendeles-{{$idx}}" style="cursor: pointer;" role="button">
+                    <h5 class="mb-0">
+                    <button class="btn btn-outline-dark text-button" type="button">
+                        {{$kiszallitok->where('id', $idx)->first()->nev}}
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapse-rendeles-{{$idx}}" class="collapse" aria-labelledby="heading-rendeles-{{$idx}}" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <x-megrendelok-het-table tartozas="false" :megrendeloHetek="$megrendeloHet" :het="$het"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </div>
+
+@else
+    <div class="flex-center">
+        <x-megrendelok-het-table tartozas="false" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
+    </div>
+
+    <div class="flex-center">
+        <x-megrendelok-het-table tartozas="true" :megrendeloHetek="$tartozasok" :het="$het"/>
+    </div>
+@endif
 
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
         $(event.currentTarget[5]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[2]).prop('disabled', !$(event.currentTarget[2]).is(":disabled"));
         $(event.currentTarget[3]).val( $(event.currentTarget[3]).val() == 0 ? 1 : 0);
-    });
-    $('.megrendeles-modositas-button').on('click', function(){
-        //console.log($(this).closest('.modal').find('.megrendeles-modositas-form'));
-       // $(this).closest('.modal').find('.megrendeles-modositas-form').submit();
     });
 
     function selectValidInputs(inp, ref) {
@@ -173,7 +205,7 @@
 
     }
 
-    $('.megrendelo-table tbody tr td .megrendeles-table-input').on('change', function() {
+    $(document).on('change', '.megrendelo-table tbody tr td .megrendeles-table-input', function() {
         let val = $(this).val().trim();
         let re = /(^\d+)((?:x|X)|\s)?(\d+)?(f$|F$)?/g;
         let groups = re.exec(val);
