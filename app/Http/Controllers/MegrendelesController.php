@@ -76,8 +76,6 @@ class MegrendelesController extends Controller
             'searchedMegrendelok' => $searchedMegrendelok,
             'het' => $het,
             'ev' => $ev,
-            'tetelek' => \App\TetelNev::all(),
-            'fizetesiModok' => \App\FizetesiMod::where('nev', '!=', 'Tartozás')->get(),
             'currentHet' => Carbon::now()->weekOfYear,
         ];
 

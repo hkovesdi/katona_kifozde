@@ -129,8 +129,9 @@
         </div>
     </div>
 </div>
+
 <div class="flex-center">
-   @include('components.megrendelok-het-table')
+   <x-megrendelok-het-table :megrendeloHetek="$megrendeloHetek" :het="$het"/>
 </div>
 
 <script>
