@@ -8,9 +8,11 @@
         </a>
     @endif
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
-    <a class="baljobbgombA" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
-        <button type="button" class="baljobbgomb"><i class="fas fa-arrow-right"></i></button>
-    </a>
+    @if($het <= $currentHet)
+        <a class="baljobbgombA" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
+            <button type="button" class="baljobbgomb"><i class="fas fa-arrow-right"></i></button>
+        </a>
+    @endif
 </div>
 
 <div id="buttons">
