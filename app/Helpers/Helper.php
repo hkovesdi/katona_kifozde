@@ -56,6 +56,22 @@ class Helper
         return $hetkoznapok;
     }
 
+    /**
+     * Elkészíti az üres tétel táblázatot
+     * @return array Az üres táblázat [nap][tételNév] formában
+     */
+    public static function constructEmptyTetelTablazat() 
+    {
+        $tetelNevek = array_fill_keys(\App\TetelNev::all()->pluck('nev')->toArray(), array_fill_keys(array('ar'),0));
+        $hetkoznapok = array_fill_keys(array(1,2,3,4,5), null);
+
+        foreach($hetkoznapok as &$hetkoznap) {
+            $hetkoznap = $tetelNevek;
+        }
+        
+        return $hetkoznapok;
+    }
+
 
     /**
      * Az fél és egész adagok darabszámából elkészíti a megrendelés táblázatban megjelítendő stringet.

@@ -137,7 +137,7 @@
                 <a class="nav-link" href="{{route('home')}}">Megrendelések <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#diagrams">Diagramok</a>
+                <a class="nav-link" href="{{route('tetelek')}}">Tételek</a>
                 </li>
                 <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
                 <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>

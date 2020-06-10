@@ -186,11 +186,11 @@
 
 @else
     <div class="flex-center">
-        <x-megrendelok-het-table tartozas="false" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
+        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
     </div>
 
     <div class="flex-center">
-        <x-megrendelok-het-table tartozas="true" :megrendeloHetek="$tartozasok" :het="$het"/>
+        <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>
     </div>
 @endif
 

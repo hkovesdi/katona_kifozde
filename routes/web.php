@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('home');
     });
     Route::get('/megrendelesek/{evHet?}', 'MegrendelesController@show')->name('home');
+    Route::get('/tetelek', 'TetelController@show')->name('tetelek');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendelesController@megrendeloLetrehozas')->name('megrendeloLetrehozas');
     Route::post('/megrendelo-het-letrehozas', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');
