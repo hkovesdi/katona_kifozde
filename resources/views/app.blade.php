@@ -96,6 +96,31 @@
                     }
                 });
             });
+
+            // Scroll position memorization after post request redirect
+            document.getScroll = function() {
+                if (window.pageYOffset != undefined) {
+                    return [pageXOffset, pageYOffset];
+                } else {
+                    var sx, sy, d = document,
+                        r = d.documentElement,
+                        b = d.body;
+                    sx = r.scrollLeft || b.scrollLeft || 0;
+                    sy = r.scrollTop || b.scrollTop || 0;
+                    return [sx, sy];
+                }
+            }
+            document.rememberScroll = function() {
+                localStorage.setItem('scrollpos', document.getScroll());
+            }
+            $(document).ready(function() {
+                let scrollPos = localStorage.getItem('scrollpos');
+                if(scrollPos !== null) {
+                    scrollPos = scrollPos.split(',');
+                    window.scrollTo(...scrollPos);
+                    localStorage.removeItem('scrollpos');
+                }
+            });
         </script>
 
     </head>

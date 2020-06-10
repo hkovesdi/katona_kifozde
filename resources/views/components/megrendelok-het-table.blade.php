@@ -65,7 +65,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form ajax">
+                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form">
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive">
@@ -107,7 +107,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <input type="submit" class="btn btn-primary megrendeles-modositas-button" value="Mentés">
+                        <button onclick="document.rememberScroll()" type="submit" class="btn btn-primary megrendeles-modositas-button">Mentés</button>
                     </div>
                 </form>
             </div>
