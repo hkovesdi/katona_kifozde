@@ -583,3 +583,42 @@ table tr .page-break {
 	cursor: pointer;
 	outline: inherit;
 }
+
+.modified-table {
+	border: 1px solid #ccc !important;
+}
+.modified-table thead td {
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
+}
+
+.modified-table thead th {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	text-align: center !important;
+	border: 1px solid #4e4e4e !important;
+}
+
+.modified-table tbody td {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #ccc;
+}
+
+.modified-table tbody th {
+	padding-left: 1px !important;
+	padding-right: 0px !important;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tetel-table-input {
+	background-color: transparent;
+	margin: 0px;
+	width: 40px;
+	border: 0px;
+	padding: 4px;
+}
+

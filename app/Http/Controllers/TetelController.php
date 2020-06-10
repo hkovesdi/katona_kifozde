@@ -19,8 +19,36 @@ class TetelController extends Controller
         ->get()
         ->each(function($tetel) use (&$emptyTetelTablazat){
             $emptyTetelTablazat[$tetel->day_of_week][$tetel->tetel_nev]['ar'] = $tetel->ar;
+            $emptyTetelTablazat[$tetel->day_of_week][$tetel->tetel_nev]['id'] = $tetel->id;
         });
 
-        return view('tetelek');
+        $data = [
+            'tetelTablazat' => $emptyTetelTablazat,
+            'tetelNevek' => \App\TetelNev::all()->pluck('nev'),
+        ];
+
+        return view('tetelek', $data);
+    }
+
+    public function tetelArModositas(Request $request) 
+    {
+        $data = $request->all();
+
+        foreach($data['tetelek'] as $napIdx => $tetelek){
+            foreach($tetelek as $tetelNev => $tetel) {
+                $tetel = \App\Tetel::with('datum')->find($tetel['id']);
+
+                if(boolval($request->input('jovohettol'))) {
+                    $datum = \App\Datum::where('datum', \Carbon\Carbon::parse($tetel->datum->datum)->addDays(7))->first();
+                    $tetel = \App\Tetel::where('tetel_nev', $tetel->nev)->where('datum_id', $datum->id)->first();
+                }
+
+                $tetel->update([
+                    'ar' => intval($tetel['ar'])
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', ['Tételek árának módosítása sikeres']);
     }
 }

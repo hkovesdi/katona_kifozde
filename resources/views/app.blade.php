@@ -136,34 +136,36 @@
                 <li class="nav-item {{Route::current()->getName()  == 'home' ? "active" : ""}}">
                 <a class="nav-link" href="{{route('home')}}">Megrendelések <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{{route('tetelek')}}">Tételek</a>
-                </li>
-                <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
-                <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
-                </li>
-                <li class="nav-item dropdown">
+                @if(Auth::user()->munkakor != 'Kiszállító')
+                    <li class="nav-item">
+                    <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Tételek</a>
+                    </li>
+                    <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
+                    <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Nyomtatványok
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/2020-05-25">Szakács összesitő</a>
+                        <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti">Futár heti</a>
+                        <a class="dropdown-item" href="#">Heti statisztika</a>
+                        <a class="dropdown-item" href="#">Havi statisztika</a>
+                        <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Nyomtatványok
+                        Futárok
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/2020-05-25">Szakács összesitő</a>
-                      <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti">Futár heti</a>
-                      <a class="dropdown-item" href="#">Heti statisztika</a>
-                      <a class="dropdown-item" href="#">Havi statisztika</a>
-                      <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
+                        <a class="dropdown-item" href="#Futár1">Futár1</a>
+                        <a class="dropdown-item" href="#Futár2">Futár2</a>
+                        <a class="dropdown-item" href="#Futár3">Futár3</a>
                     </div>
-                  </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Futárok
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#Futár1">Futár1</a>
-                    <a class="dropdown-item" href="#Futár2">Futár2</a>
-                    <a class="dropdown-item" href="#Futár3">Futár3</a>
-                  </div>
-                </li>
+                    </li>
+                @endif
               </ul>
             </div>
             <ul class="navbar-nav nav justify-content-end">

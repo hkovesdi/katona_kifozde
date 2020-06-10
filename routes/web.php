@@ -16,15 +16,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function() {
         return redirect()->route('home');
     });
+
+    Route::group(['middleware' => 'isNotKiszallito'], function () {
+        Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
+        Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
+        Route::get('/nyomtatvanyok/futar-heti', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
+        Route::get('/tetelek', 'TetelController@show')->name('tetelek');
+        Route::post('tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
+    });
     Route::get('/megrendelesek/{evHet?}', 'MegrendelesController@show')->name('home');
-    Route::get('/tetelek', 'TetelController@show')->name('tetelek');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendelesController@megrendeloLetrehozas')->name('megrendeloLetrehozas');
     Route::post('/megrendelo-het-letrehozas', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');
     Route::post('/logout', 'LoginController@logout')->name('logout');
-    Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
-    Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
-    Route::get('/nyomtatvanyok/futar-heti', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
     Route::post('/fizetesi-statusz-modositas/{megrendeloHet}', 'MegrendelesController@changeFizetesiStatusz')->name('fizetesiStatuszModositas');
 });
 Route::get('/login', 'LoginController@show')->name('login');
