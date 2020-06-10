@@ -17,7 +17,7 @@
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                     <td role="cell" class="centercell">
-                        <button class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal" type="button">Menüsor</button>
+                        <button class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" type="button">Menüsor</button>
                     </td>
                     <td role="cell" name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
                     <td role="cell" name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
@@ -56,7 +56,7 @@
 </table>
 
 @foreach($megrendeloHetek as $megrendeloHet)
-    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-modal">
+    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,9 +88,9 @@
                                             @foreach($megrendelesekPerNap as $tetelNev => $megrendelesPerNap)
                                                 {{--  <input type="hidden" name="megrendelesek[{{$idx}}][]" value="{{$tetelIdx}}"> --}}
                                                 <td>
-                                                    <input type="hidden" class="normal-adag-input" value={{$megrendelesPerNap['egesz']}} name="megrendelesek[{{$dayOfWeek-1}}][{{$tetelNev}}][normal]">
+                                                   <input type="hidden" class="normal-adag-input" value={{$megrendelesPerNap['egesz']}} name="megrendelesek[{{$dayOfWeek-1}}][{{$tetelNev}}][normal]">
                                                     <input type="hidden" class="feladag-input" value={{$megrendelesPerNap['fel']}} name="megrendelesek[{{$dayOfWeek-1}}][{{$tetelNev}}][fel]">
-                                                    <input value="{{Helper::adagokToString($megrendelesPerNap['egesz'], $megrendelesPerNap['fel'])}}" data-min-adag="{{$megrendelesPerNap['egesz']}}" data-min-feladag="{{$megrendelesPerNap['fel']}}" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$dayOfWeek}}-input-{{$tetelNev}}" class="megrendeles-table-input">
+                                                    <input {{$tartozas == true ? 'disabled' : ''}} value="{{Helper::adagokToString($megrendelesPerNap['egesz'], $megrendelesPerNap['fel'])}}" data-min-adag="{{$megrendelesPerNap['egesz']}}" data-min-feladag="{{$megrendelesPerNap['fel']}}" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$dayOfWeek}}-input-{{$tetelNev}}" class="megrendeles-table-input">
                                                 </td>
                                             @endforeach
                                         </tr>
@@ -100,14 +100,14 @@
                             <div class="megrendelo-megjegyzes">
                                 <h4 style="text-align: left">Megjegyzés</h4>
                                 <div style="width: 100%">
-                                    <textarea name="megjegyzes" class="megrendelo-textarea">{{$megrendeloHet->megjegyzes}}</textarea>
+                                    <textarea name="megjegyzes" {{$tartozas == true ? 'disabled' : ''}} class="megrendelo-textarea">{{$megrendeloHet->megjegyzes}}</textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <button onclick="document.rememberScroll()" type="submit" class="btn btn-primary megrendeles-modositas-button">Mentés</button>
+                        <button onclick="document.rememberScroll()" type="submit" class="btn btn-primary megrendeles-modositas-button" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
                     </div>
                 </form>
             </div>
