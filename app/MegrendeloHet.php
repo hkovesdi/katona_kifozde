@@ -25,7 +25,7 @@ class MegrendeloHet extends Model
      */
     protected $table = 'megrendelok_hetek';
 
-    protected $appends = ['osszeg'];
+   // protected $appends = ['osszeg'];
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -75,9 +75,9 @@ class MegrendeloHet extends Model
     /**
      * Visszaadja a heti rendelések összegét
      */
-    public function getOsszegAttribute() {
-        return $this->megrendelesek->sum(function($megrendeles) {
-            return $megrendeles->feladag ? $megrendeles->tetel->ar*0.6 : $megrendeles->tetel->ar;
-        });
-    }
+   // public function getOsszegAttribute() {
+     //   return $this->megrendelesek->sum(function($megrendeles) {
+       //     return $megrendeles->feladag ? $megrendeles->tetel->ar*0.6 : $megrendeles->tetel->ar;
+        //});
+    //}
 }

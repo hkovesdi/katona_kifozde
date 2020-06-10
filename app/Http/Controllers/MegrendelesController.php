@@ -47,13 +47,17 @@ class MegrendelesController extends Controller
             ->get()
             ->each(function($megrendeloHet) use($emptyMegrendelesTablazat, $ev, $het, $tartozasok, $megrendeloHetek){
                 $megrendelesTablazat = $emptyMegrendelesTablazat;
-                $megrendeloHet->megrendelesek->each(function($megrendeles) use(&$megrendelesTablazat){
+                $osszeg = 0;
+                $megrendeloHet->megrendelesek->each(function($megrendeles) use(&$megrendelesTablazat, &$osszeg){
                     $adag = $megrendeles->feladag ? 'fel' : 'egesz';
                     $tetel = $megrendeles->tetel;
+                    $tetelAr = $megrendeles->feladag ? $tetel->ar*0.6 : $tetel->ar;
                     $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev][$adag]++;
-                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] = $tetel->ar;
+                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] += $tetelAr;
+                    $osszeg+=$tetelAr;
                 });
                 $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
+                $megrendeloHet->setAttribute('osszeg', $osszeg);
                 $Megrendeleshete = $megrendeloHet->datum->het;
                 $megrendeleseve = Carbon::parse($megrendeloHet->datum->datum)->year;
                 
