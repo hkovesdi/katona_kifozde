@@ -11,6 +11,6 @@ class MegrendeloSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Megrendelo::class, 800)->create();
+        factory(\App\Megrendelo::class, 100)->create();
     }
 }
