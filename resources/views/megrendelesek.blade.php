@@ -139,6 +139,7 @@
 @if(Auth::user()->munkakor != 'Kiszállító')
 
 <div class="">
+    <h1> Heti megrendelések </h1>
     @foreach($megrendeloHetek as $idx => $megrendeloHet)
         <div class="accordion" id="accordionExample">
             <div class="card">
@@ -152,7 +153,30 @@
             
                 <div id="collapse-rendeles-{{$idx}}" class="collapse" aria-labelledby="heading-rendeles-{{$idx}}" data-parent="#accordionExample">
                     <div class="card-body">
-                        <x-megrendelok-het-table tartozas="false" :megrendeloHetek="$megrendeloHet" :het="$het"/>
+                        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHet" :het="$het"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+<div class="">
+    <h1>Tartozások</h1>
+    @foreach($tartozasok as $idx => $tartozas)
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header collapsed" id="heading-tartozas-{{$idx}}" data-toggle="collapse" data-target="#collapse-tartozas-{{$idx}}" aria-expanded="false" aria-controls="collapse-tartozas-{{$idx}}" style="cursor: pointer;" role="button">
+                    <h5 class="mb-0">
+                    <button class="btn btn-outline-dark text-button" type="button">
+                        {{$kiszallitok->where('id', $idx)->first()->nev}}
+                    </button>
+                    </h5>
+                </div>
+            
+                <div id="collapse-tartozas-{{$idx}}" class="collapse" aria-labelledby="heading-tartozas-{{$idx}}" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozas" :het="$tartozas[0]['datum']['het']"/>
                     </div>
                 </div>
             </div>

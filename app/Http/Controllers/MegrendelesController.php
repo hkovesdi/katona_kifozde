@@ -33,8 +33,8 @@ class MegrendelesController extends Controller
         $tartozasok = collect();
         $megrendeloHetek = collect();
 
-        \App\MegrendeloHet::with(['megrendelo', 'megrendelesek.tetel.datum'])
-            ->when(Auth::user()->munkakor == "Kiszállító", function($query){ //NOT WORKING FIX
+        \App\MegrendeloHet::with(['megrendelo', 'datum', 'megrendelesek.tetel.datum'])
+            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
                 return $query->whereHas('megrendelo', function($query){
                     $query->where('kiszallito_id', Auth::user()->id);
                 });
