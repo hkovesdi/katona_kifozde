@@ -36,19 +36,19 @@ class TetelController extends Controller
 
         foreach($data['tetelek'] as $napIdx => $tetelek){
             foreach($tetelek as $tetelNev => $tetel) {
-                $tetel = \App\Tetel::with('datum')->find($tetel['id']);
+                $tetelFromDB = \App\Tetel::with('datum')->find($tetel['id']); //maybe check the date in case of ID tampering?
 
                 if(boolval($request->input('jovohettol'))) {
                     $datum = \App\Datum::where('datum', \Carbon\Carbon::parse($tetel->datum->datum)->addDays(7))->first();
-                    $tetel = \App\Tetel::where('tetel_nev', $tetel->nev)->where('datum_id', $datum->id)->first();
+                    $tetelFromDB = \App\Tetel::where('tetel_nev', $tetel->nev)->where('datum_id', $datum->id)->first();
                 }
 
-                $tetel->update([
+                $tetelFromDB->update([
                     'ar' => intval($tetel['ar'])
                 ]);
             }
         }
 
-        return redirect()->back()->with('success', ['Tételek árának módosítása sikeres']);
+        return redirect()->back()->with('success', ['Tétel(ek) árának módosítása sikeres']);
     }
 }
