@@ -40,9 +40,9 @@ class Megrendelo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function kiszallito()
     {
-        return $this->belongsTo('App\User', 'id');
+        return $this->belongsTo('App\User', 'kiszallito_id', 'id');
     }
 
     /**

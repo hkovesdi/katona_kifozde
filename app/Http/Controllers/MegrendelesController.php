@@ -89,11 +89,7 @@ class MegrendelesController extends Controller
      */
     private function searchMegrendeloByName($name)
     {
-        return $name == null ? null : \App\Megrendelo::where('nev', 'LIKE', "%$name%")
-            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
-              $query->where('kiszallito_id', Auth::user()->id);  
-            })
-            ->get();
+        return $name == null ? null : \App\Megrendelo::with('kiszallito')->where('nev', 'LIKE', "%$name%")->get();
     }
 
     /**

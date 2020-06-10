@@ -77,7 +77,7 @@
                         {{ Request::get('name') }}
                     </div>
                     @if ($searchedMegrendelok && count($searchedMegrendelok) === 0)
-                        <p>Ez a személy még nincs az adatbázisunkban {{Auth::user()->munkakor == 'Kiszállító?' ? ", vagy nem ön a kiszállítója.": "."}} </p>
+                        <p>Ez a személy még nincs az adatbázisunkban </p>
                     @else
                         <table id="search-table">
                             <thead>
@@ -85,9 +85,7 @@
                                     <th>Név</th>
                                     <th>Cim</th>
                                     <th>Tel</th>
-                                    @if(!$kiszallitok->isEmpty())
-                                        <th>Kiszállító</th>
-                                    @endif
+                                    <th>Kiszállító</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -97,10 +95,8 @@
                                         <td>{{$searchedMegrendelo['nev']}}</td>
                                         <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
                                         <td>{{$searchedMegrendelo['telefonszam']}}</td>
-                                        @if(!$kiszallitok->isEmpty())
-                                            <td>{{$kiszallitok->where('id', $searchedMegrendelo['kiszallito_id'])->first()->nev}}</td>
-                                        @endif
-                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && !$megrendeloHetek->flatten(1)->pluck('megrendelo_id')->contains($searchedMegrendelo->id))
+                                        <td>{{$searchedMegrendelo->kiszallito['nev']}}</td>
+                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && !$megrendeloHetek->flatten(1)->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && (Auth::user()->munkakor != 'Kiszállító' || $searchedMegrendelo->kiszallito_id == Auth::user()->id))
                                             <td>
                                                 <form method="post" action="{{route('megrendeloHetLetrehozas')}}">
                                                     @csrf
@@ -109,6 +105,10 @@
                                                     <input type="hidden" name="megrendelo-id" value="{{$searchedMegrendelo->id}}">
                                                     <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important;">Hozzáadás</button>
                                                 </form>
+                                            </td>
+                                        @elseif(Auth::user()->munkakor == 'Kiszállító' && $searchedMegrendelo->kiszallito_id != Auth::user()->id)
+                                            <td>
+                                                <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Másik futárhoz tartozik</button>
                                             </td>
                                         @else
                                             <td>
