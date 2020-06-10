@@ -18,8 +18,8 @@ class MegrendelesController extends Controller
         }
         else {
             $temp = explode("-", $evHet);
-            $ev = $temp[0];
-            $het = $temp[1];
+            $ev = intval($temp[0]);
+            $het = intval($temp[1]);
         }
 
         if(Auth::user()->munkakor == 'Kiszállító' && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1))){
@@ -54,11 +54,13 @@ class MegrendelesController extends Controller
                     $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] = $tetel->ar;
                 });
                 $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
-
-                if($megrendeloHet->datum->het != $het || Carbon::parse($megrendeloHet->datum->datum)->year != $ev){
+                $Megrendeleshete = $megrendeloHet->datum->het;
+                $megrendeleseve = Carbon::parse($megrendeloHet->datum->datum)->year;
+                
+                if(($megrendeloHet->datum->het < $het || Carbon::parse($megrendeloHet->datum->datum)->year != $ev) && $het <= Carbon::now()->weekOfYear){
                     $tartozasok->push($megrendeloHet);
                 }
-                else {
+                else if($het == $megrendeloHet->datum->het){
                     $megrendeloHetek->push($megrendeloHet);
                 }
             });
@@ -68,7 +70,6 @@ class MegrendelesController extends Controller
                 $megrendeloHetek = $megrendeloHetek->groupBy('megrendelo.kiszallito_id');
             }
 
-            $test = $megrendeloHetek->flatten(1)->pluck('megrendelo_id');
         $data = [
             'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::all(),
             'megrendeloHetek' => $megrendeloHetek,
@@ -93,7 +94,7 @@ class MegrendelesController extends Controller
     }
 
     /**
-     *
+     * 
      */
     public function modositas(Request $request)
     {
@@ -108,9 +109,10 @@ class MegrendelesController extends Controller
         ->first();
 
         if($megrendeloHet->fizetve_at != null) {
-            return redirect()->back()->with(
-                'failure',
-                ['A már kifizetett hét megrendeléseinek módosítása nem lehetséges']);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'A már kifizetett hét megrendeléseinek módosítása nem lehetséges'
+            ], 403);
         }
 
         foreach($data['megrendelesek'] as $nap => $tetelek) {
@@ -124,9 +126,10 @@ class MegrendelesController extends Controller
                     ->where('day_of_week', $nap+1);
 
                 if(!$this->megrendelesTorles(true, $adagok, "fel", $currentMegrendelesek) || !$this->megrendelesTorles(false, $adagok, "normal", $currentMegrendelesek)){
-                    return redirect()->back()->with(
-                        'failure',
-                        ['Megrendelések utólagos törlése nem lehetséges']);
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Megrendelések utólagos törlése nem lehetséges'
+                    ], 403);
                 }
 
 
@@ -140,9 +143,11 @@ class MegrendelesController extends Controller
         $megrendeloHet->update([
             'megjegyzes' => $data['megjegyzes']
         ]);
-        return redirect()->back()->with(
-            'success',
-            ['Megrendelések változtatása sikeres!']);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Megrendelések változtatása sikeres!'
+        ]);
     }
 
     public function changeFizetesiStatusz(Request $request, \App\MegrendeloHet $megrendeloHet)
@@ -186,7 +191,7 @@ class MegrendelesController extends Controller
         ]);*/
     }
 
-    public function megrendeloHetLetrehozas(Request $request)
+    public function megrendeloHetLetrehozas(Request $request) 
     {
         $data = $request->only('ev','het','megrendelo-id');
 
@@ -195,7 +200,7 @@ class MegrendelesController extends Controller
         return redirect()->back()->with('success', ['Személy sikeresen hozzáadva a héthez']);
     }
 
-    public function megrendeloLetrehozas(Request $request)
+    public function megrendeloLetrehozas(Request $request) 
     {
         $data = $request->only('nev', 'cim', 'tel', 'ev', 'het');
 
@@ -224,7 +229,7 @@ class MegrendelesController extends Controller
         $hetStartDatum = \App\Datum::whereYear('datum', $ev)->where('het', $het)->orderBy('datum', 'asc')->first();
 
         $megrendelo = \App\Megrendelo::when(Auth::user()->munkakor == "Kiszállító", function($query){
-            $query->where('kiszallito_id', Auth::user()->id);
+            $query->where('kiszallito_id', Auth::user()->id);  
         })
         ->find($megrendelo_id);
 
