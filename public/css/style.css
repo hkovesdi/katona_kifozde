@@ -155,7 +155,7 @@ body {
 	vertical-align: middle;
 }
 .fizetve-button-kifizetve {
-    background: green !important;
+	background: green !important;
 }
 /*
 .fizetve-button:hover,
@@ -298,11 +298,9 @@ body {
 	margin-right: auto;
 }
 
-
-
 #buttons {
-	position:relative;
-	margin-left: 1%
+	position: relative;
+	margin-left: 1%;
 }
 
 #new-search {
@@ -622,3 +620,14 @@ table tr .page-break {
 	padding: 4px;
 }
 
+.tablazat-cim {
+	margin-left: 1.5%;
+	margin-top: 3%;
+	margin-bottom: 0;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	display: flex;
+}

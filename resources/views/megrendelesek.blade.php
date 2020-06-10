@@ -136,6 +136,10 @@
     </div>
 </div>
 
+<div class="tablazat-cim">
+    Heti megrendelések
+</div>
+
 @if(Auth::user()->munkakor != 'Kiszállító')
 
 <div class="">
@@ -189,10 +193,16 @@
         <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
     </div>
 
+    <div class="tablazat-cim">
+        Tartozások
+    </div>
+
     <div class="flex-center">
         <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>
     </div>
 @endif
+
+
 
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
