@@ -54,6 +54,20 @@ class MegrendelesController extends Controller
                     $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] += $tetelAr;
                     $osszeg+=$tetelAr;
                 });
+                $osszegOsszesito = "";
+                $megrendeloHet->megrendelesek->groupBy('tetel.tetel_nev')
+                ->each(function($megrendeles,$tetelNev) use(&$osszegOsszesito){ //Optimize this
+                    $fel = $megrendeles->where('feladag', true)->count();
+                    $normal = $megrendeles->count()-$fel;
+                    $felAr = $megrendeles->where('feladag', true)->sum('tetel.ar') * 0.6;
+                    $normalAr = $megrendeles->where('feladag', false)->sum('tetel.ar');
+
+                    $osszegOsszesito .= ($fel > 0 ? $fel.' <i>fél</i> ' : "").($normal > 0 ? $normal.' <i>normál</i> ' : "").'<b>'.$tetelNev.'</b> = '.strval($felAr+$normalAr).' Ft <br> ';
+                });
+                
+                $osszegOsszesito.='<hr> Végösszeg: <b>'.$osszeg.' Ft </b>';
+
+                $megrendeloHet->setAttribute('osszeg_osszesito',$osszegOsszesito);
                 $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
                 $megrendeloHet->setAttribute('osszeg', $osszeg);
                 

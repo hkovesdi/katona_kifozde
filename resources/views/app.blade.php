@@ -114,6 +114,7 @@
                 localStorage.setItem('scrollpos', document.getScroll());
             }
             $(document).ready(function() {
+                $('[data-toggle="popover"]').popover()
                 let scrollPos = localStorage.getItem('scrollpos');
                 if(scrollPos !== null) {
                     scrollPos = scrollPos.split(',');
@@ -121,6 +122,7 @@
                     localStorage.removeItem('scrollpos');
                 }
             });
+
         </script>
 
     </head>
@@ -200,7 +202,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post">
+                <form method="post" action="{{route('jelszoValtoztatas')}}">
+                        @csrf
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="currentPassword">Jelenlegi jelszó</label>
