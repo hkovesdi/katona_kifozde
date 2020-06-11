@@ -10,7 +10,7 @@
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
     @if($het <= $currentHet)
         <a class="baljobbgombA" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
-            <button type="button" class="baljobbgomb"><i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="baljobbgomb baljobbgombR"><i class="fas fa-arrow-right"></i></button>
         </a>
     @endif
 </div>
@@ -152,7 +152,7 @@
                     </button>
                     </h5>
                 </div>
-            
+
                 <div id="collapse-rendeles-{{$idx}}" class="collapse" aria-labelledby="heading-rendeles-{{$idx}}" data-parent="#accordionExample">
                     <div class="card-body">
                         <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHet" :het="$het"/>
@@ -175,7 +175,7 @@
                         </button>
                         </h5>
                     </div>
-                
+
                     <div id="collapse-tartozas-{{$idx}}" class="collapse" aria-labelledby="heading-tartozas-{{$idx}}" data-parent="#accordionExample">
                         <div class="card-body">
                             <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozas" :het="$tartozas[0]['datum']['het']"/>
@@ -186,7 +186,7 @@
         @endforeach
 </div>
 
-@else  
+@else
     <div class="tablazat-cim">
         Heti megrendelések
     </div>
