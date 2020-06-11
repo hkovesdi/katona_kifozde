@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function() {
-        return redirect()->route('home');
-    });
+        return redirect()->route('megrendelesek', ['user' => Auth::user()]);
+    })->name('home');
 
     Route::group(['middleware' => 'isNotKiszallito'], function () {
         Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
@@ -24,9 +24,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/tetelek', 'TetelController@show')->name('tetelek');
         Route::get('/megrendelok', 'MegrendeloController@show')->name('megrendelok');
         Route::post('/megrendelok/{megrendelo}', 'MegrendeloController@modositas')->name('megrendeloModositas');
-        Route::post('tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
+        Route::post('/tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
     });
-    Route::get('/megrendelesek/{evHet?}', 'MegrendelesController@show')->name('home');
+    Route::get('/megrendelesek/{user}/{evHet?}', 'MegrendelesController@show')->name('megrendelesek');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendelesController@megrendeloLetrehozas')->name('megrendeloLetrehozas');
     Route::post('/megrendelo-het-letrehozas', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');

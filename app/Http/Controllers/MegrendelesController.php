@@ -10,7 +10,7 @@ use App\Helpers\Helper;
 
 class MegrendelesController extends Controller
 {
-    public function show(Request $request, String $evHet = null)
+    public function show(Request $request, \App\User $user, String $evHet = null)
     {
         if($evHet === null) {
             $ev = Carbon::now()->year;
@@ -22,7 +22,7 @@ class MegrendelesController extends Controller
             $het = intval($temp[1]);
         }
 
-        if(Auth::user()->munkakor == 'Kiszállító' && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1))){
+        if(Auth::user()->munkakor == 'Kiszállító'  && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user))){
             return redirect('/');
         }
 
@@ -34,10 +34,8 @@ class MegrendelesController extends Controller
         $megrendeloHetek = collect();
 
         \App\MegrendeloHet::with(['megrendelo', 'datum', 'megrendelesek.tetel.datum'])
-            ->when(Auth::user()->munkakor == "Kiszállító", function($query){
-                return $query->whereHas('megrendelo', function($query){
-                    $query->where('kiszallito_id', Auth::user()->id);
-                });
+            ->whereHas('megrendelo', function($query) use($user){
+                $query->where('kiszallito_id', $user->id);
             })
             ->where(function($query) use($ev, $het){
                 $query->whereHas('datum', function($query) use($ev, $het) {
@@ -58,8 +56,6 @@ class MegrendelesController extends Controller
                 });
                 $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
                 $megrendeloHet->setAttribute('osszeg', $osszeg);
-                $Megrendeleshete = $megrendeloHet->datum->het;
-                $megrendeleseve = Carbon::parse($megrendeloHet->datum->datum)->year;
                 
                 if(($megrendeloHet->datum->het < $het || Carbon::parse($megrendeloHet->datum->datum)->year != $ev) && $het <= Carbon::now()->weekOfYear){
                     $tartozasok->push($megrendeloHet);
@@ -69,13 +65,9 @@ class MegrendelesController extends Controller
                 }
             });
 
-            if(Auth::user()->munkakor != 'Kiszállító') {
-                $tartozasok = $tartozasok->groupBy('megrendelo.kiszallito_id');
-                $megrendeloHetek = $megrendeloHetek->groupBy('megrendelo.kiszallito_id');
-            }
-
         $data = [
             'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::all(),
+            'user' => $user,
             'megrendeloHetek' => $megrendeloHetek,
             'tartozasok' => $tartozasok,
             'searchedMegrendelok' => $searchedMegrendelok,
@@ -227,6 +219,8 @@ class MegrendelesController extends Controller
             $query->where('kiszallito_id', Auth::user()->id);  
         })
         ->find($megrendelo_id);
+
+        $shitlord = \App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first();
 
         if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null && $megrendelo !== null){
             \App\MegrendeloHet::create([

@@ -133,15 +133,19 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
-                <li class="nav-item {{Route::current()->getName()  == 'home' ? "active" : ""}}">
-                <a class="nav-link" href="{{route('home')}}">Megrendelések <span class="sr-only">(current)</span></a>
-                </li>
                 @if(Auth::user()->munkakor != 'Kiszállító')
+                    <li class="nav-item dropdown {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Megrendelések
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @foreach(\App\User::where('munkakor', 'Kiszállító')->get() as $kiszallito)
+                                <a class="dropdown-item" href="{{route('megrendelesek', $kiszallito->id)}}">{{$kiszallito->nev}}</a>
+                            @endforeach
+                        </div>
+                    </li>
                     <li class="nav-item">
                     <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Tételek</a>
-                    </li>
-                    <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
-                    <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
                     </li>
                     <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
                         <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
@@ -158,22 +162,16 @@
                         <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Futárok
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#Futár1">Futár1</a>
-                        <a class="dropdown-item" href="#Futár2">Futár2</a>
-                        <a class="dropdown-item" href="#Futár3">Futár3</a>
-                    </div>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}" href="{{route('megrendelesek', ['user' => Auth::user()])}}">Megrendelések</a>
                     </li>
                 @endif
               </ul>
             </div>
             <ul class="navbar-nav nav justify-content-end">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="logout-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->username}}</a>
+                    <a class="nav-link dropdown-toggle" id="logout-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->nev.' ('.Auth::user()->username.'), '.Auth::user()->munkakor}}</a>
                     <div class="dropdown-menu" aria-labelledby="logout-dropdown">
                         <a class="dropdown-item" style="padding: 0px">
                             <form action="{{route('logout')}}" id="logout-form" method="post">

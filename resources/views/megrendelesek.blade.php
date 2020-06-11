@@ -3,13 +3,13 @@
 
 <div id="week-counter">
     @if((Auth::user()->munkakor != 'Kiszállító') || (Auth::user()->munkakor == 'Kiszállító' && $het > $currentHet))
-        <a class="baljobbgombA" href="/megrendelesek/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
+        <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
             <button type="button" class="baljobbgomb"><i class="fas fa-arrow-left"></i></button>
         </a>
     @endif
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
     @if($het <= $currentHet)
-        <a class="baljobbgombA" href="/megrendelesek/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
+        <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
             <button type="button" class="baljobbgomb baljobbgombR"><i class="fas fa-arrow-right"></i></button>
         </a>
     @endif
@@ -98,7 +98,7 @@
                                         <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
                                         <td>{{$searchedMegrendelo['telefonszam']}}</td>
                                         <td>{{$searchedMegrendelo->kiszallito['nev']}}</td>
-                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && !$megrendeloHetek->flatten(1)->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && (Auth::user()->munkakor != 'Kiszállító' || $searchedMegrendelo->kiszallito_id == Auth::user()->id))
+                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && $searchedMegrendelo->kiszallito_id == $user->id)
                                             <td>
                                                 <form method="post" action="{{route('megrendeloHetLetrehozas')}}">
                                                     @csrf
@@ -108,7 +108,7 @@
                                                     <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important;">Hozzáadás</button>
                                                 </form>
                                             </td>
-                                        @elseif(Auth::user()->munkakor == 'Kiszállító' && $searchedMegrendelo->kiszallito_id != Auth::user()->id)
+                                        @elseif($searchedMegrendelo->kiszallito_id != $user->id)
                                             <td>
                                                 <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Másik futárhoz tartozik</button>
                                             </td>
@@ -138,78 +138,28 @@
     </div>
 </div>
 
-@if(Auth::user()->munkakor != 'Kiszállító')
-
-<div class="">
-    <h1> Heti megrendelések </h1>
-    @foreach($megrendeloHetek as $idx => $megrendeloHet)
-        <div class="accordion" id="accordionExample">
-            <div class="card">
-                <div class="card-header collapsed" id="heading-rendeles-{{$idx}}" data-toggle="collapse" data-target="#collapse-rendeles-{{$idx}}" aria-expanded="false" aria-controls="collapse-rendeles-{{$idx}}" style="cursor: pointer;" role="button">
-                    <h5 class="mb-0">
-                    <button class="btn btn-outline-dark text-button" type="button">
-                        {{$kiszallitok->where('id', $idx)->first()->nev}}
-                    </button>
-                    </h5>
-                </div>
-
-                <div id="collapse-rendeles-{{$idx}}" class="collapse" aria-labelledby="heading-rendeles-{{$idx}}" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHet" :het="$het"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
+<div class="tablazat-cim">
+    Heti megrendelések ({{$user->nev}})
 </div>
 
-<div class="">
-    <h1>Tartozások</h1>
-        @foreach($tartozasok as $idx => $tartozas)
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header collapsed" id="heading-tartozas-{{$idx}}" data-toggle="collapse" data-target="#collapse-tartozas-{{$idx}}" aria-expanded="false" aria-controls="collapse-tartozas-{{$idx}}" style="cursor: pointer;" role="button">
-                        <h5 class="mb-0">
-                        <button class="btn btn-outline-dark text-button" type="button">
-                            {{$kiszallitok->where('id', $idx)->first()->nev}}
-                        </button>
-                        </h5>
-                    </div>
-
-                    <div id="collapse-tartozas-{{$idx}}" class="collapse" aria-labelledby="heading-tartozas-{{$idx}}" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozas" :het="$tartozas[0]['datum']['het']"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-</div>
-
+@if($megrendeloHetek->isEmpty())
+    <h5>A héten még nincsenek megrendelések</h5>
 @else
-    <div class="tablazat-cim">
-        Heti megrendelések
+    <div class="flex-center">
+        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
     </div>
+@endif
 
-    @if($megrendeloHetek->isEmpty())
-        <h5>A héten még nincsenek megrendelések</h5>
-    @else
-        <div class="flex-center">
-            <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
-        </div>
-    @endif
+<div class="tablazat-cim">
+    Tartozások
+</div>
 
-    <div class="tablazat-cim">
-        Tartozások
+@if($tartozasok->isEmpty())
+    <h5>Nincsenek tartozások</h5>
+@else
+    <div class="flex-center">
+        <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>
     </div>
-
-    @if($tartozasok->isEmpty())
-        <h5>Nincsenek tartozások</h5>
-    @else
-        <div class="flex-center">
-            <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>
-        </div>
-    @endif
 @endif
 
 

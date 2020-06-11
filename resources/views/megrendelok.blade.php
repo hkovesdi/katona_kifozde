@@ -27,6 +27,7 @@
                     <div class="modal fade" id="szerkesztModal{{$megrendelo->id}}" tabindex="-1" role="dialog" aria-labelledby="szerkesztModalLabel{{$megrendelo->id}}" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <form method="post" action="{{route('megrendeloModositas', $megrendelo->id)}}">
+                                @csrf
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="szerkesztModalLabel{{$megrendelo->id}}">{{$megrendelo->nev}} szerkesztése</h5>
@@ -49,7 +50,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="kiszallitoSelect">Kiszállító</label>
-                                            <select name="kiszallito" class="form-control" id="kiszallitoSelect">
+                                            <select name="kiszallito-id" class="form-control" id="kiszallitoSelect">
                                                 @foreach ($kiszallitok as $kiszallito)
                                                     <option {{$kiszallito->nev == $megrendelo->kiszallito->nev ? "selected" : ""}} value="{{$kiszallito->id}}">{{$kiszallito->nev}}</option>
                                                 @endforeach
@@ -58,7 +59,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                                        <button type="submit" class="btn btn-primary">Mentés</button>
+                                        <button type="submit" onclick="document.rememberScroll()" class="btn btn-primary">Mentés</button>
                                     </div>
                                 </div>
                             </form>
