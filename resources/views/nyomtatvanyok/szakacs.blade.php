@@ -2,9 +2,9 @@
 @section('content')
 
         <div style="text-align: center;">
-            <div><h2>{{$datum['datum']}}</h2></div>
-            <div class="mt-1"><h2>{{$datum['het']}}. hét</h2></div>
-            <div class="mt-2"><h2>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h2></div>
+            <div><h3>{{$datum['datum']}}</h3></div>
+            <div class="mt-1"><h3>{{$datum['het']}}. hét</h3></div>
+            <div class="mt-2"><h3>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h3></div>
         </div>
 
 

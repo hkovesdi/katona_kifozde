@@ -143,7 +143,7 @@
 </div>
 
 @if($megrendeloHetek->isEmpty())
-    <h5>A héten még nincsenek megrendelések</h5>
+    <h5 class="heti-ertesito"><i class="fas fa-times" style="color: red"></i> A héten még nincsenek megrendelések!</h5>
 @else
     <div class="flex-center">
         <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
@@ -155,7 +155,7 @@
 </div>
 
 @if($tartozasok->isEmpty())
-    <h5>Nincsenek tartozások</h5>
+    <h5 class="heti-ertesito"><i class="fas fa-check" style="color: green"></i> Nincsenek tartozások!</h5>
 @else
     <div class="flex-center">
         <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>

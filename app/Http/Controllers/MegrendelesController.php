@@ -250,8 +250,6 @@ class MegrendelesController extends Controller
         })
         ->find($megrendelo_id);
 
-        $shitlord = \App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first();
-
         if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null && $megrendelo !== null){
             \App\MegrendeloHet::create([
                 'megrendelo_id' => $megrendelo->id,

@@ -454,16 +454,20 @@ input[type=number] {
 }
 
 .szakacs-thead > tr > th {
-	font-size: 25px !important;
+	font-size: 20px !important;
 }
 
 .szakacs-table > tbody > tr > td {
-	font-size: 20px !important;
+	font-size: 15px !important;
 	border-right: 1px solid #ccc;
+	margin: 5px !important;
+	padding: 5px !important;
 }
 
 .szakacs-table > tbody > tr {
 	border: 1px solid #ccc !important;
+	margin: 5px !important;
+	padding: 5px !important;
 }
 
 .datum {
@@ -475,10 +479,10 @@ input[type=number] {
 	margin-right: auto;
 }
 
-/* @page {
+@page {
 	size: auto;
 	margin: 0mm;
-} */
+}
 
 .futar-table {
 	margin-top: 20px;
@@ -745,4 +749,15 @@ table tr .page-break {
 		margin-left: 0px;
 		margin-right: 0px;
 	}
+}
+
+.heti-ertesito {
+	margin-left: 3%;
+	margin-top: auto;
+	margin-bottom: 0;
+	font-family: "Arial", sans-serif;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: bold;
+	display: inline-block;
 }

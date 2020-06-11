@@ -31,6 +31,9 @@ class TetelNevSeeder extends Seeder
                 'nev' => 'T',
             ],
             [
+                'nev' => 'Db',
+            ],
+            [
                 'nev' => 'Dz',
             ],
             [
