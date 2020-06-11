@@ -64,7 +64,7 @@ class MegrendelesController extends Controller
 
                     $osszegOsszesito .= ($fel > 0 ? $fel.' <i>fél</i> ' : "").($normal > 0 ? $normal.' <i>normál</i> ' : "").'<b>'.$tetelNev.'</b> = '.strval($felAr+$normalAr).' Ft <br> ';
                 });
-                
+
                 $osszegOsszesito.='<hr> Végösszeg: <b>'.$osszeg.' Ft </b>';
 
                 $megrendeloHet->setAttribute('osszeg_osszesito',$osszegOsszesito);
@@ -101,6 +101,22 @@ class MegrendelesController extends Controller
     private function searchMegrendeloByName($name)
     {
         return $name == null ? null : \App\Megrendelo::with('kiszallito')->where('nev', 'LIKE', "%$name%")->get();
+    }
+
+
+    public function megrendeloHetTorles(Request $request, \App\MegrendeloHet $megrendeloHet) 
+    {   
+        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->megrendelo->kiszallito_id != Auth::user()->id){
+            return redirect()->back()->with('failure', ['Más kiszállító alá tartozó megrendelők hetének törlése nem lehetséges!']);
+        }
+        
+        if(!$megrendeloHet->megrendelesek->isEmpty()) {
+            return redirect()->back()->with('failure', ['A megrendelőt csak akkor lehet törölni a hétről, ha nincsen hozzá tartozó rendelés.']);
+        }
+
+        $megrendeloHet->delete();
+
+        return redirect()->back()->with('success', ['Megrendelő sikeresen törölve a hétről!']);
     }
 
     /**

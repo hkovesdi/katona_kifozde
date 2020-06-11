@@ -1,6 +1,7 @@
 <table role="table" class="main-table">
     <thead role="rowgroup" class="main-thead">
         <tr role="row">
+            <th role="columnheader" class="fejlec-center row-rend">Törlés</th>
             <th role="columnheader" class="fejlec-center row-rend">Rendelések</th>
             <th role="columnheader" class="fejlec-center row-nev">Név</th>
             <th role="columnheader" class="fejlec-center row-cim">Cim</th>
@@ -13,9 +14,33 @@
     <tbody role="rowgroup" class="main-tbody">
 
         @foreach($megrendeloHetek as $megrendeloHet)
+            <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['megrendeloHet' => $megrendeloHet])}}">
+                @csrf
+            </form>
             <form class="ajax fizetesi-status-modosito-form" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
+                    <td role="cell" class="centercell"><button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></i></td>
+                    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Megrendelő törlése a hétről</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body mt-3">
+                              <p style="font-size: 16px">Biztos benne, hogy törölni szeretné a megrendelőt erről a hétről?</p>
+                              <p style="font-size: 12px"><i class="fas fa-info-circle"  style="font-size: 15px; color: #6699ff"></i> A megrendelőt csak akkor lehet törölni a hétről, ha nincsen hozzá tartozó rendelés a héten.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Mégsem</button>
+                              <button type="submit" form="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" class="btn btn-success" {{$megrendeloHet->osszeg != 0 ? 'disabled' : ''}}>Törlés</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     <td role="cell" class="centercell">
                         <button class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" type="button">Menüsor</button>
                     </td>
@@ -44,7 +69,7 @@
                             <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
                             <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
                             @if ($megrendeloHet['fizetve_at'] !== null)
-                                <button type="submit" class="fizetve-button-kifizetve fizetve-button ">Fizetve</button>
+                                <button type="submit" class="fizetve-button-kifizetve fizetve-button " >Fizetve</button>
                             @else
                                 <button type="submit" class="fizetve-button">Fizetve</button>
                             @endif

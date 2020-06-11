@@ -10,7 +10,7 @@ class MegrendeloController extends Controller
     {
 
         $data = [
-            'megrendelok' => \App\Megrendelo::with('kiszallito')->get(),
+            'megrendelok' => \App\Megrendelo::with('kiszallito')->orderBy('nev', 'asc')->get(),
             'kiszallitok' => \App\User::where('munkakor', 'Kiszállító')->get()
         ];
 
