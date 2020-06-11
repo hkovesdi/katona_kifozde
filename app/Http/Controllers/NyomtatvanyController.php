@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDF;
 
 class NyomtatvanyController extends Controller
 {
@@ -57,11 +58,17 @@ class NyomtatvanyController extends Controller
 
         $datum = array("datum" => $datum, "het" => $parsedDatum->weekOfYear, "nap" => $parsedDatum->dayOfWeek);
 
-        return view("nyomtatvanyok.szakacs", [
+        //PDF::setOptions(['debugCss' => true]);
+        $pdf =  PDF::loadView("nyomtatvanyok.szakacs", [
             "tetelek" => $tetelNevekFiltered,
             "datum" => $datum
-        ]);
+        ])->setPaper('a4');
 
+        return $pdf->stream('szakacs-osszesito-'.$parsedDatum.'.pdf');
+      //  return view("nyomtatvanyok.szakacs", [
+          //  "tetelek" => $tetelNevekFiltered,
+          //  "datum" => $datum
+        //]);
     }
 
     public function showFutarHeti()
