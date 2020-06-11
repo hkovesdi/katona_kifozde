@@ -1,15 +1,15 @@
 @extends('app') 
 @section('content')
 
-    <h2 class="datum flex-center">
+    <div class="flex-center mt-4" style="flex-direction: column">
         
-        {{$datum['datum']}}
-        {{$datum['het']}}. hét
-        {{$datum['nap']}}
+        <div class="datum mt-2"><h2>{{$datum['datum']}}</h2></div>
+        <div class=" datum"><h2>{{$datum['het']}}. hét</h2></div>
+        <div class="mt-4 datum"><h2>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h2></div>
 
-    </h2>
+    </div>
 
-<table class="szakacs-table table table-bordered">
+<table class="szakacs-table table table-bordered mt-1">
 
     <thead class="szakacs-thead">
         <tr>
