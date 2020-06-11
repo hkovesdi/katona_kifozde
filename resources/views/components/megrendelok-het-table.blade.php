@@ -63,7 +63,7 @@
                         </select>
                     </td>
                     <td role="cell" class="centercell">
-                        <a tabindex="0" style="cursor: pointer" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
+                        <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
                     </td>
                     <td role="cell" class="centercell">
                             <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">

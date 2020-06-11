@@ -138,7 +138,7 @@
                 @if(Auth::user()->munkakor != 'Kiszállító')
                     <li class="nav-item dropdown {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Megrendelések
+                            Futárok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             @foreach(\App\User::where('munkakor', 'Kiszállító')->get() as $kiszallito)
@@ -147,7 +147,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Tételek</a>
+                    <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Ártábla</a>
                     </li>
                     <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
                         <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
@@ -166,7 +166,7 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}" href="{{route('megrendelesek', ['user' => Auth::user()])}}">Megrendelések</a>
+                        <a class="nav-link {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}" href="{{route('megrendelesek', ['user' => Auth::user()])}}">Futárok</a>
                     </li>
                 @endif
               </ul>

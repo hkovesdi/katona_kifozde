@@ -154,15 +154,6 @@ body {
 	text-align: center;
 	vertical-align: middle;
 }
-.fizetve-button-kifizetve {
-	background: green !important;
-}
-/*
-.fizetve-button:hover,
-.fizetve-button:active,
-.fizetve-button:focus {
-    background: #155115;
-} */
 
 .fizetve-button {
 	padding: 5px;
@@ -179,6 +170,15 @@ body {
 .fizetve-button:hover,
 .fizetve-button:active {
 	background: #300c0c !important;
+}
+
+.fizetve-button-kifizetve {
+	background: green !important;
+}
+
+.fizetve-button-kifizetve:hover,
+.fizetve-button-kifizetve:active {
+	background: #155115 !important;
 }
 
 .check {
@@ -250,7 +250,6 @@ body {
 	.main-thead td,
 	.main-tbody td {
 		border: 1px solid #ccc;
-		border-bottom: 0;
 		position: relative;
 		padding-left: 50%;
 		text-align: center;
@@ -265,30 +264,34 @@ body {
 	}
 
 	.main-tbody td:nth-of-type(1):before {
-		content: "Rendelések";
+		content: "Törlés";
 	}
 
 	.main-tbody td:nth-of-type(2):before {
-		content: "Név";
+		content: "Rendelések";
 	}
 
 	.main-tbody td:nth-of-type(3):before {
-		content: "Cim";
+		content: "Név";
 	}
 
 	.main-tbody td:nth-of-type(4):before {
-		content: "Tel";
+		content: "Cim";
 	}
 
 	.main-tbody td:nth-of-type(5):before {
-		content: "Fizetési mód";
+		content: "Tel";
 	}
 
 	.main-tbody td:nth-of-type(6):before {
-		content: "Összeg";
+		content: "Fizetési mód";
 	}
 
 	.main-tbody td:nth-of-type(7):before {
+		content: "Összeg";
+	}
+
+	.main-tbody td:nth-of-type(8):before {
 		content: "Fizetett";
 	}
 }
@@ -711,7 +714,6 @@ table tr .page-break {
 	.main-thead-megrendelo td,
 	.main-tbody-megrendelo td {
 		border: 1px solid #ccc;
-		border-bottom: 0;
 		position: relative;
 		padding-left: 50%;
 		text-align: center;
@@ -725,29 +727,42 @@ table tr .page-break {
 		white-space: nowrap;
 	}
 
-	.main-tbody-megrendelo td:nth-of-type(1):before {
+	#search-table .main-tbody td:nth-of-type(1):before {
 		content: "Név";
 	}
 
-	.main-tbody-megrendelo td:nth-of-type(2):before {
+	#search-table .main-tbody td:nth-of-type(2):before {
 		content: "Cím";
 	}
 
-	.main-tbody-megrendelo td:nth-of-type(3):before {
+	#search-table .main-tbody td:nth-of-type(3):before {
 		content: "Tel";
 	}
 
-	.main-tbody-megrendelo td:nth-of-type(4):before {
+	#search-table .main-tbody td:nth-of-type(4):before {
 		content: "Kiszállító";
 	}
 
-	.main-tbody-megrendelo td:nth-of-type(5):before {
+	#search-table .main-tbody td:nth-of-type(5):before {
 		content: "Szerkesztés";
 	}
 
 	.megrendelo-table-holder {
 		margin-left: 0px;
 		margin-right: 0px;
+	}
+
+	.search-thead {
+		display: none;
+	}
+
+	.mobil-btn {
+		font-size: 10px !important;
+		text-align: center !important;
+	}
+
+	#search-table {
+		width: 98%;
 	}
 }
 
@@ -760,4 +775,19 @@ table tr .page-break {
 	font-size: 18px;
 	font-weight: bold;
 	display: inline-block;
+}
+
+.arrows:hover,
+.arrows:active {
+	background-color: #111;
+}
+
+.osszeg-osszesito {
+	cursor: pointer;
+	color: #4d88ff;
+}
+
+.osszeg-osszesito:hover,
+.osszeg-osszesito:active {
+	color: #4d88ff;
 }

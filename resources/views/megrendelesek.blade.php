@@ -4,20 +4,19 @@
 <div id="week-counter">
     @if((Auth::user()->munkakor != 'Kiszállító') || (Auth::user()->munkakor == 'Kiszállító' && $het > $currentHet))
         <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
-            <button type="button" class="baljobbgomb"><i class="fas fa-arrow-left"></i></button>
+            <button type="button" class="baljobbgomb arrows"><i class="fas fa-arrow-left"></i></button>
         </a>
     @endif
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
     @if($het <= $currentHet)
         <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
-            <button type="button" class="baljobbgomb baljobbgombR"><i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="baljobbgomb baljobbgombR arrows"><i class="fas fa-arrow-right"></i></button>
         </a>
     @endif
 </div>
 
 <div id="buttons">
     <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
-    <button class="btn-basic">Törlés</button>
     @if (Request::get('name'))
     <div id="hozzaadas-btn">
     @else
@@ -76,19 +75,19 @@
                         </div>
                     </div>
                     <div class="card-title">
-                        {{ Request::get('name') }}
+                        "{{ Request::get('name') }}"
                     </div>
                     @if ($searchedMegrendelok && count($searchedMegrendelok) === 0)
                         <p>Ez a személy még nincs az adatbázisunkban </p>
                     @else
                         <table id="search-table">
-                            <thead>
+                            <thead class="search-thead">
                                 <tr>
                                     <th>Név</th>
                                     <th>Cim</th>
                                     <th>Tel</th>
                                     <th>Kiszállító</th>
-                                    <th></th>
+                                    <th>Szerkesztés</th>
                                 </tr>
                             </thead>
                             <tbody role="rowgroup" class="main-tbody">
@@ -105,16 +104,16 @@
                                                     <input type="hidden" name="ev" value="{{ $ev }}">
                                                     <input type="hidden" name="het" value="{{ $het }}">
                                                     <input type="hidden" name="megrendelo-id" value="{{$searchedMegrendelo->id}}">
-                                                    <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important;">Hozzáadás</button>
+                                                    <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important; width: 212px !important;">Hozzáadás</button>
                                                 </form>
                                             </td>
                                         @elseif($searchedMegrendelo->kiszallito_id != $user->id)
                                             <td>
-                                                <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Másik futárhoz tartozik</button>
+                                                <button type="submit" class="btn btn-sm btn-success mobil-btn" disabled style="box-shadow: none !important; width: 212px !important;">Másik futárhoz tartozik</button>
                                             </td>
                                         @else
                                             <td>
-                                                <button type="submit" class="btn btn-sm btn-success" disabled style="box-shadow: none !important;">Hozzáadva</button>
+                                                <button type="submit" class="btn btn-sm btn-success mobil-btn" disabled style="box-shadow: none !important; width: 212px !important; ">Hozzáadva</button>
                                             </td>
                                         @endif
                                     </tr>
@@ -128,7 +127,7 @@
                 <div class="card-text">
                     <form class="form-inline">
                         <div class="form-group">
-                            <input type="text" for="name" name="name" class="form-control" placeholder="Adja meg a kívánt nevet">
+                            <input type="text" for="name" name="name" class="form-control" placeholder="Adja meg a kívánt nevet" style="width: 180px !important; ">
                         </div>
                         <button type="submit" id="search-btn" class="btn btn-sm">Keresés</button>
                     </form>
