@@ -143,6 +143,9 @@
                     <li class="nav-item {{Route::current()->getName()  == 'nyomtatvanyok' ? "active" : ""}}">
                     <a class="nav-link" href="{{route('nyomtatvanyok')}}">Nyomtatás</a>
                     </li>
+                    <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
+                        <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Nyomtatványok
