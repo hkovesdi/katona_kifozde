@@ -15,4 +15,8 @@ class MegrendeloController extends Controller
 
         return view('megrendelok', $data);
     }
+
+    public function modositas(Request $request, \App\Megrendelo $megrendelo) {
+
+    }
 }

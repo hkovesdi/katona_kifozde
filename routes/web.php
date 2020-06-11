@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/nyomtatvanyok/futar-heti', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
         Route::get('/tetelek', 'TetelController@show')->name('tetelek');
         Route::get('/megrendelok', 'MegrendeloController@show')->name('megrendelok');
+        Route::post('/megrendelok/{megrendelo}', 'MegrendeloController@modositas')->name('megrendeloModositas');
         Route::post('tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
     });
     Route::get('/megrendelesek/{evHet?}', 'MegrendelesController@show')->name('home');
