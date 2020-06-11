@@ -174,6 +174,11 @@
                     <a class="nav-link dropdown-toggle" id="logout-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:white" href="#"><i class="fas fa-user" style="margin-right: 8px"></i>{{Auth::user()->nev.' ('.Auth::user()->username.'), '.Auth::user()->munkakor}}</a>
                     <div class="dropdown-menu" aria-labelledby="logout-dropdown">
                         <a class="dropdown-item" style="padding: 0px">
+                            <button class="text-button" type="button" data-toggle="modal" data-target="#pwChangeModal">
+                                Jelszó változtatás
+                            </button>
+                        </a>
+                        <a class="dropdown-item" style="padding: 0px">
                             <form action="{{route('logout')}}" id="logout-form" method="post">
                                 @csrf
                                 <button class="text-button" type="submit">
@@ -186,7 +191,40 @@
               </ul>
           </nav>
 
-          @endauth
+        <div class="modal fade" id="pwChangeModal" tabindex="-1" role="dialog" aria-labelledby="pwChangeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pwChangeModalLabel">Jelszó változtatás</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="currentPassword">Jelenlegi jelszó</label>
+                                <input name="current" type="password" class="form-control" id="currentPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Új jelszó</label>
+                                <input name="new" type="password" class="form-control" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Új jelszó ismétlés</label>
+                                <input name="confirm" type="password" class="form-control" id="confirmPassword">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                            <button type="submit" class="btn btn-primary">Mentés</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @endauth
 
         @if (\Session::has('success'))
         <script type="text/javascript">
