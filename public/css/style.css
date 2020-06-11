@@ -450,7 +450,7 @@ input[type=number] {
 	color: white !important;
 	font-weight: bold;
 	text-align: center;
-	border: 1px solid #424242;
+	border: 1px solid #ccc !important;
 }
 
 .szakacs-thead > tr > th {
@@ -459,10 +459,11 @@ input[type=number] {
 
 .szakacs-table > tbody > tr > td {
 	font-size: 20px !important;
+	border-right: 1px solid #ccc;
 }
 
 .szakacs-table > tbody > tr {
-	border: 1px solid #424242 !important;
+	border: 1px solid #ccc !important;
 }
 
 .datum {
