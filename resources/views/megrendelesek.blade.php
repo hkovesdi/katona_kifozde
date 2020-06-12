@@ -151,9 +151,10 @@
 
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
-        $(event.currentTarget[5]).toggleClass('fizetve-button-kifizetve');
-        $(event.currentTarget[2]).prop('disabled', !$(event.currentTarget[2]).is(":disabled"));
-        $(event.currentTarget[3]).val( $(event.currentTarget[3]).val() == 0 ? 1 : 0);
+        console.log(event);
+        $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
+        $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
+        $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
     });
 
     function selectValidInputs(inp, ref) {
