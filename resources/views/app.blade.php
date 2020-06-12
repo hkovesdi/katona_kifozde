@@ -6,6 +6,7 @@
             content="initial-scale=1, shrink-to-fit=no, width=device-width"
             name="viewport"
         />
+        <meta name="_token" content="{{ csrf_token() }}">
 
         <link href="{{asset('css/style.css')}}" rel="stylesheet" />
         <title>Laravel</title>
@@ -43,6 +44,14 @@
         <script src="{{asset('js/material.min.js')}}"></script>
 
         <script type="text/javascript">
+            $(function() {
+                $.ajaxSetup({
+                    headers: {
+                    'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                    }
+                });
+            });
+            
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",

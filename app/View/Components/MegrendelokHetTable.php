@@ -15,18 +15,21 @@ class MegrendelokHetTable extends Component
     public $het;
 
     public $tartozas;
+
+    public $user;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($megrendeloHetek, $het, $tartozas)
+    public function __construct($megrendeloHetek, $het, $tartozas, $user)
     {
         $this->megrendeloHetek = $megrendeloHetek;
         $this->fizetesiModok = \App\FizetesiMod::where('nev', '!=', 'Tartozás')->get();
         $this->tetelek = \App\TetelNev::all();
         $this->het = $het;
         $this->tartozas = $tartozas;
+        $this->user = $user;
     }
 
     /**

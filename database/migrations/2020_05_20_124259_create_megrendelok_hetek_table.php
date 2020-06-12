@@ -21,6 +21,7 @@ class CreateMegrendelokHetekTable extends Migration
             $table->string('fizetesi_mod');
             $table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok')->onDelete("cascade");
             $table->dateTime('fizetve_at')->nullable();
+            $table->integer('sorrend');
             $table->string('megjegyzes')->nullable();
             $table->timestamps();
         });

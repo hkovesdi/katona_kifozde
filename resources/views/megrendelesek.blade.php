@@ -95,7 +95,7 @@
     <h5 class="heti-ertesito"><i class="fas fa-times" style="color: red"></i> A héten még nincsenek megrendelések!</h5>
 @else
     <div class="flex-center">
-        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het"/>
+        <x-megrendelok-het-table tartozas="0" :megrendeloHetek="$megrendeloHetek" :het="$het" :user="$user"/>
     </div>
 @endif
 
@@ -107,7 +107,7 @@
     <h5 class="heti-ertesito"><i class="fas fa-check" style="color: green"></i> Nincsenek tartozások!</h5>
 @else
     <div class="flex-center">
-        <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het"/>
+        <x-megrendelok-het-table tartozas="1" :megrendeloHetek="$tartozasok" :het="$het" :user="$user"/>
     </div>
 @endif
 
@@ -143,7 +143,41 @@
             })
 
             let tableRowIds = tableRows.map(x => x.id.split('-')[1])
-            console.log(tableRowIds)
+            let data = {
+                ids: tableRowIds, 
+                ev: <?php echo $ev ?>, 
+                het: <?php echo $het ?>
+            };
+            
+            $.ajax({
+                    type: "POST",
+                    url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,
+                    data: data,
+                    statusCode: {
+                        500: function() {
+                                Toast.fire({
+                                icon: 'error',
+                                title: 'Váratlan hiba történt'
+                            });
+                        }
+                    },
+                    success: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.message
+                        });
+
+                        $( form ).trigger("ajaxSuccess", data);
+                    },
+                    error: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.responseJSON.message
+                        });
+                    },
+                });
         }
     });
 
