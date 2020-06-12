@@ -14,7 +14,7 @@
     <tbody role="rowgroup" class="main-tbody sortable-table">
 
         @foreach($megrendeloHetek as $megrendeloHet)
-            <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['megrendeloHet' => $megrendeloHet])}}">
+            <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
                 @csrf
             </form>
             <form class="ajax fizetesi-status-modosito-form" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">

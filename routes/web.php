@@ -27,7 +27,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
     });
     Route::get('/megrendelesek/{user}/{evHet?}', 'MegrendelesController@show')->name('megrendelesek');
-    Route::post('megrendelo-het-torles/{megrendeloHet}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
+    Route::post('megrendelo-het-sorrend-modositas/{user}', 'MegrendelesController@sorrendModositas')->name('sorrendModositas');
+    Route::post('megrendelo-het-torles/{user}/{megrendeloHet}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
     Route::post('/jelszo-valtoztatas', 'UserController@jelszoValtoztatas')->name('jelszoValtoztatas');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendeloController@letrehozas')->name('megrendeloLetrehozas');

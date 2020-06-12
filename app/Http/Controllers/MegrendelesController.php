@@ -40,6 +40,7 @@ class MegrendelesController extends Controller
                     $query->whereYear('datum', $ev)->where('het', $het);
                 })->orWhere('fizetve_at', NULL);
             })
+            ->orderBy('sorrend', 'asc')
             ->get()
             ->each(function($megrendeloHet) use($emptyMegrendelesTablazat, $ev, $het, $tartozasok, $megrendeloHetek){
                 $megrendelesTablazat = $emptyMegrendelesTablazat;
@@ -102,9 +103,9 @@ class MegrendelesController extends Controller
     }
 
 
-    public function megrendeloHetTorles(Request $request, \App\MegrendeloHet $megrendeloHet) 
+    public function megrendeloHetTorles(Request $request, \App\User $user, \App\MegrendeloHet $megrendeloHet) 
     {   
-        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+        if(Auth::user()->munkakor == 'Kiszállító' && $user->id != Auth::user()->id){
             return redirect()->back()->with('failure', ['Más kiszállító alá tartozó megrendelők hetének törlése nem lehetséges!']);
         }
         
@@ -112,9 +113,41 @@ class MegrendelesController extends Controller
             return redirect()->back()->with('failure', ['A megrendelőt csak akkor lehet törölni a hétről, ha nincsen hozzá tartozó rendelés.']);
         }
 
+        \App\MegrendeloHet::where('het_start_datum_id', $megrendeloHet->het_start_datum_id)
+            ->where('sorrend', '>', $megrendeloHet->sorrend)
+            ->update(['sorrend' => DB::raw('sorrend - 1')]);
+
         $megrendeloHet->delete();
 
         return redirect()->back()->with('success', ['Megrendelő sikeresen törölve a hétről!']);
+    }
+
+    public function sorrendModositas(Request $request, \App\User $user)
+    {
+        if(!$user->is(Auth::user()) && Auth::user()->munkakor == 'Kiszállító')
+        {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Más kiszállító megrendelései sorrendjének megváltoztatása nem lehetséges'
+            ], 403);
+        }
+
+        $data = $request->only('ids', 'ev', 'het');
+
+        foreach($data['ids'] as $idx => $id) 
+        {
+            \App\MegrendeloHet::where('kiszallito_id', $user->id)
+            ->whereHas('datum', function($query) use($data){
+                $query->whereYear('datum', $data['ev'])->where('het', $data['het']);
+            })->where('megrendelo_id', intval($id))->first()->update([
+                'sorrend' => $idx+1
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Sorrend sikeresen módosítva'
+        ]);
     }
 
     /**
@@ -213,16 +246,22 @@ class MegrendelesController extends Controller
         if($megrendeloHet !== null && Auth::user()->munkakor == 'Kiszállító'){
             return redirect()->back()->with('failure', ['A megrendelőt nem lehet hozzáadni a héthez mert másik futárhoz tartozik']);
         }
-        else if(Auth::user()->munkakor != 'Kiszállító') {
+        else if(Auth::user()->munkakor != 'Kiszállító' && $megrendeloHet !== null) {
             $megrendeloHet->update([
                 'kiszallito_id' => $user->id
             ]);
         }
         else {
+            $prevMegrendeloHet = \App\MegrendeloHet::where('het_start_datum_id', $hetStartDatum->id)
+                ->where('kiszallito_id', $user->id)
+                ->orderBy('sorrend', 'desc')
+                ->first();
+
             \App\MegrendeloHet::create([
                 'kiszallito_id' => $user->id,
                 'megrendelo_id' => $megrendelo->id,
                 'het_start_datum_id' => $hetStartDatum->id,
+                'sorrend' => $prevMegrendeloHet === null ? 1 : $prevMegrendeloHet->sorrend+1,
                 'fizetesi_mod' => 'Tartozás',
                 'fizetve_at' => NULL
             ]);
