@@ -51,7 +51,7 @@
                     }
                 });
             });
-            
+
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -235,10 +235,10 @@
                             <input name="password-confirm" type="password" class="form-control" id="password-confirm">
                         </div>
                         <div class="form-group">
-                            <label for="munkakor">Example select</label>
+                            <label for="munkakor">Munkakör</label>
                             <select name="munkakor" class="form-control" id="munkakor">
-                                @foreach ($munkakorok as $munkakor)
-                                    <option>{{$munkakor}}</option>
+                                @foreach (\App\Munkakor::all() as $munkakor)
+                                    <option>{{$munkakor->nev}}</option>
                                 @endforeach
                             </select>
                         </div>
