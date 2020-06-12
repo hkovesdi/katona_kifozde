@@ -25,41 +25,6 @@
         <div class="card">
             <div class="card-body">
                 @if (Request::get('name'))
-                    <div class="modal fade" id="hozzaadasModal" tabindex="-1" role="dialog" aria-labelledby="hozzaadasModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="hozzaadasModalLabel">Új személy létrehozása</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="hozzaadas-form" action="{{route('megrendeloLetrehozas')}}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="nev-hozzaadas" class="col-form-label">Név</label>
-                                            <input name="nev" type="text" class="form-control" id="nev-hozzaadas" value="{{ Request::get('name') }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="cim-hozzaadas" class="col-form-label">Cím</label>
-                                            <input name="cim" type="text" class="form-control" id="cim-hozzaadas">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="tel-hozzaadas" class="col-form-label">Telefonszám</label>
-                                            <input name="tel" type="text" class="form-control" id="tel-hozzaadas">
-                                        </div>
-                                        <input type="hidden" name="ev" value="{{$ev}}">
-                                        <input type="hidden" name="het" value="{{$het}}">
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                                    <button type="submit" class="btn btn-primary" form="hozzaadas-form">Létrehozás</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-title">
                         "{{ Request::get('name') }}"
                     </div>
@@ -107,7 +72,6 @@
                             </tbody>
                         </table>
                     @endif
-                    <button type="button" class="btn btn-sm inner-hozzaadas-btn" data-toggle="modal" data-target="#hozzaadasModal">Új személy létrehozása</button>
                     <div id="new-search">Újabb keresés indítása:</div>
                 @endif
                 <div class="card-text">

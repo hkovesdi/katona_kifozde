@@ -714,6 +714,7 @@ table tr .page-break {
 	.main-thead-megrendelo td,
 	.main-tbody-megrendelo td {
 		border: 1px solid #ccc;
+		border-bottom: 0;
 		position: relative;
 		padding-left: 50%;
 		text-align: center;
@@ -727,23 +728,23 @@ table tr .page-break {
 		white-space: nowrap;
 	}
 
-	#search-table .main-tbody td:nth-of-type(1):before {
+	.main-tbody-megrendelo td:nth-of-type(1):before {
 		content: "Név";
 	}
 
-	#search-table .main-tbody td:nth-of-type(2):before {
+	.main-tbody-megrendelo td:nth-of-type(2):before {
 		content: "Cím";
 	}
 
-	#search-table .main-tbody td:nth-of-type(3):before {
+	.main-tbody-megrendelo td:nth-of-type(3):before {
 		content: "Tel";
 	}
 
-	#search-table .main-tbody td:nth-of-type(4):before {
+	.main-tbody-megrendelo td:nth-of-type(4):before {
 		content: "Kiszállító";
 	}
 
-	#search-table .main-tbody td:nth-of-type(5):before {
+	.main-tbody-megrendelo td:nth-of-type(5):before {
 		content: "Szerkesztés";
 	}
 
@@ -763,6 +764,26 @@ table tr .page-break {
 
 	#search-table {
 		width: 98%;
+	}
+
+	#search-table .main-tbody td:nth-of-type(1):before {
+		content: "Név";
+	}
+	#search-table .main-tbody td:nth-of-type(2):before {
+		content: "Cím";
+	}
+	#search-table .main-tbody td:nth-of-type(3):before {
+		content: "Tel";
+	}
+	#search-table .main-tbody td:nth-of-type(4):before {
+		content: "Kiszállító";
+	}
+	#search-table .main-tbody td:nth-of-type(5):before {
+		content: "Szerkesztés";
+	}
+
+	.button-helper {
+		margin-left: 20px;
 	}
 }
 
@@ -791,3 +812,4 @@ table tr .page-break {
 .osszeg-osszesito:active {
 	color: #4d88ff;
 }
+
