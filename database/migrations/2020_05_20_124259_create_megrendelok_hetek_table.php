@@ -17,6 +17,7 @@ class CreateMegrendelokHetekTable extends Migration
             $table->id();
             $table->foreignId('megrendelo_id')->constrained('megrendelok')->onDelete("cascade");
             $table->foreignId('het_start_datum_id')->constrained('datumok')->onDelete("cascade");
+            $table->foreignId('kiszallito_id')->constrained('users')->onDelete("cascade");
             $table->string('fizetesi_mod');
             $table->foreign('fizetesi_mod')->references('nev')->on('fizetesi_modok')->onDelete("cascade");
             $table->dateTime('fizetve_at')->nullable();
@@ -33,7 +34,7 @@ class CreateMegrendelokHetekTable extends Migration
     public function down()
     {
         Schema::table('megrendelok_hetek', function (Blueprint $table) {
-            $table->dropForeign(['megrendelo_id', 'het_start_datum_id', 'fizetesi_mod']);
+            $table->dropForeign(['megrendelo_id', 'het_start_datum_id', 'fizetesi_mod', 'kiszallito_id']);
         });
     }
 }

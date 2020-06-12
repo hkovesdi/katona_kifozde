@@ -46,10 +46,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Visszaadja a userhez tartozó megrendelőket
+     * Visszaadja a userhez tartozó megrendelőheteket
      */
-    public function megrendelok()
+    public function megrendeloHetek()
     {
-        return $this->hasMany('App\Megrendelo', 'kiszallito_id', 'id');
+        return $this->hasMany('App\MegrendeloHet', 'kiszallito_id', 'id');
     }
 }

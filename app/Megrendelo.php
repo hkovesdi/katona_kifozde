@@ -35,15 +35,7 @@ class Megrendelo extends Model
     /**
      * @var array
      */
-    protected $fillable = ['kiszallito_id', 'nev', 'telefonszam', 'szallitasi_cim', 'szepkartya', 'created_at', 'updated_at'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function kiszallito()
-    {
-        return $this->belongsTo('App\User', 'kiszallito_id', 'id');
-    }
+    protected $fillable = ['nev', 'telefonszam', 'szallitasi_cim', 'szepkartya', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

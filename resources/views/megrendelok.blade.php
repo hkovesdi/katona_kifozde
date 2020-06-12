@@ -1,6 +1,8 @@
 @extends('app')
 
 @section('content')
+
+@if($megrendelok->count() > 0)
 <div class="megrendelo-table-holder">
     <table class="main-table-megrendelo">
         <thead class="main-thead-megrendelo">
@@ -8,7 +10,6 @@
                 <th class="fejlec-center row-nev">Név</th>
                 <th class="fejlec-center row-cim">Cím</th>
                 <th class="fejlec-center row-tel">Tel</th>
-                <th class="fejlec-center">Kiszállító</th>
                 <th class="fejlec-center">Szerkesztés</th>
             </tr>
         </thead>
@@ -18,7 +19,6 @@
                     <td>{{$megrendelo->nev}}</td>
                     <td>{{$megrendelo->szallitasi_cim}}</td>
                     <td>{{$megrendelo->telefonszam}}</td>
-                    <td>{{$megrendelo->kiszallito->nev}}</td>
                     <td valign="top" class="centercell">
                         <button type="button" style="box-shadow: none" class="btn-basic" data-toggle="modal" data-target="#szerkesztModal{{$megrendelo->id}}">
                             Szerkesztés
@@ -62,4 +62,8 @@
         </tbody>
     </table>
 </div>
+@else
+    <h1 class="heti-ertesito mt-3">Nincsenek megrendelők az adatbázisban</h1>
+@endif
+
 @stop

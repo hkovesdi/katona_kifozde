@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
         Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
         Route::get('/nyomtatvanyok/futar-heti', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
-        Route::get('/tetelek', 'TetelController@show')->name('tetelek');
+        Route::get('/tetelek/{evHet?}', 'TetelController@show')->name('tetelek');
         Route::get('/megrendelok', 'MegrendeloController@show')->name('megrendelok');
         Route::post('/megrendelok/{megrendelo}', 'MegrendeloController@modositas')->name('megrendeloModositas');
         Route::post('/tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
@@ -30,8 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('megrendelo-het-torles/{megrendeloHet}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
     Route::post('/jelszo-valtoztatas', 'UserController@jelszoValtoztatas')->name('jelszoValtoztatas');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
-    Route::post('/megrendelo-letrehozas', 'MegrendelesController@megrendeloLetrehozas')->name('megrendeloLetrehozas');
-    Route::post('/megrendelo-het-letrehozas', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');
+    Route::post('/megrendelo-letrehozas', 'MegrendeloController@letrehozas')->name('megrendeloLetrehozas');
+    Route::post('/megrendelo-het-letrehozas/{user}/{megrendelo}', 'MegrendelesController@megrendeloHetLetrehozas')->name('megrendeloHetLetrehozas');
     Route::post('/logout', 'LoginController@logout')->name('logout');
     Route::post('/fizetesi-statusz-modositas/{megrendeloHet}', 'MegrendelesController@changeFizetesiStatusz')->name('fizetesiStatuszModositas');
 });

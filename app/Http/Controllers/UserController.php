@@ -27,5 +27,10 @@ class UserController extends Controller
         Auth::logout();
 
         return redirect('login')->with('success', ['Sikeres jelszó változtatás, kérem jelentkezzen be újra!']);
-    }   
+    }
+    
+    public function create(Request $request)
+    {
+
+    }
 }

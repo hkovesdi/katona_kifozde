@@ -10,7 +10,7 @@ class MegrendeloController extends Controller
     {
 
         $data = [
-            'megrendelok' => \App\Megrendelo::with('kiszallito')->orderBy('nev', 'asc')->get(),
+            'megrendelok' => \App\Megrendelo::orderBy('nev', 'asc')->get(),
             'kiszallitok' => \App\User::where('munkakor', 'Kiszállító')->get()
         ];
 
@@ -39,15 +39,27 @@ class MegrendeloController extends Controller
     }
 
     public function modositas(Request $request, \App\Megrendelo $megrendelo) {
-        $data = $request->only('nev','cim','tel','kiszallito-id');
+        $data = $request->only('nev','cim','tel');
 
         $megrendelo->update([
             'nev' => $data['nev'],
             'szallitasi_cim' => $data['cim'],
             'telefonszam' => $data['tel'],
-            'kiszallito_id' => $data['kiszallito-id']
         ]);
 
         return redirect()->back()->with('success', ['Megrendelő változtatása sikeres']);
+    }
+
+    public function letrehozas(Request $request)
+    {
+        $data = $request->only('nev', 'cim', 'tel');
+
+        $megrendelo = \App\Megrendelo::create([
+            'nev' => $data['nev'],
+            'szallitasi_cim' => $data['cim'],
+            'telefonszam' => $data['tel']
+        ]);
+
+        return redirect()->back()->with('success', ['Új megrendelő sikeresen létrehozva']);
     }
 }
