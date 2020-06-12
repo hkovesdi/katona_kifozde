@@ -148,7 +148,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Ártábla</a>
+                        <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Ártábla</a>
                     </li>
                     <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
                         <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
@@ -164,6 +164,9 @@
                         <a class="dropdown-item" href="#">Havi statisztika</a>
                         <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
                         </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#newUserModal" class="nav-link">Új felhasználó</a>
                     </li>
                 @else
                     <li class="nav-item">
@@ -193,6 +196,52 @@
                 </li>
               </ul>
           </nav>
+
+          <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newUserModalLabel">Új felhasználó létrehozása</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="change">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="realname">Teljes név</label>
+                            <input name="realname" type="text" class="form-control" id="realname">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Felhasználó név</label>
+                            <input name="username" type="text" class="form-control" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Jelszó</label>
+                            <input name="password" type="password" class="form-control" id="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="password-confirm">Jelszó ismétlés</label>
+                            <input name="password-confirm" type="password" class="form-control" id="password-confirm">
+                        </div>
+                        <div class="form-group">
+                            <label for="munkakor">Example select</label>
+                            <select name="munkakor" class="form-control" id="munkakor">
+                                @foreach ($munkakorok as $munkakor)
+                                    <option>{{$munkakor}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+                        <button type="submit" class="btn btn-primary">Létrehozás</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="pwChangeModal" tabindex="-1" role="dialog" aria-labelledby="pwChangeModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
