@@ -29,7 +29,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="hozzaadasModalLabel">Új személy hozzáadása</h5>
+                                    <h5 class="modal-title" id="hozzaadasModalLabel">Új személy létrehozása</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -49,27 +49,13 @@
                                             <label for="tel-hozzaadas" class="col-form-label">Telefonszám</label>
                                             <input name="tel" type="text" class="form-control" id="tel-hozzaadas">
                                         </div>
-                                        @if (Auth::user()->munkakor != "Kiszállító")
-                                        <div class="form-group">
-                                            <label for="kiszallito-hozzaadas">Kiszállító</label>
-                                            <select name="kiszallito-id" class="form-control" id="kiszallito-hozzaadas">
-                                                @foreach ($kiszallitok as $kiszallito)
-                                                    <option value="{{$kiszallito->id}}">{{$kiszallito->nev}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @endif
-                                        <div class="form-check">
-                                            <input name="hozzaadas" class="form-check-input" type="checkbox" id="hozzaadas-hethez-check">
-                                            <label class="form-check-label" for="hozzaadas-hethez-check">Hozzáadás a héthez</label>
-                                        </div>
                                         <input type="hidden" name="ev" value="{{$ev}}">
                                         <input type="hidden" name="het" value="{{$het}}">
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                                    <button type="submit" class="btn btn-primary" form="hozzaadas-form">Hozzáadás</button>
+                                    <button type="submit" class="btn btn-primary" form="hozzaadas-form">Létrehozás</button>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +85,7 @@
                                         <td>{{$searchedMegrendelo->kiszallito['nev']}}</td>
                                         @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && $searchedMegrendelo->kiszallito_id == $user->id)
                                             <td>
-                                                <form method="post" action="{{route('megrendeloHetLetrehozas')}}">
+                                                <form method="post" action="{{route('megrendeloHetLetrehozas', ['user' => $user,'megrendelo' => $searchedMegrendelo])}}">
                                                     @csrf
                                                     <input type="hidden" name="ev" value="{{ $ev }}">
                                                     <input type="hidden" name="het" value="{{ $het }}">
@@ -121,7 +107,7 @@
                             </tbody>
                         </table>
                     @endif
-                    <button type="button" class="btn btn-sm inner-hozzaadas-btn" data-toggle="modal" data-target="#hozzaadasModal">Új személy hozzáadása</button>
+                    <button type="button" class="btn btn-sm inner-hozzaadas-btn" data-toggle="modal" data-target="#hozzaadasModal">Új személy létrehozása</button>
                     <div id="new-search">Újabb keresés indítása:</div>
                 @endif
                 <div class="card-text">
