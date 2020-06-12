@@ -158,7 +158,6 @@
 
     $('.sortable-table').sortable({
         axis: "y",
-        revert: true,
         cancel: ".sortable-table tr span",
         helper: function(e, tr) {
             var $originals = tr.children();
