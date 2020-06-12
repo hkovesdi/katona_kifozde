@@ -11,6 +11,7 @@
         <title>Laravel</title>
         <script src="https://kit.fontawesome.com/6b162f348b.js" crossorigin="anonymous"></script>
 
+
         <!-- Fonts -->
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,600"
@@ -124,7 +125,7 @@
             });
 
         </script>
-
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
     </head>
     <body>
         @auth

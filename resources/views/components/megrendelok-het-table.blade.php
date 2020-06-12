@@ -11,7 +11,7 @@
             <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
         </tr>
     </thead>
-    <tbody role="rowgroup" class="main-tbody">
+    <tbody role="rowgroup" class="main-tbody sortable-table">
 
         @foreach($megrendeloHetek as $megrendeloHet)
             <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['megrendeloHet' => $megrendeloHet])}}">
@@ -44,28 +44,33 @@
                     <td role="cell" class="centercell">
                         <button class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" type="button">Menüsor</button>
                     </td>
-                    <td role="cell" name="nev">{{$megrendeloHet->megrendelo['nev']}}</td>
-                    <td role="cell" name="szallitasi-cim">{{$megrendeloHet->megrendelo['szallitasi_cim']}}</td>
-                    <td role="cell" name="telefonszam">{{$megrendeloHet->megrendelo['telefonszam']}}</td>
+                    <td role="cell" name="nev"><span>{{$megrendeloHet->megrendelo['nev']}}</span></td>
+                    <td role="cell" name="szallitasi-cim"><span>{{$megrendeloHet->megrendelo['szallitasi_cim']}}</span></td>
+                    <td role="cell" name="telefonszam"><span>{{$megrendeloHet->megrendelo['telefonszam']}}</span></td>
                     <td role="cell" class="centercell" name="fizetesi-mod">
-                        @if ($megrendeloHet->fizetve_at === null)
-                            <select name="fizetesi-mod">
-                        @else
-                            <select name="fizetesi-mod" disabled>
-                        @endif
-                            @foreach($fizetesiModok as $fizetesiMod)
-                                @if ($megrendeloHet->fizetesi_mod == 'Tartozás')
-                                    <option {{$fizetesiMod->nev == 'Készpénz' ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
-                                @else
-                                    <option {{$fizetesiMod->nev == $megrendeloHet->fizetesi_mod ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <span>
+                            @if ($megrendeloHet->fizetve_at === null)
+                                <select name="fizetesi-mod">
+                            @else
+                                <select name="fizetesi-mod" disabled>
+                            @endif
+                                @foreach($fizetesiModok as $fizetesiMod)
+                                    @if ($megrendeloHet->fizetesi_mod == 'Tartozás')
+                                        <option {{$fizetesiMod->nev == 'Készpénz' ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
+                                    @else
+                                        <option {{$fizetesiMod->nev == $megrendeloHet->fizetesi_mod ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </span>
                     </td>
                     <td role="cell" class="centercell">
-                        <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
+                        <span>
+                            <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
+                        </span>
                     </td>
                     <td role="cell" class="centercell">
+                        <span>
                             <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
                             <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
                             @if ($megrendeloHet['fizetve_at'] !== null)
@@ -73,6 +78,7 @@
                             @else
                                 <button type="submit" class="fizetve-button">Fizetve</button>
                             @endif
+                        </span>
                     </td>
                 </tr>
             </form>

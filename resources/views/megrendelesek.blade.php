@@ -151,10 +151,29 @@
 
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
-        console.log(event);
         $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
         $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
+    });
+
+    $('.sortable-table').sortable({
+        axis: "y",
+        revert: true,
+        cancel: ".sortable-table tr span",
+        helper: function(e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function(index)
+            {
+            // Set helper cell sizes to match the original sizes
+            $(this).width($originals.eq(index).outerWidth());
+            });
+            return $helper;
+        },
+        stop: function( e, { item } ) {
+            console.log(item[0].id.split('-')[1]); // id
+            //TODO: backend?
+        }
     });
 
     function selectValidInputs(inp, ref) {
