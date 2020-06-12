@@ -1,6 +1,7 @@
 <?php // Code within app\Helpers\Helper.php
 
 namespace App\Helpers;
+use Illuminate\Support\Carbon;
 
 class Helper
 {   
@@ -70,6 +71,20 @@ class Helper
         }
         
         return $hetkoznapok;
+    }
+
+    public static function parseEvHet($evHet) 
+    {   
+        $parsedEvHet = array();
+        if($evHet === null) {
+            $parsedEvHet[0] = Carbon::now()->year;
+            $parsedEvHet[1] = Carbon::now()->weekOfYear;
+        }
+        else {
+            $parsedEvHet = explode("-", $evHet);
+        }
+
+        return $parsedEvHet;
     }
 
 

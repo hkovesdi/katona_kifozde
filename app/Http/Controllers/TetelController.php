@@ -9,12 +9,16 @@ use Helper;
 
 class TetelController extends Controller
 {
-    public function show() 
-    {
+    public function show(String $evHet = null)
+    {   
+        $parsedEvHet = Helper::parseEvHet($evHet);
+        $ev = intval($parsedEvHet[0]);
+        $het = intval($parsedEvHet[1]);
+
         $emptyTetelTablazat = Helper::constructEmptyTetelTablazat();
         
-        \App\Tetel::whereHas('datum', function($query){
-            $query->whereBetween('datum', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        $tetelek = \App\Tetel::whereHas('datum', function($query) use($ev,$het){
+            $query->whereYear('datum', $ev)->where('het', $het);
         })
         ->get()
         ->each(function($tetel) use (&$emptyTetelTablazat){
@@ -25,6 +29,9 @@ class TetelController extends Controller
         $data = [
             'tetelTablazat' => $emptyTetelTablazat,
             'tetelNevek' => \App\TetelNev::all()->pluck('nev'),
+            'ev' => $ev,
+            'het' => $het,
+            'letezik' => $tetelek->count() > 0,
         ];
 
         return view('tetelek', $data);
@@ -34,14 +41,18 @@ class TetelController extends Controller
     {
         $data = $request->all();
 
+        if($data['ev'] < Carbon::now()->year || $data['het'] < Carbon::now()->weekOfYear) {
+            return redirect()->back()->with('failure', ['Tétel(ek) árának módosítása visszamenőleg nem lehetséges']);
+        }
+
+        if($data['ev'] )
         foreach($data['tetelek'] as $napIdx => $tetelek){
             foreach($tetelek as $tetelNev => $tetel) {
-                $tetelFromDB = \App\Tetel::with('datum')->find($tetel['id']); //maybe check the date in case of ID tampering?
-
-                if(boolval($request->input('jovohettol'))) {
-                    $datum = \App\Datum::where('datum', \Carbon\Carbon::parse($tetel->datum->datum)->addDays(7))->first();
-                    $tetelFromDB = \App\Tetel::where('tetel_nev', $tetel->nev)->where('datum_id', $datum->id)->first();
-                }
+                $tetelFromDB = \App\Tetel::with('datum')
+                ->whereHas('datum', function($query) use($data){
+                    $query->whereYear('datum', $data['ev'])->where('het', $data['het']);
+                })
+                ->find($tetel['id']); //maybe check the date in case of ID tampering?
 
                 $tetelFromDB->update([
                     'ar' => intval($tetel['ar'])

@@ -37,7 +37,7 @@ class MegrendeloHet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'megjegyzes', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'kiszallito_id', 'megjegyzes', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
 
 
     /**
@@ -70,6 +70,11 @@ class MegrendeloHet extends Model
     public function datum()
     {
         return $this->belongsTo('App\Datum', 'het_start_datum_id');
+    }
+
+    public function kiszallito() 
+    {
+        return $this->belongsTo('\App\User', 'kiszallito_id', 'id');
     }
 
     /**

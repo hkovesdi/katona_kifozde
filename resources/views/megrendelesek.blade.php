@@ -2,13 +2,13 @@
 @section('content')
 
 <div id="week-counter">
-    @if((Auth::user()->munkakor != 'Kiszállító') || (Auth::user()->munkakor == 'Kiszállító' && $het > $currentHet))
+    @if((Auth::user()->munkakor != 'Kiszállító') || (Auth::user()->munkakor == 'Kiszállító' && ($ev > \Carbon\Carbon::now()->year || $het > \Carbon\Carbon::now()->weekOfYear)))
         <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het-1 === 0 ? $ev-1 : $ev}}-{{$het-1 === 0 ? 53 : $het-1}}">
             <button type="button" class="baljobbgomb arrows"><i class="fas fa-arrow-left"></i></button>
         </a>
     @endif
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
-    @if($het <= $currentHet)
+    @if($ev < \Carbon\Carbon::now()->year || $het <= \Carbon\Carbon::now()->weekOfYear)
         <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
             <button type="button" class="baljobbgomb baljobbgombR arrows"><i class="fas fa-arrow-right"></i></button>
         </a>
@@ -82,8 +82,8 @@
                                         <td>{{$searchedMegrendelo['nev']}}</td>
                                         <td>{{$searchedMegrendelo['szallitasi_cim']}}</td>
                                         <td>{{$searchedMegrendelo['telefonszam']}}</td>
-                                        <td>{{$searchedMegrendelo->kiszallito['nev']}}</td>
-                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && $searchedMegrendelo->kiszallito_id == $user->id)
+                                        <td>{{$searchedMegrendelo['kiszallito']['nev'] ?? '-'}}</td>
+                                        @if(!$megrendeloHetek->pluck('megrendelo_id')->contains($searchedMegrendelo->id) && ($searchedMegrendelo['kiszallito']['id'] === null || Auth::user()->munkakor != 'Kiszállító'))
                                             <td>
                                                 <form method="post" action="{{route('megrendeloHetLetrehozas', ['user' => $user,'megrendelo' => $searchedMegrendelo])}}">
                                                     @csrf
@@ -93,7 +93,7 @@
                                                     <button type="submit" class="btn btn-sm inner-hozzaadas-btn" style="box-shadow: none !important; width: 212px !important;">Hozzáadás</button>
                                                 </form>
                                             </td>
-                                        @elseif($searchedMegrendelo->kiszallito_id != $user->id)
+                                        @elseif($searchedMegrendelo['kiszallito']['id'] !== $user->id)
                                             <td>
                                                 <button type="submit" class="btn btn-sm btn-success mobil-btn" disabled style="box-shadow: none !important; width: 212px !important;">Másik futárhoz tartozik</button>
                                             </td>

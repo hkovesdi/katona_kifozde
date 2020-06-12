@@ -12,21 +12,21 @@ class MegrendelesController extends Controller
 {
     public function show(Request $request, \App\User $user, String $evHet = null)
     {
-        if($evHet === null) {
-            $ev = Carbon::now()->year;
-            $het = Carbon::now()->weekOfYear;
-        }
-        else {
-            $temp = explode("-", $evHet);
-            $ev = intval($temp[0]);
-            $het = intval($temp[1]);
-        }
+        $parsedEvHet = Helper::parseEvHet($evHet);
+        $ev = intval($parsedEvHet[0]);
+        $het = intval($parsedEvHet[1]);
 
         if(Auth::user()->munkakor == 'Kiszállító'  && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user))){
             return redirect('/');
         }
 
-        $searchedMegrendelok = $this->searchMegrendeloByName($request->query('name'));
+        $searchedMegrendelok = $this->searchMegrendeloByName($request->query('name'))->each(function($megrendelo) use($ev,$het){
+            $hetiFutar = $megrendelo->megrendeloHetek()->whereHas('datum', function($query) use($ev,$het){
+                $query->whereYear('datum', $ev)->where('het', $het);
+            })->first()['kiszallito'];
+
+            $megrendelo->setAttribute('kiszallito', $hetiFutar);
+        });
 
         $emptyMegrendelesTablazat = Helper::constructEmptyMegrendelesTablazat();
 
@@ -34,9 +34,7 @@ class MegrendelesController extends Controller
         $megrendeloHetek = collect();
 
         \App\MegrendeloHet::with(['megrendelo', 'datum', 'megrendelesek.tetel.datum'])
-            ->whereHas('megrendelo', function($query) use($user){
-                $query->where('kiszallito_id', $user->id);
-            })
+            ->where('kiszallito_id', $user->id)
             ->where(function($query) use($ev, $het){
                 $query->whereHas('datum', function($query) use($ev, $het) {
                     $query->whereYear('datum', $ev)->where('het', $het);
@@ -100,13 +98,13 @@ class MegrendelesController extends Controller
      */
     private function searchMegrendeloByName($name)
     {
-        return $name == null ? null : \App\Megrendelo::with('kiszallito')->where('nev', 'LIKE', "%$name%")->get();
+        return \App\Megrendelo::where('nev', 'LIKE', "%$name%")->get();
     }
 
 
     public function megrendeloHetTorles(Request $request, \App\MegrendeloHet $megrendeloHet) 
     {   
-        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->megrendelo->kiszallito_id != Auth::user()->id){
+        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
             return redirect()->back()->with('failure', ['Más kiszállító alá tartozó megrendelők hetének törlése nem lehetséges!']);
         }
         
@@ -127,9 +125,7 @@ class MegrendelesController extends Controller
         $data = $request->all();
 
         $megrendeloHet = \App\MegrendeloHet::when(Auth::user()->munkakor == "Kiszállító", function($query){
-            return $query->whereHas('megrendelo', function($query){
-                $query->where('kiszallito_id', Auth::user()->id);
-            });
+            return $query->where('kiszallito_id', Auth::user()->id);
         })
         ->where('id', $data['megrendelo-het-id'])
         ->first();
@@ -170,7 +166,7 @@ class MegrendelesController extends Controller
     public function changeFizetesiStatusz(Request $request, \App\MegrendeloHet $megrendeloHet)
     {
         $data = $request->only('megrendelo-het-id', 'torles', 'fizetesi-mod');
-        if(Auth::user()->munkakor == 'Kiszállító' && !Auth::user()->megrendelok->contains($megrendeloHet->megrendelo)){
+        if(Auth::user()->munkakor == 'Kiszállító' && !Auth::user()->megrendeloHetek->contains($megrendeloHet)){
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Csak az önhöz tartozó megrendelők fizetési státuszának változtatása lehetséges'
@@ -202,62 +198,37 @@ class MegrendelesController extends Controller
             'status' => 'success',
             'message' => 'Fizetési státusz sikeresen módosítva!'
         ]);
-        /*return redirect()->back()->with([
-            'status' => 'success',
-            'message' => 'Sikerélmény elérve'
-        ]);*/
     }
 
-    public function megrendeloHetLetrehozas(Request $request) 
+    public function megrendeloHetLetrehozas(Request $request, \App\User $user, \App\Megrendelo $megrendelo) 
     {
-        $data = $request->only('ev','het','megrendelo-id');
+        $data = $request->only('ev','het');
+        $hetStartDatum = \App\Datum::whereYear('datum', $data['ev'])->where('het', $data['het'])->first();
+        $megrendeloHet = \App\MegrendeloHet::where('megrendelo_id', $megrendelo->id)->where('het_start_datum_id', $hetStartDatum->id)->first();
 
-        $this->createMegrendeloHet($data['megrendelo-id'], $data['ev'], $data['het']);
+        if(Auth::user()->munkakor == 'Kiszállító' && !$user->is(Auth::user())){
+            return redirect()->back()->with('failure', ['Más kiszállítókhoz nem lehet megrendelőt hozzáadni']);
+        }
 
-        return redirect()->back()->with('success', ['Személy sikeresen hozzáadva a héthez']);
-    }
-
-    public function megrendeloLetrehozas(Request $request) 
-    {
-        $data = $request->only('nev', 'cim', 'tel', 'ev', 'het');
-
-        if(Auth::user()->munkakor == 'Kiszállító'){
-            $kiszallito_id = Auth::user()->id;
+        if($megrendeloHet !== null && Auth::user()->munkakor == 'Kiszállító'){
+            return redirect()->back()->with('failure', ['A megrendelőt nem lehet hozzáadni a héthez mert másik futárhoz tartozik']);
+        }
+        else if(Auth::user()->munkakor != 'Kiszállító') {
+            $megrendeloHet->update([
+                'kiszallito_id' => $user->id
+            ]);
         }
         else {
-            $kiszallito_id = \App\User::find($request->input('kiszallito-id'))->id;
-        }
-
-        $megrendelo = \App\Megrendelo::create([
-            'kiszallito_id' => $kiszallito_id,
-            'nev' => $data['nev'],
-            'szallitasi_cim' => $data['cim'],
-            'telefonszam' => $data['tel']
-        ]);
-
-        if(boolval($request->input('hozzaadas')))
-            $this->createMegrendeloHet($megrendelo->id, $data['ev'], $data['het']);
-
-        return redirect()->back()->with('success', ['Új megrendelő sikeresen létrehozva '.(boolval($request->input('hozzaadas')) ? 'és hozzáadva a héthez!' : '!')]);
-    }
-
-    private function createMegrendeloHet($megrendelo_id, $ev, $het)
-    {
-        $hetStartDatum = \App\Datum::whereYear('datum', $ev)->where('het', $het)->orderBy('datum', 'asc')->first();
-
-        $megrendelo = \App\Megrendelo::when(Auth::user()->munkakor == "Kiszállító", function($query){
-            $query->where('kiszallito_id', Auth::user()->id);  
-        })
-        ->find($megrendelo_id);
-
-        if(\App\MegrendeloHet::where('megrendelo_id', $megrendelo_id)->where('het_start_datum_id', $hetStartDatum->id)->first() === null && $megrendelo !== null){
             \App\MegrendeloHet::create([
+                'kiszallito_id' => $user->id,
                 'megrendelo_id' => $megrendelo->id,
                 'het_start_datum_id' => $hetStartDatum->id,
                 'fizetesi_mod' => 'Tartozás',
                 'fizetve_at' => NULL
             ]);
         }
+
+        return redirect()->back()->with('success', ['Személy sikeresen hozzáadva a héthez']);
     }
 
     private function megrendelesTorles($isFeladag, $adagok, $key, &$currentMegrendelesek)

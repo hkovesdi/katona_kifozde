@@ -19,7 +19,7 @@ class CreateTetelek extends Command
      *
      * @var string
      */
-    protected $description = 'Elkészíti a tételeket a következő hétre';
+    protected $description = 'Elkészíti a tételeket';
 
     /**
      * Create a new command instance.
@@ -31,13 +31,31 @@ class CreateTetelek extends Command
         parent::__construct();
     }
 
+
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * Legenerálja az üres (0ft) tételeket
      */
-    public function handle()
+    private function initialCreate() 
     {   
+        if(\App\Tetel::count() == 0) { 
+            foreach(\App\Datum::all() as $datum) {
+                if(Carbon::parse($datum->datum)->isWeekDay()) {
+                    foreach(\App\TetelNev::all() as $tetelNev) {
+                        \App\Tetel::create([
+                            'tetel_nev' => $tetelNev->nev,
+                            'datum_id' => $datum->id,
+                            'ar' => 0,
+                        ]);
+                    }
+                }
+            }
+        }
+        else {
+            $this->error('Tételek már léteznek');
+        }
+    }
+
+    private function createNextWeek() {
         $datumok = \App\Datum::where('het', Carbon::now()->addDays(7)->weekOfYear)->get();
 
         foreach($datumok as $datum) {
@@ -58,6 +76,20 @@ class CreateTetelek extends Command
                     }
                 }
             }
+        }
+    }
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {   
+        if($this->option('next-week')){
+            $this->createNextWeek();
+        }
+        else {
+            $this->initialCreate();
         }
     }
 }
