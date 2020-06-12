@@ -169,9 +169,17 @@
             });
             return $helper;
         },
-        stop: function( e, { item } ) {
-            console.log(item[0].id.split('-')[1]); // id
-            //TODO: backend?
+        update: function( e, { item } ) {
+            let domElements = Array.from($('.sortable-table')[0].children);
+            let tableRows = [];
+            domElements.forEach(data => {
+                if (data.tagName === "TR") {
+                    tableRows.push(data);
+                }
+            })
+
+            let tableRowIds = tableRows.map(x => x.id.split('-')[1])
+            console.log(tableRowIds)
         }
     });
 
