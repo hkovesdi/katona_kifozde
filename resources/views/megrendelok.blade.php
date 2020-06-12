@@ -48,14 +48,6 @@
                                             <label for="telInput">Telefonszám</label>
                                             <input name="tel" type="text" class="form-control" value="{{$megrendelo->telefonszam}}" id="telInput">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="kiszallitoSelect">Kiszállító</label>
-                                            <select name="kiszallito-id" class="form-control" id="kiszallitoSelect">
-                                                @foreach ($kiszallitok as $kiszallito)
-                                                    <option {{$kiszallito->nev == $megrendelo->kiszallito->nev ? "selected" : ""}} value="{{$kiszallito->id}}">{{$kiszallito->nev}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
