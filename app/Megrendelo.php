@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property User $user
- * @property MegrendeloHet[] $megrendeloHetek
+ * @property Megrendeles[] $megrendelesek
  */
 class Megrendelo extends Model
 {
@@ -35,15 +35,7 @@ class Megrendelo extends Model
     /**
      * @var array
      */
-    protected $fillable = ['kiszallito_id', 'nev', 'telefonszam', 'szallitasi_cim', 'szepkartya', 'created_at', 'updated_at'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User', 'kiszallito_id');
-    }
+    protected $fillable = ['nev', 'telefonszam', 'szallitasi_cim', 'szepkartya', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

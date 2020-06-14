@@ -6,28 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer $id
- * @property integer $het_id
  * @property integer $megrendelo_id
- * @property boolean $fizetett
- * @property boolean $szepkartya
+ * @property integer $het_start_datum_id
+ * @property string $fizetesi_mod
+ * @property string $fizetve_at
  * @property string $created_at
  * @property string $updated_at
- * @property Het $hetek
- * @property Megrendelo $megrendelok
- * @property MegrendeloHetTetelek[] $megrendeloHetTeteleks
+ * @property FizetesiModok $fizetesiModok
+ * @property Datumok $datumok
+ * @property Megrendelok $megrendelok
  */
 class MegrendeloHet extends Model
 {
     /**
      * The table associated with the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'megrendelok_hetek';
 
+   // protected $appends = ['osszeg'];
+
     /**
      * The "type" of the auto-incrementing ID.
-     * 
+     *
      * @var string
      */
     protected $keyType = 'integer';
@@ -35,14 +37,15 @@ class MegrendeloHet extends Model
     /**
      * @var array
      */
-    protected $fillable = ['het_id', 'megrendelo_id', 'fizetett', 'szepkartya', 'created_at', 'updated_at'];
+    protected $fillable = ['megrendelo_id', 'het_start_datum_id', 'sorrend', 'kiszallito_id', 'megjegyzes', 'fizetesi_mod', 'fizetve_at', 'created_at', 'updated_at'];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function het()
+    public function fizetesiMod()
     {
-        return $this->belongsTo('App\Het', 'het_id');
+        return $this->belongsTo('App\FizetesiMod', 'fizetesi_mod', 'nev');
     }
 
     /**
@@ -54,10 +57,32 @@ class MegrendeloHet extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function megrendeloHetTetelek()
+    public function megrendelesek()
     {
-        return $this->hasMany('App\MegrendeloHetTetel', 'megrendelo_het_id');
+        return $this->hasMany('App\Megrendeles', 'megrendelo_het_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function datum()
+    {
+        return $this->belongsTo('App\Datum', 'het_start_datum_id');
+    }
+
+    public function kiszallito() 
+    {
+        return $this->belongsTo('\App\User', 'kiszallito_id', 'id');
+    }
+
+    /**
+     * Visszaadja a heti rendelések összegét
+     */
+   // public function getOsszegAttribute() {
+     //   return $this->megrendelesek->sum(function($megrendeles) {
+       //     return $megrendeles->feladag ? $megrendeles->tetel->ar*0.6 : $megrendeles->tetel->ar;
+        //});
+    //}
 }

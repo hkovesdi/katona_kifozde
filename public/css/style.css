@@ -1,0 +1,815 @@
+body {
+	background-color: #6699ff !important;
+	font-family: "Arial", sans-serif !important;
+	font-weight: 250;
+	height: 100vh;
+	margin: 0;
+}
+
+.full-height {
+	height: 100vh;
+}
+
+.flex-center {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.position-ref {
+	position: relative;
+}
+
+.top-right {
+	position: absolute;
+	right: 10px;
+	top: 18px;
+}
+
+.content {
+	text-align: center;
+}
+
+.title {
+	font-size: 30px;
+}
+
+.links > a {
+	color: white;
+	padding: 0 25px;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.1rem;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+/* login page */
+
+.form {
+	border-radius: 7px;
+	position: relative;
+	z-index: 1;
+	background: #ffffff;
+	max-width: 360px;
+	margin: 0 auto 100px;
+	padding: 30px;
+	text-align: center;
+	border: 0;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.login-page {
+	width: 360px;
+	padding: 8% 0 0;
+	margin: auto;
+}
+
+.logininput {
+	border-radius: 7px;
+	font-family: "Arial", sans-serif;
+	background: #f2f2f2;
+	width: 100%;
+	border: 1px solid white;
+	margin: 0 0 16px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 14px;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.loginbutton {
+	border: 1px solid white;
+	border-radius: 7px;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	background: #6699ff;
+	width: 50%;
+	border: 0;
+	padding: 15px;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: bold;
+	-webkit-transition: all 0.3 ease;
+	transition: all 0.3 ease;
+	cursor: pointer;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.loginbutton:hover,
+.loginbutton:active {
+	background: #4d88ff;
+}
+
+.loginlogo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+}
+
+.login-page input:focus {
+	border: 1px solid #6699ff;
+}
+
+/* table */
+
+.main-table {
+	width: 98%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+.main-thead tr,
+.main-tbody tr {
+	background: #eee;
+}
+
+.fejlec-center {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.main-thead th {
+	background: #424242;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+.main-tbody td,
+.main-thead th {
+	padding: 6px;
+	border: 1px solid #ccc;
+}
+
+.centercell {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.fizetve-button {
+	padding: 5px;
+	border: 1px solid white;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	background: red;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.fizetve-button:hover,
+.fizetve-button:active {
+	background: #300c0c !important;
+}
+
+.fizetve-button-kifizetve {
+	background: green !important;
+}
+
+.fizetve-button-kifizetve:hover,
+.fizetve-button-kifizetve:active {
+	background: #155115 !important;
+}
+
+.check {
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.row-rend {
+	width: 7%;
+}
+
+.row-nev {
+	width: 20%;
+}
+
+.row-cim {
+	width: 35%;
+}
+
+.row-tel {
+	width: 15%;
+}
+
+.row-fizm {
+	width: 7%;
+}
+
+.row-ossz {
+	width: 7%;
+}
+
+.row-fiz {
+	width: 7%;
+}
+
+.main-table tr:nth-child(even) {
+	background-color: #e4e4e4;
+}
+
+/* table resp */
+
+@media only screen and (max-width: 680px) {
+	.main-table,
+	.main-thead,
+	.main-tbody,
+	.main-thead th,
+	.main-tbody td,
+	.main-thead tr,
+	.main-tbody tr {
+		display: block;
+	}
+
+	.main-table {
+		margin-top: 20px;
+		width: 95%;
+	}
+
+	.main-thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	.main-thead tr,
+	.main-tbody tr {
+		margin: 0 0 1rem 0;
+		background: #eee;
+	}
+
+	.main-thead td,
+	.main-tbody td {
+		border: 1px solid #ccc;
+		position: relative;
+		padding-left: 50%;
+		text-align: center;
+	}
+
+	.main-tbody td:before {
+		position: absolute;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+	.main-tbody td:nth-of-type(1):before {
+		content: "Törlés";
+	}
+
+	.main-tbody td:nth-of-type(2):before {
+		content: "Rendelések";
+	}
+
+	.main-tbody td:nth-of-type(3):before {
+		content: "Név";
+	}
+
+	.main-tbody td:nth-of-type(4):before {
+		content: "Cim";
+	}
+
+	.main-tbody td:nth-of-type(5):before {
+		content: "Tel";
+	}
+
+	.main-tbody td:nth-of-type(6):before {
+		content: "Fizetési mód";
+	}
+
+	.main-tbody td:nth-of-type(7):before {
+		content: "Összeg";
+	}
+
+	.main-tbody td:nth-of-type(8):before {
+		content: "Fizetett";
+	}
+}
+
+#myTable {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#buttons {
+	position: relative;
+	margin-left: 1.5%;
+}
+
+#new-search {
+	margin-top: 15px;
+	margin-bottom: 5px;
+	font-style: italic;
+}
+
+#hozzaadas-btn > div {
+	width: fit-content;
+	margin-top: 1%;
+	margin-right: 2%;
+}
+
+.inner-hozzaadas-btn {
+	color: #fff !important;
+	background-color: #424242 !important;
+}
+
+#search-btn {
+	margin-left: 10px;
+	color: #fff;
+	background-color: #424242;
+}
+
+#search-table {
+	margin-bottom: 15px;
+}
+
+.btn-basic {
+	width: auto;
+	padding: 10px;
+	text-align: center;
+	display: inline-block;
+	border: 1px solid white;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	background: #424242;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.btn-basic:hover,
+.btn-basic:active {
+	background: #111;
+}
+
+.btn-rend {
+	width: auto;
+	padding: 5px;
+	text-align: center;
+	display: inline-block;
+	margin-top: 1%;
+	border: 1px solid white;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	background: #424242;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.btn-rend:hover,
+.btn-rend:active {
+	background: #111;
+}
+
+.modal-row-size-l {
+	width: 15%;
+}
+
+.modal-row-size-s {
+	width: 10%;
+}
+
+.modal-lg {
+	max-width: 80.5rem !important;
+}
+
+.float-right {
+	float: right;
+}
+
+.megrendelo-table {
+	width: 98%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+.megrendelo-table tr {
+	background: #eee;
+}
+
+.megrendelo-table td {
+	text-align: left;
+	padding: 6px;
+	border: 1px solid #ccc;
+}
+
+.megrendeles-table-input {
+	background-color: transparent;
+	margin: 0px;
+	width: 50px;
+	border: 0px;
+	padding: 4px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+.megrendelo-thead {
+	background: #424242;
+	color: white !important;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #424242;
+}
+
+.megrendelo-napok {
+	border: 1px solid #ccc;
+}
+
+.szakacs-table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	width: 200px !important;
+	font-weight: bold !important;
+	text-align: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.szakacs-thead {
+	background: #424242;
+	color: white !important;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #ccc !important;
+}
+
+.szakacs-thead > tr > th {
+	font-size: 20px !important;
+}
+
+.szakacs-table > tbody > tr > td {
+	font-size: 15px !important;
+	border-right: 1px solid #ccc;
+	margin: 5px !important;
+	padding: 5px !important;
+}
+
+.szakacs-table > tbody > tr {
+	border: 1px solid #ccc !important;
+	margin: 5px !important;
+	padding: 5px !important;
+}
+
+.datum {
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	width: 202px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@page {
+	size: auto;
+	margin: 0mm;
+}
+
+.futar-table {
+	margin-top: 20px;
+	border-collapse: collapse;
+	width: auto !important;
+	font-weight: bold !important;
+	text-align: center;
+	align-items: center;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+.futar-thead {
+	background: #424242;
+	color: white !important;
+	border: 1px solid #424242;
+}
+
+.futar-thead > tr > th {
+	font-size: 18px !important;
+	text-align: center;
+	font-weight: bold;
+	padding-right: 10px !important;
+	padding-left: 10px !important;
+}
+
+.futar-table > tbody > tr > td {
+	font-size: 14px !important;
+	padding-right: 10px !important;
+	padding-left: 10px !important;
+}
+
+.futar-table > tbody > tr {
+	border: 1px solid #424242 !important;
+}
+
+.flex-container {
+	display: flex;
+}
+
+table tr .page-break {
+	page-break-after: always;
+}
+
+.megrendelo-megjegyzes {
+	margin-top: 30px;
+}
+
+.megrendelo-textarea {
+	width: 98%;
+	border: 1px solid #ccc !important;
+}
+
+.input-hide {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.baljobbgomb {
+	text-align: center;
+	border: 1px solid white;
+	background: #424242;
+	color: #ffffff;
+	font-size: 26px;
+	height: 37px;
+	cursor: pointer;
+	margin-right: 10px;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.baljobbgombR {
+	margin-left: 10px;
+}
+
+.baljobbgombA {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#week-counter {
+	margin-left: 1.5%;
+	margin-top: 2%;
+	margin-bottom: 1%;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	display: flex;
+}
+
+.text-button {
+	background: none !important;
+	border: none !important;
+	padding: 15px;
+	cursor: pointer;
+	outline: inherit;
+	width: 100%;
+	text-align: left;
+}
+
+.modified-table {
+	border: 1px solid #ccc !important;
+}
+.modified-table thead td {
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
+}
+
+.modified-table thead th {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	text-align: center !important;
+	border: 1px solid #4e4e4e !important;
+}
+
+.modified-table tbody td {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #ccc;
+}
+
+.modified-table tbody th {
+	padding-left: 1px !important;
+	padding-right: 0px !important;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.tetel-table-input {
+	background-color: transparent;
+	margin: 0px;
+	width: 40px;
+	border: 0px;
+	padding: 4px;
+}
+
+.tablazat-cim {
+	margin-left: 1.5%;
+	margin-top: 3%;
+	margin-bottom: 0;
+	font-family: "Arial", sans-serif;
+	text-transform: uppercase;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: bold;
+	display: flex;
+}
+
+#het-text {
+	font-size: 35px;
+}
+
+/* table megrendelo*/
+
+.main-table-megrendelo {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1200px;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+.main-thead-megrendelo tr,
+.main-tbody-megrendelo tr {
+	background: #eee;
+}
+
+.main-thead-megrendelo th {
+	background: #424242;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+.main-tbody-megrendelo td,
+.main-thead-megrendelo th {
+	padding: 6px;
+	border: 1px solid #ccc;
+}
+
+.main-table-megrendelo tr:nth-child(even) {
+	background-color: #e4e4e4;
+}
+
+.megrendelo-table-holder {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+/* table resp megrendelo*/
+
+@media only screen and (max-width: 680px) {
+	.main-table-megrendelo,
+	.main-thead-megrendelo,
+	.main-tbody-megrendelo,
+	.main-thead-megrendelo th,
+	.main-tbody-megrendelo td,
+	.main-thead-megrendelo tr,
+	.main-tbody-megrendelo tr {
+		display: block;
+	}
+
+	.main-table-megrendelo {
+		margin-top: 20px;
+		width: 95%;
+	}
+
+	.main-thead-megrendelo tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	.main-thead-megrendelo tr,
+	.main-tbody-megrendelo tr {
+		margin: 0 0 1rem 0;
+		background: #eee;
+	}
+
+	.main-thead-megrendelo td,
+	.main-tbody-megrendelo td {
+		border: 1px solid #ccc;
+		border-bottom: 0;
+		position: relative;
+		padding-left: 50%;
+		text-align: center;
+	}
+
+	.main-tbody-megrendelo td:before {
+		position: absolute;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+	.main-tbody-megrendelo td:nth-of-type(1):before {
+		content: "Név";
+	}
+
+	.main-tbody-megrendelo td:nth-of-type(2):before {
+		content: "Cím";
+	}
+
+	.main-tbody-megrendelo td:nth-of-type(3):before {
+		content: "Tel";
+	}
+
+	.main-tbody-megrendelo td:nth-of-type(4):before {
+		content: "Kiszállító";
+	}
+
+	.main-tbody-megrendelo td:nth-of-type(5):before {
+		content: "Szerkesztés";
+	}
+
+	.megrendelo-table-holder {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	.search-thead {
+		display: none;
+	}
+
+	.mobil-btn {
+		font-size: 10px !important;
+		text-align: center !important;
+	}
+
+	#search-table {
+		width: 98%;
+	}
+
+	#search-table .main-tbody td:nth-of-type(1):before {
+		content: "Név";
+	}
+	#search-table .main-tbody td:nth-of-type(2):before {
+		content: "Cím";
+	}
+	#search-table .main-tbody td:nth-of-type(3):before {
+		content: "Tel";
+	}
+	#search-table .main-tbody td:nth-of-type(4):before {
+		content: "Kiszállító";
+	}
+	#search-table .main-tbody td:nth-of-type(5):before {
+		content: "Szerkesztés";
+	}
+
+	.button-helper {
+		margin-left: 20px;
+	}
+}
+
+.heti-ertesito {
+	margin-left: 3%;
+	margin-top: auto;
+	margin-bottom: 0;
+	font-family: "Arial", sans-serif;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: bold;
+	display: inline-block;
+}
+
+.arrows:hover,
+.arrows:active {
+	background-color: #111;
+}
+
+.osszeg-osszesito {
+	cursor: pointer;
+	color: #4d88ff;
+}
+
+.osszeg-osszesito:hover,
+.osszeg-osszesito:active {
+	color: #4d88ff;
+}
+

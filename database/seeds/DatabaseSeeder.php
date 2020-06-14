@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
         $this->call(MunkakorSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(MegrendeloSeeder::class);
-        $this->call(HetSeeder::class);
+        $this->call(TetelNevSeeder::class);
+        $this->call(DatumSeeder::class);
+        $this->call(FizetesiModokSeeder::class);
         $this->call(TetelSeeder::class);
         $this->call(MegrendeloHetSeeder::class);
-        $this->call(MegrendeloHetTetelSeeder::class);
+        $this->call(MegrendelesSeeder::class);
     }
 }

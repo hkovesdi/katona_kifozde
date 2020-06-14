@@ -18,8 +18,6 @@ class CreateMegrendelokTable extends Migration
             $table->string('nev');
             $table->string('telefonszam');
             $table->string('szallitasi_cim');
-            $table->boolean('szepkartya')->default(0);
-            $table->foreignId('kiszallito_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -31,9 +29,6 @@ class CreateMegrendelokTable extends Migration
      */
     public function down()
     {   
-        Schema::table('megrendelok', function (Blueprint $table) {
-            $table->dropForeign(['kiszallito_id']);
-        });
         Schema::dropIfExists('megrendelok');
     }
 }

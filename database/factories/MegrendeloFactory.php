@@ -16,8 +16,6 @@ $factory->define(Megrendelo::class, function (Faker $faker) {
         'nev' => generateHunName($faker->numberBetween(0,1),$faker->numberBetween(0,1),$huFaker),
         'telefonszam' => $huFaker->phoneNumber,
         'szallitasi_cim' => $huFaker->address,
-        'szepkartya' => $faker->numberBetween(0,1),
-        'kiszallito_id' => App\User::where('munkakor', 'Kiszállító')->inRandomOrder()->first()->id,
     ];
 });
 

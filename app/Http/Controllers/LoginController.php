@@ -11,7 +11,7 @@ class LoginController extends Controller
 
     public function show() {
         if(Auth::check()) {
-            return view('home');
+            return redirect()->route('home');
         }
         return view('login');
     }
@@ -29,10 +29,19 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('home');
+            return redirect()->intended('')->with('success', ['Sikeres bejelentkezés!']);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('failure', ['Hibás felhasználónév vagy jelszó!']);
 
+    }
+
+    public function logout()
+    {
+        if(Auth::check()){
+            Auth::logout();
+        }
+
+        return redirect('login')->with('success', ['Kijelentkezve']);
     }
 }

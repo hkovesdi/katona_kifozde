@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Carbon;
 class TetelSeeder extends Seeder
 {
     /**
@@ -10,26 +10,18 @@ class TetelSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
-        $tetelek = [
-            [
-                'nev' => 'A',
-                'ar' => 2500
-            ],
-            [
-                'nev' => 'B',
-                'ar' => 2700
-            ],
-            [
-                'nev' => 'L',
-                'ar' => 1000
-            ],
-            [
-                'nev' => 'F',
-                'ar' => 3000
-            ],
-        ];
+    {
         
-        \App\Tetel::insert($tetelek);
+        foreach(\App\Datum::all() as $datum) {
+            if(Carbon::parse($datum->datum)->isWeekDay()) {
+                foreach(\App\TetelNev::all() as $tetelNev) {
+                    \App\Tetel::create([
+                        'tetel_nev' => $tetelNev->nev,
+                        'datum_id' => $datum->id,
+                        'ar' => random_int(1000,3000),
+                    ]);
+                }
+            }
+        }
     }
 }

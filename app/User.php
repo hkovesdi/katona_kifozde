@@ -42,14 +42,14 @@ class User extends Authenticatable
      */
     public function munkakor()
     {
-        return $this->hasOne('App\Munkakor');
+        return $this->belongsTo('App\Munkakor', 'munkakor', 'nev');
     }
 
     /**
-     * Visszaadja a userhez tartozó megrendelőket
+     * Visszaadja a userhez tartozó megrendelőheteket
      */
-    public function megrendelok()
+    public function megrendeloHetek()
     {
-        return $this->hasMany('App\Megrendelo');
+        return $this->hasMany('App\MegrendeloHet', 'kiszallito_id', 'id');
     }
 }
