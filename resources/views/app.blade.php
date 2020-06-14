@@ -215,12 +215,12 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="change">
+                <form method="post" action="{{route('felhasznaloLetrehozas')}}">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="realname">Teljes név</label>
-                            <input name="realname" type="text" class="form-control" id="realname">
+                            <input name="nev" type="text" class="form-control" id="realname">
                         </div>
                         <div class="form-group">
                             <label for="username">Felhasználó név</label>
@@ -232,7 +232,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password-confirm">Jelszó ismétlés</label>
-                            <input name="password-confirm" type="password" class="form-control" id="password-confirm">
+                            <input name="confirm" type="password" class="form-control" id="password-confirm">
                         </div>
                         <div class="form-group">
                             <label for="munkakor">Munkakör</label>

@@ -21,6 +21,9 @@
         <div class="card-body">
           <h1 class="card-title">Tételek</h1>
           <div class="table-responsive-xl">
+            @if($ev < \Carbon\Carbon::now()->year || $het < \Carbon\Carbon::now()->weekOfYear)
+                <p style="font-size: 16px"><i class="fas fa-info-circle"  style="font-size: 21px; color: #6699ff"></i> A tételek árait visszamenőleg nem lehet módosítani</p>
+            @endif
             <table class="modified-table table table-striped">
                 <thead class="thead-dark">
                 <tr>

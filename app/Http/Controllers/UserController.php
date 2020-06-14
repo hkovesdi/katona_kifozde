@@ -31,6 +31,22 @@ class UserController extends Controller
     
     public function create(Request $request)
     {
+        $data = $request->all();
+
+        if($data['password'] !== $data['confirm']) {
+            return redirect()->back()->with('failure', ['A jelszavak nem egyeznek']);
+        }
+
+        $munkakor = \App\Munkakor::where('nev', $data['munkakor'])->first();
+
+        \App\User::create([
+            'nev' => $data['nev'],
+            'username' => $data['username'],
+            'password' => Hash::make($data['password']),
+            'munkakor' => $munkakor->nev          
+        ]);
+
+        return redirect()->back()->with('success', ['Felhasználó sikeresen létrehozva!']);
 
     }
 }
