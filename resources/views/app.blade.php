@@ -167,7 +167,7 @@
                         Nyomtatványok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
+                        <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->isWeekend() ? \Carbon\Carbon::now()->addDays(7)->startOfWeek()->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
                         <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti">Futár heti</a>
                         <a class="dropdown-item" href="#">Heti statisztika</a>
                         <a class="dropdown-item" href="#">Havi statisztika</a>
