@@ -12,7 +12,7 @@ class CreateDatumok extends Command
      *
      * @var string
      */
-    protected $signature = 'datumok:create {--next-week}';
+    protected $signature = 'create:datumok {--next-week}';
 
     /**
      * The console command description.

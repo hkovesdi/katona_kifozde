@@ -97,7 +97,11 @@
         </tbody>
     </table>
     @else
-    <h1 class="heti-ertesito mt-3">Nincsenek megrendelők az adatbázisban</h1>
+    <div class="megrendelo-table-holder">
+        <div style="max-width: 1200px; margin: 0 auto">
+            <h1 class="heti-ertesito mt-3">Nincsenek megrendelők az adatbázisban</h1>
+        </div>
+    </div>
     @endif
 </div>
 @stop

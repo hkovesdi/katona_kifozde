@@ -3,16 +3,16 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class CreateMunkakorok extends Command
+class CreateAdminUser extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'create:munkakorok';
+    protected $signature = 'create:admin-user';
 
     /**
      * The console command description.
@@ -37,20 +37,13 @@ class CreateMunkakorok extends Command
      * @return mixed
      */
     public function handle()
-    {
-        DB::table('munkakorok')->insert([
-            'nev' => "Kiszállító",
-            'privilege_level' => 1,
-        ]);
-
-        DB::table('munkakorok')->insert([
-            'nev' => "Titkárnő",
-            'privilege_level' => 5,
-        ]);
-
-        DB::table('munkakorok')->insert([
-            'nev' => "Főnök",
-            'privilege_level' => 5,
-        ]);
+    { 
+        if(!\App\User::where('nev', 'Admin')->exists())
+            \App\User::create([
+                'nev' => 'Admin',
+                'username' => 'Admin',
+                'munkakor' => 'Főnök',
+                'password' => Hash::make(env('ADMIN_USER_PASSWORD')),
+            ]);
     }
 }

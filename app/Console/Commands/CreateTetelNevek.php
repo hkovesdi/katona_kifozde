@@ -11,7 +11,7 @@ class CreateTetelNevek extends Command
      *
      * @var string
      */
-    protected $signature = 'tetel-nevek:create';
+    protected $signature = 'create:tetel-nevek';
 
     /**
      * The console command description.

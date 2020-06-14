@@ -12,7 +12,7 @@ class CreateTetelek extends Command
      *
      * @var string
      */
-    protected $signature = 'tetelek:create {--next-week}';
+    protected $signature = 'create:tetelek {--next-week}';
 
     /**
      * The console command description.
