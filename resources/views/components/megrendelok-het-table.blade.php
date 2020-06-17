@@ -7,6 +7,7 @@
             <th role="columnheader" class="fejlec-center row-cim">Cim</th>
             <th role="columnheader" class="fejlec-center row-tel">Tel</th>
             <th role="columnheader" class="fejlec-center row-fizm">Fizetési mód</th>
+            <th role="columnheader" class="fejlec-center row-fizm">Kedvezmény</th>
             <th role="columnheader" class="fejlec-center row-ossz">Összeg</th>
             <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
         </tr>
@@ -65,6 +66,9 @@
                         </span>
                     </td>
                     <td role="cell" class="centercell">
+                        <span><input type="number" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
+                    </td>
+                    <td role="cell" class="centercell">
                         <span>
                             <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
                         </span>
@@ -104,7 +108,7 @@
                             <table id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table" class="megrendelo-table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="megrendelo-thead" scope="col">{{$het}}. hét</td>
+                                        <th class="megrendelo-thead" scope="col">{{$megrendeloHet['datum']['het']}}. hét</td>
                                         @foreach($tetelek as $tetel)
                                             <th class="megrendelo-thead" scope="col" style="text-align: center">{{$tetel->nev}}</th>
                                         @endforeach

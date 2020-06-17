@@ -151,7 +151,7 @@
                             Futárok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            @foreach(\App\User::where('munkakor', 'Kiszállító')->get() as $kiszallito)
+                            @foreach(\App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Titkárnő')->get() as $kiszallito)
                                 <a class="dropdown-item" href="{{route('megrendelesek', $kiszallito->id)}}">{{$kiszallito->nev}}</a>
                             @endforeach
                         </div>

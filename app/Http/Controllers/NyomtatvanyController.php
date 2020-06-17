@@ -72,7 +72,8 @@ class NyomtatvanyController extends Controller
     }
 
     public function showFutarHeti()
-    {
+    {   
+        //18 megrendelő fér ki 1 A4-es oldalra
         
         $megrendelok = array([
                 'id' => 1,
@@ -164,72 +165,14 @@ class NyomtatvanyController extends Controller
                 'nev' => 'Menő Jenő',
                 'fizmod' => 'Baptista',
                 'osszeg' => 2000,
-            ],[
-                'id' => 19,
-                'nev' => 'Bekap Hatod',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 1500,
-            ],[
-                'id' => 20,
-                'nev' => 'Görcs Ikrek',
-                'fizmod' => 'Tartozás',
-                'osszeg' => 6000,
-            ], [
-                'id' => 21,
-                'nev' => 'Kiss Jenő',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 5000
-            ],[
-                'id' => 22,
-                'nev' => 'Csuhai János',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6700
-            ],[
-                'id' => 23,
-                'nev' => 'Balogh Robin',
-                'fizmod' => 'Baptista',
-                'osszeg' => 9990,
-            ],[
-                'id' => 24,
-                'nev' => 'Kathi Béla',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6969,
-            ],[
-                'id' => 25,
-                'nev' => 'Bohos Kornél',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 2000,
-            ],[
-                'id' => 26,
-                'nev' => 'Bitang Vagyok',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 3000
-            ],[
-                'id' => 27,
-                'nev' => 'Elek Kelek',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 4000
-            ],[
-                'id' => 28,
-                'nev' => 'Menő Jenő',
-                'fizmod' => 'Baptista',
-                'osszeg' => 2000,
-            ],[
-                'id' => 29,
-                'nev' => 'Bekap Hatod',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 1500,
-            ],[
-                'id' => 30,
-                'nev' => 'Görcs Ikrek',
-                'fizmod' => 'Tartozás',
-                'osszeg' => 6000,
             ]);
 
-    
-            return view("nyomtatvanyok.futarHeti", [
-                "megrendelok" => $megrendelok,
-            ]);
+                
+        $pdf =  PDF::loadView("nyomtatvanyok.futarHeti", [
+            'megrendelok' => $megrendelok
+        ])->setPaper('a4');
+
+        return $pdf->stream('futar-heti-.pdf');
     }
 
     

@@ -510,6 +510,7 @@ input[type=number] {
 	font-weight: bold;
 	padding-right: 10px !important;
 	padding-left: 10px !important;
+	padding-top: 0px !important;
 }
 
 .futar-table > tbody > tr > td {

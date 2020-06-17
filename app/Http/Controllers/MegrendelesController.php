@@ -64,6 +64,11 @@ class MegrendelesController extends Controller
                     $osszegOsszesito .= ($fel > 0 ? $fel.' <i>fél</i> ' : "").($normal > 0 ? $normal.' <i>normál</i> ' : "").'<b>'.$tetelNev.'</b> = '.strval($felAr+$normalAr).' Ft <br> ';
                 });
 
+                if($megrendeloHet->kedvezmeny != 0){
+
+                    $osszegOsszesito.='Össz: <i>'.$osszeg.' Ft </i> - <i>'.$megrendeloHet->kedvezmeny.'% kedvezmény </i> <br>';
+                }
+                $osszeg -= $megrendeloHet->kedvezmeny * $osszeg;
                 $osszegOsszesito.='<hr> Végösszeg: <b>'.$osszeg.' Ft </b>';
 
                 $megrendeloHet->setAttribute('osszeg_osszesito',$osszegOsszesito);
@@ -147,6 +152,35 @@ class MegrendelesController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Sorrend sikeresen módosítva'
+        ]);
+    }
+
+    public function kedvezmenyValtoztatas(Request $request, \App\MegrendeloHet $megrendeloHet)
+    {
+        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Más futárhoz tartozó megrendelők kedvezményének módosítására nincs lehetőség'
+            ]);
+        }
+
+        $kedvezmeny = $request->input('kedvezmeny');
+
+        if($kedvezmeny < 0 || $kedvezmeny > 100 || $kedvezmeny % 1 != 0) 
+        {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Kérem 0 és 100 közötti egész számokat adjon meg!'
+            ]);
+        }
+
+        $megrendeloHet->update([
+            'kedvezmeny' => $kedvezmeny
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Kedvezmény sikeresen módosítva!'
         ]);
     }
 

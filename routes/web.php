@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/felhasznalo-letrehozas', 'UserController@create')->name('felhasznaloLetrehozas');
     });
     Route::get('/megrendelesek/{user}/{evHet?}', 'MegrendelesController@show')->name('megrendelesek');
+    Route::post('/megrendelo-het/kedvezmeny-modositas/{megrendeloHet}', 'MegrendelesController@kedvezmenyValtoztatas')->name('kedvezmenyValtoztatas');
     Route::post('megrendelo-het-sorrend-modositas/{user}', 'MegrendelesController@sorrendModositas')->name('sorrendModositas');
     Route::post('megrendelo-het-torles/{user}/{megrendeloHet}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
     Route::post('/jelszo-valtoztatas', 'UserController@jelszoValtoztatas')->name('jelszoValtoztatas');
