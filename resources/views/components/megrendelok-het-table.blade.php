@@ -37,7 +37,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-danger" data-dismiss="modal">Mégsem</button>
-                              <button type="submit" form="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" class="btn btn-success" {{$megrendeloHet->osszeg != 0 ? 'disabled' : ''}}>Törlés</button>
+                              <button type="submit" form="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" class="btn btn-success" {{count($megrendeloHet['megrendelesek']) > 0 ? 'disabled' : ''}}>Törlés</button>
                             </div>
                           </div>
                         </div>

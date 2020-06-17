@@ -203,7 +203,7 @@
                             title: data.message
                         });
 
-                        $( form ).trigger("ajaxSuccess", data);
+                        //$( form ).trigger("ajaxSuccess", data);
                     },
                     error: function(data)
                     {
