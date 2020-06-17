@@ -114,14 +114,29 @@
 
 
 <script>
+    let meGo = -1;
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
         $(event.currentTarget[9]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
+        $(event.currentTarget[6]).prop('disabled', !$(event.currentTarget[6]).is(":disabled"));
         $(event.currentTarget[7]).val( $(event.currentTarget[7]).val() == 0 ? 1 : 0);
     });
 
+    $('.kedvezmeny-input').focus(function(e){
+        meGo = e.currentTarget.value;
+    });
+
+    $('.kedvezmeny-input').blur(function(e){
+        let megrendeloHetId = e.currentTarget.classList[1].split('-')[3];
+        if(e.currentTarget.value !== meGo) {
+            // Initiate black hole insertion
+        }
+    });
+
     $('.fizetve-modal').click(function(e) {
-        let megrendeloId = e.currentTarget.classList[2].split('-')[3];
+        let megrendeloId = [...e.currentTarget.classList].find(element => element.startsWith('fizetve-button-id')).split('-')[3];
+
+        console.log(megrendeloId);
         Swal.fire({
             title: 'Biztos benne?',
             text: "Nem fogod tudni visszaváltoztatni!",

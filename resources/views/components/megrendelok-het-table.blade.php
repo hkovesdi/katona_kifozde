@@ -66,7 +66,9 @@
                         </span>
                     </td>
                     <td role="cell" class="centercell">
-                        <span><input type="number" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
+                        <form class="kedvezmeny-form-{{$megrendeloHet->id}}" method="post" action="{{route('kedvezmenyValtoztatas', $megrendeloHet)}}">
+                            <span><input {{$megrendeloHet->fizetve_at === null ? '' : 'disabled'}} type="number" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
+                        </form>
                     </td>
                     <td role="cell" class="centercell">
                         <span>
