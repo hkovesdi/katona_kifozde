@@ -17,7 +17,15 @@ class MunkakorSeeder extends Seeder
         ]);
 
         DB::table('munkakorok')->insert([
-            'nev' => "Bo$$",
+            'nev' => "Főnök",
+            'privilege_level' => 5,
+        ]);
+        DB::table('munkakorok')->insert([
+            'nev' => "Admin",
+            'privilege_level' => 5,
+        ]);
+        DB::table('munkakorok')->insert([
+            'nev' => "Titkárnő",
             'privilege_level' => 5,
         ]);
     }
