@@ -120,6 +120,41 @@
         $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
     });
 
+    $('.fizetve-modal').click(function(e) {
+        let megrendeloId = e.currentTarget.classList[2].split('-')[3];
+        Swal.fire({
+            title: 'Biztos benne?',
+            text: "Nem fogod tudni visszaváltoztatni!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Igen',
+            cancelButtonText: 'Mégse'
+        }).then((result) => {
+            if (result.value) {
+                $('.form-id-' + megrendeloId).submit();
+            }
+        })
+    });
+
+    $('.megrendeles-modositas-button').click(function(e) {
+        let megrendeloId = e.currentTarget.classList[3].split('-')[4];
+        Swal.fire({
+            title: 'Biztos benne?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Igen',
+            cancelButtonText: 'Mégse'
+        }).then((result) => {
+            if (result.value) {
+                $('.megrendeles-modositas-id-' + megrendeloId).submit();
+            }
+        })
+    });
+
     $('.sortable-table').sortable({
         axis: "y",
         cancel: ".sortable-table tr span",
@@ -144,11 +179,11 @@
 
             let tableRowIds = tableRows.map(x => x.id.split('-')[1])
             let data = {
-                ids: tableRowIds, 
-                ev: <?php echo $ev ?>, 
+                ids: tableRowIds,
+                ev: <?php echo $ev ?>,
                 het: <?php echo $het ?>
             };
-            
+
             $.ajax({
                     type: "POST",
                     url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,

@@ -17,7 +17,7 @@
             <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
                 @csrf
             </form>
-            <form class="ajax fizetesi-status-modosito-form" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
+            <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                     <td role="cell" class="centercell"><button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></i></td>
@@ -74,9 +74,10 @@
                             <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
                             <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
                             @if ($megrendeloHet['fizetve_at'] !== null)
-                                <button type="submit" class="fizetve-button-kifizetve fizetve-button " >Fizetve</button>
+                            <button type="button" class="fizetve-button-kifizetve fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}" >Fizetve</button>
+
                             @else
-                                <button type="submit" class="fizetve-button">Fizetve</button>
+                                <button type="button" class="fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}">Fizetve</button>
                             @endif
                         </span>
                     </td>
@@ -96,7 +97,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form">
+                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form megrendeles-modositas-id-{{$megrendeloHet->id}}">
                     @csrf
                     <div class="modal-body">
                         <div class="table-responsive">
@@ -138,7 +139,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <button onclick="document.rememberScroll()" type="submit" class="btn btn-primary megrendeles-modositas-button" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
+                        <button onclick="document.rememberScroll()" type="button" class="btn btn-primary megrendeles-modositas-button megrendeles-modositas-button-id-{{$megrendeloHet->id}}" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
                     </div>
                 </form>
             </div>
