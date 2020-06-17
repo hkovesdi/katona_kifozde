@@ -68,7 +68,7 @@ class MegrendelesController extends Controller
 
                     $osszegOsszesito.='Össz: <i>'.$osszeg.' Ft </i> - <i>'.$megrendeloHet->kedvezmeny.'% kedvezmény </i> <br>';
                 }
-                $osszeg -= $megrendeloHet->kedvezmeny * $osszeg;
+                $osszeg -=  $osszeg * ($megrendeloHet->kedvezmeny / 100);
                 $osszegOsszesito.='<hr> Végösszeg: <b>'.$osszeg.' Ft </b>';
 
                 $megrendeloHet->setAttribute('osszeg_osszesito',$osszegOsszesito);

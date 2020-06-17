@@ -115,9 +115,9 @@
 
 <script>
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
-        $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
+        $(event.currentTarget[9]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
-        $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
+        $(event.currentTarget[7]).val( $(event.currentTarget[7]).val() == 0 ? 1 : 0);
     });
 
     $('.fizetve-modal').click(function(e) {
