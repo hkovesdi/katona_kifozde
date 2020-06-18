@@ -129,7 +129,7 @@
     $('.kedvezmeny-input').blur(function(e){
         let megrendeloHetId = e.currentTarget.classList[1].split('-')[3];
         if(e.currentTarget.value !== meGo) {
-            // Initiate black hole insertion
+           $(this.form).submit();
         }
     });
 

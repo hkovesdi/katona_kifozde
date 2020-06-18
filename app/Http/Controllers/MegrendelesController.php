@@ -158,30 +158,21 @@ class MegrendelesController extends Controller
     public function kedvezmenyValtoztatas(Request $request, \App\MegrendeloHet $megrendeloHet)
     {
         if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Más futárhoz tartozó megrendelők kedvezményének módosítására nincs lehetőség'
-            ]);
+            return redirect()->back()->with('failure', ['Más futárhoz tartozó megrendelők kedvezményének módosítására nincs lehetőség']);
         }
 
         $kedvezmeny = $request->input('kedvezmeny');
 
-        if($kedvezmeny < 0 || $kedvezmeny > 100 || $kedvezmeny % 1 != 0) 
+        if($kedvezmeny < 0 || $kedvezmeny > 100 || $kedvezmeny % 1 != 0 || $kedvezmeny === null) 
         {
-            return response()->json([
-                'status' => 'failure',
-                'message' => 'Kérem 0 és 100 közötti egész számokat adjon meg!'
-            ]);
+            return redirect()->back()->with('failure', ['Kérem 0 és 100 közötti egész számot adjon meg a kedvezmény értékének!']);
         }
 
         $megrendeloHet->update([
             'kedvezmeny' => $kedvezmeny
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Kedvezmény sikeresen módosítva!'
-        ]);
+        return redirect()->back()->with('success', ['Kedvezmény sikeresen módosítva!']);
     }
 
     /**

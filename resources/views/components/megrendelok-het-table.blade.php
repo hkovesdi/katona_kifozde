@@ -18,6 +18,9 @@
             <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
                 @csrf
             </form>
+            <form id="kedvezmeny-form-{{$megrendeloHet->id}}" method="post" action="{{route('kedvezmenyValtoztatas', $megrendeloHet)}}">
+                @csrf
+            </form>
             <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
@@ -66,9 +69,7 @@
                         </span>
                     </td>
                     <td role="cell" class="centercell">
-                        <form class="kedvezmeny-form-{{$megrendeloHet->id}}" method="post" action="{{route('kedvezmenyValtoztatas', $megrendeloHet)}}">
-                            <span><input {{$megrendeloHet->fizetve_at === null ? '' : 'disabled'}} type="number" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
-                        </form>
+                        <span><input {{$megrendeloHet->fizetve_at === null ? '' : 'disabled'}} type="number" form="kedvezmeny-form-{{$megrendeloHet->id}}" name="kedvezmeny" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
                     </td>
                     <td role="cell" class="centercell">
                         <span>
