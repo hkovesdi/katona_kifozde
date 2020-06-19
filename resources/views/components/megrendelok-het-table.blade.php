@@ -46,7 +46,11 @@
                         </div>
                       </div>
                     <td role="cell" class="centercell">
-                        <button class="btn-rend" data-toggle="modal" data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" type="button">Menüsor</button>
+                        <button class="btn-rend megrendeles-modal-button" 
+                            data-toggle="modal" 
+                            data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal"
+                            type="button">Menüsor
+                        </button>
                     </td>
                     <td role="cell" name="nev"><span>{{$megrendeloHet->megrendelo['nev']}}</span></td>
                     <td role="cell" name="szallitasi-cim"><span>{{$megrendeloHet->megrendelo['szallitasi_cim']}}</span></td>
@@ -104,51 +108,27 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('megrendelesModositas')}}" method="post" class="megrendeles-modositas-form megrendeles-modositas-id-{{$megrendeloHet->id}}">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table" class="megrendelo-table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="megrendelo-thead" scope="col">{{$megrendeloHet['datum']['het']}}. hét</td>
-                                        @foreach($tetelek as $tetel)
-                                            <th class="megrendelo-thead" scope="col" style="text-align: center">{{$tetel->nev}}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <input type="hidden" name="megrendelo-id" value="{{$megrendeloHet->megrendelo['id']}}">
-                                    <input type="hidden" name="megrendelo-het-id" value="{{$megrendeloHet->id}}">
-                                    @foreach($megrendeloHet->megrendeles_tablazat as $dayOfWeek => $megrendelesekPerNap)
-                                        <tr id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$dayOfWeek}}" class="megrendelo-napok">
-                                            {{-- <input type="hidden" name="megrendelesek[]" value="{{$idx}}"> --}}
-                                            <th scope="row">{{Helper::getNapFromDayOfWeek($dayOfWeek)}}</th>
-                                            @foreach($megrendelesekPerNap as $tetelNev => $megrendelesPerNap)
-                                                {{--  <input type="hidden" name="megrendelesek[{{$idx}}][]" value="{{$tetelIdx}}"> --}}
-                                                <td>
-                                                   <input type="hidden" class="normal-adag-input" value={{$megrendelesPerNap['egesz']}} name="megrendelesek[{{$dayOfWeek-1}}][{{$tetelNev}}][normal]">
-                                                    <input type="hidden" class="feladag-input" value={{$megrendelesPerNap['fel']}} name="megrendelesek[{{$dayOfWeek-1}}][{{$tetelNev}}][fel]">
-                                                    <input {{$tartozas == true ? 'disabled' : ''}} value="{{Helper::adagokToString($megrendelesPerNap['egesz'], $megrendelesPerNap['fel'])}}" data-min-adag="{{$megrendelesPerNap['egesz']}}" data-min-feladag="{{$megrendelesPerNap['fel']}}" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-table-{{$dayOfWeek}}-input-{{$tetelNev}}" class="megrendeles-table-input">
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="megrendelo-megjegyzes">
-                                <h4 style="text-align: left">Megjegyzés</h4>
-                                <div style="width: 100%">
-                                    <textarea name="megjegyzes" {{$tartozas == true ? 'disabled' : ''}} class="megrendelo-textarea">{{$megrendeloHet->megjegyzes}}</textarea>
+                <div class="ajax-content">
+                    <div class="flex-center">
+                        <div class="progress-circular">
+                            <div class="progress-circular-wrapper">
+                            <div class="progress-circular-inner">
+                                <div class="progress-circular-left">
+                                <div class="progress-circular-spinner"></div>
                                 </div>
+                                <div class="progress-circular-gap"></div>
+                                <div class="progress-circular-right">
+                                <div class="progress-circular-spinner"></div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-                        <button onclick="document.rememberScroll()" type="button" class="btn btn-primary megrendeles-modositas-button megrendeles-modositas-button-id-{{$megrendeloHet->id}}" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
+                        <button type="button" class="btn btn-primary" disabled >Mentés</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

@@ -114,6 +114,37 @@
 
 
 <script>
+
+    $(document).on('click', '.megrendeles-modal-button', function() {
+        let modal = $($(this).data("target"));
+        let ajaxTarget = modal.find('.ajax-content');
+        if(!ajaxTarget.hasClass('loaded')) {
+            $.ajax({
+                    type: "GET",
+                    url: window.location.origin+'/megrendeles-table/'+<?php echo $user->id ?>,
+                    statusCode: {
+                        500: function() {
+                                Toast.fire({
+                                icon: 'error',
+                                title: 'Váratlan hiba történt, kérem frissítse az oldalt és próbálja újra!'
+                            });
+                        }
+                    },
+                    success: function(data)
+                    {
+                        //TODO: LOAD HTML
+                    },
+                    error: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.responseJSON.message
+                        });
+                    },
+                });
+        }
+    });
+
     let meGo = -1;
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
         $(event.currentTarget[9]).toggleClass('fizetve-button-kifizetve');
@@ -200,34 +231,34 @@
             };
 
             $.ajax({
-                    type: "POST",
-                    url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,
-                    data: data,
-                    statusCode: {
-                        500: function() {
-                                Toast.fire({
-                                icon: 'error',
-                                title: 'Váratlan hiba történt'
-                            });
-                        }
-                    },
-                    success: function(data)
-                    {
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.message
-                        });
-
-                        //$( form ).trigger("ajaxSuccess", data);
-                    },
-                    error: function(data)
-                    {
-                        Toast.fire({
+                type: "POST",
+                url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,
+                data: data,
+                statusCode: {
+                    500: function() {
+                            Toast.fire({
                             icon: 'error',
-                            title: data.responseJSON.message
+                            title: 'Váratlan hiba történt'
                         });
-                    },
-                });
+                    }
+                },
+                success: function(data)
+                {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    });
+
+                    //$( form ).trigger("ajaxSuccess", data);
+                },
+                error: function(data)
+                {
+                    Toast.fire({
+                        icon: 'error',
+                        title: data.responseJSON.message
+                    });
+                },
+            });
         }
     });
 
