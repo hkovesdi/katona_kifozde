@@ -169,10 +169,9 @@
     $('.fizetve-modal').click(function(e) {
         let megrendeloId = [...e.currentTarget.classList].find(element => element.startsWith('fizetve-button-id')).split('-')[3];
 
-        console.log(megrendeloId);
         Swal.fire({
             title: 'Biztos benne?',
-            text: "Nem fogod tudni visszaváltoztatni!",
+            text: "Ha a hetet fizetettre állítja akkor a hozzá tartozó tételek módosítására nem lesz lehetőség.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -186,10 +185,12 @@
         })
     });
 
-    $('.megrendeles-modositas-button').click(function(e) {
+    $(document).on('click','.megrendeles-modositas-button', function(e) {
+        e.preventDefault();
         let megrendeloId = e.currentTarget.classList[3].split('-')[4];
         Swal.fire({
-            title: 'Biztos benne?',
+            title: 'Biztos benne, hogy módosítja a megrendeléseket?',
+            text: 'Megrendeléseket utólag csak a főnök vagy a titkárnő tud kivenni',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -200,7 +201,7 @@
             if (result.value) {
                 $('.megrendeles-modositas-id-' + megrendeloId).submit();
             }
-        })
+        });
     });
 
     $('.sortable-table').sortable({

@@ -40,6 +40,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
-        <button onclick="document.rememberScroll()" type="button" class="btn btn-primary megrendeles-modositas-button megrendeles-modositas-button-id-{{$megrendeloHet->id}}" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
+        <button onclick="document.rememberScroll()" type="submit" class="btn btn-primary megrendeles-modositas-button megrendeles-modositas-button-id-{{$megrendeloHet->id}}" {{$tartozas == true ? 'disabled' : ''}}>Mentés</button>
     </div>
 </form>
