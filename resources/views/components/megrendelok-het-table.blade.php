@@ -99,7 +99,7 @@
 </table>
 
 @foreach($megrendeloHetek as $megrendeloHet)
-    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal">
+<div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" data-megrendelo-het-id="{{$megrendeloHet->id}}">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

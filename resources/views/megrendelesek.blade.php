@@ -117,11 +117,12 @@
 
     $(document).on('click', '.megrendeles-modal-button', function() {
         let modal = $($(this).data("target"));
+        let megrendeloHetId = modal.data('megrendelo-het-id');
         let ajaxTarget = modal.find('.ajax-content');
         if(!ajaxTarget.hasClass('loaded')) {
             $.ajax({
                     type: "GET",
-                    url: window.location.origin+'/megrendeles-table/'+<?php echo $user->id ?>,
+                    url: window.location.origin+'/megrendeles-table/'+megrendeloHetId,
                     statusCode: {
                         500: function() {
                                 Toast.fire({
@@ -132,7 +133,7 @@
                     },
                     success: function(data)
                     {
-                        //TODO: LOAD HTML
+                        ajaxTarget.html(data);
                     },
                     error: function(data)
                     {
@@ -160,7 +161,8 @@
     $('.kedvezmeny-input').blur(function(e){
         let megrendeloHetId = e.currentTarget.classList[1].split('-')[3];
         if(e.currentTarget.value !== meGo) {
-           $(this.form).submit();
+            document.rememberScroll();
+            $(this.form).submit();
         }
     });
 
@@ -204,6 +206,7 @@
     $('.sortable-table').sortable({
         axis: "y",
         cancel: ".sortable-table tr span",
+        distance: 2,
         helper: function(e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
