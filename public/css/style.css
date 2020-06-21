@@ -463,8 +463,9 @@ input[type=number] {
 .szakacs-table > tbody > tr > td {
 	font-size: 15px !important;
 	border-right: 1px solid #ccc;
-	margin: 5px !important;
-	padding: 5px !important;
+	margin: 3,5,5,3px !important;
+	padding: 3,5,5,3px !important;
+	vertical-align: middle !important;
 }
 
 .szakacs-table > tbody > tr {

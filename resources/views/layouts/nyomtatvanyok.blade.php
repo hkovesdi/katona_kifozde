@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
         <link href="css/style.css" rel="stylesheet" />
-        <title>Laravel</title>
+        <title>Kiskakas Vendéglő</title>
 
         <!-- Fonts -->
         <link

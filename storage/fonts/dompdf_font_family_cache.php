@@ -92,9 +92,9 @@
     'bold' => $fontDir . '/roboto-bold_1e996688829091a02d8ce32f4ce56696',
   ),
   'roboto mono' => array(
-    '300' => $fontDir . '/roboto-mono-300_dca4a96e32185c7b68a2e913aa2c68c1',
-    'normal' => $fontDir . '/roboto-mono-normal_fa0d777f587b080a562ffe6f8b2afc1b',
-    'bold' => $fontDir . '/roboto-mono-bold_ef30994c4e4ad29946c0f88949cd45ed',
+    '300' => $fontDir . '/roboto-mono-300_f65f4f954904cb1ba4e3702d9914e677',
+    'normal' => $fontDir . '/roboto-mono-normal_7935545b25a3c52cc15029e83e11e4ee',
+    'bold' => $fontDir . '/roboto-mono-bold_d19853040262b0de1b0ea714c74b8032',
   ),
   'roboto slab' => array(
     '300' => $fontDir . '/roboto-slab-300_1535fe71bb040a33a43c69a678d53474',
