@@ -1,15 +1,15 @@
 @extends('layouts.nyomtatvanyok') 
 @section('content')
 
-        <div style="text-align: center;">
-            <div><h3>{{$datum['datum']}}</h3></div>
-            <div class="mt-1"><h3>{{$datum['het']}}. hét</h3></div>
-            <div class="mt-2"><h3>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h3></div>
-        </div>
+<div style="text-align: center;">
+    <div><h3>{{$datum['datum']}}</h3></div>
+    <div class="mt-1"><h3>{{$datum['het']}}. hét</h3></div>
+    <div class="mt-2"><h3>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h3></div>
+</div>
 
 
 
-<table class="szakacs-table table table-bordered mt-1">
+<table class="szakacs-table table-sm table-striped table-bordered mt-1" style="margin: auto;">
 
     <thead class="szakacs-thead">
         <tr>

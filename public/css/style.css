@@ -485,15 +485,16 @@ input[type=number] {
 }
 
 .szakacs-thead > tr > th {
-	font-size: 20px !important;
+	font-size: 24px !important;
 }
 
 .szakacs-table > tbody > tr > td {
-	font-size: 15px !important;
+	font-size: 20px !important;
 	border-right: 1px solid #ccc;
 	margin: 3,5,5,3px !important;
 	padding: 3,5,5,3px !important;
 	vertical-align: middle !important;
+	text-align:center;
 }
 
 .szakacs-table > tbody > tr {
