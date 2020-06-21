@@ -146,21 +146,28 @@
         }
     });
 
-    let meGo = -1;
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
-        $(event.currentTarget[9]).toggleClass('fizetve-button-kifizetve');
+        console.log(event)
+        // Get ID
+        let id = [...event.currentTarget[8].classList].find(classElem => classElem.startsWith('fizetve-button-id-')).split('-')[3]
+
+        // Change values
+        $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
-        $(event.currentTarget[6]).prop('disabled', !$(event.currentTarget[6]).is(":disabled"));
-        $(event.currentTarget[7]).val( $(event.currentTarget[7]).val() == 0 ? 1 : 0);
+        $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
+
+        // Set kedvezmeny to disabled megrendelo-het-id-614
+        $('.megrendelo-het-id-' + id).prop('disabled', !$('.megrendelo-het-id-' + id).is(":disabled"));
     });
 
+    let stateForKedvezmenyClick = -1;
     $('.kedvezmeny-input').focus(function(e){
-        meGo = e.currentTarget.value;
+        stateForKedvezmenyClick = e.currentTarget.value;
     });
 
     $('.kedvezmeny-input').blur(function(e){
         let megrendeloHetId = e.currentTarget.classList[1].split('-')[3];
-        if(e.currentTarget.value !== meGo) {
+        if(e.currentTarget.value !== stateForKedvezmenyClick) {
             document.rememberScroll();
             $(this.form).submit();
         }
