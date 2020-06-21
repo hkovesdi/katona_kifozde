@@ -17,7 +17,9 @@
 
 <div id="buttons">
     <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
-<button class="btn-basic" onclick="location.href='{{route('nyomtatvanyok.futarHeti', ['kiszallito' => $user, 'evHet' => $ev.'-'.$het])}}'">Futár heti</button>
+    @if(Auth::user()->munkakor != 'Kiszállító')
+        <button class="btn-basic" onclick="location.href='{{route('nyomtatvanyok.futarHeti', ['kiszallito' => $user, 'evHet' => $ev.'-'.$het])}}'">Futár heti</button>
+    @endif
     @if (Request::get('name'))
     <div id="hozzaadas-btn">
     @else
