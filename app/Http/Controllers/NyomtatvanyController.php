@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PDF;
+use Helper;
 
 class NyomtatvanyController extends Controller
 {
@@ -39,7 +40,9 @@ class NyomtatvanyController extends Controller
 
         $tdb=$tetelNevek->where('nev', 'T')->first()->darab;
 
-        $leves->darab+=$adb+$bdb+$tdb;
+        $fdb=$tetelNevek->where('nev', 'F')->first()->darab;
+
+        $leves->darab+=$adb+$bdb+$tdb+$fdb;
 
         $aMasodik=$tetelNevek->where('nev', 'A m')->first();
 
@@ -49,8 +52,12 @@ class NyomtatvanyController extends Controller
 
         $bMasodik->darab+=$bdb;
 
+        $fMasodik=$tetelNevek->where('nev', 'F m')->first();
+
+        $fMasodik->darab+=$fdb;
+
         $tetelNevekFiltered = $tetelNevek->reject(function ($value, $key) {
-            return $value->nev == 'A' || $value->nev == 'B' || $value->nev == 'Dz';
+            return $value->nev == 'A' || $value->nev == 'B' || $value->nev == 'Dz' || $value->nev == 'F';
         });
 
 
@@ -71,105 +78,48 @@ class NyomtatvanyController extends Controller
         //]);
     }
 
-    public function showFutarHeti()
+    public function showFutarHeti(\App\User $kiszallito, String $evHet)
     {   
-        //18 megrendelő fér ki 1 A4-es oldalra
-        
-        $megrendelok = array([
-                'id' => 1,
-                'nev' => 'Kiss Jenő',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 5000
-            ],[
-                'id' => 2,
-                'nev' => 'Csuhai János',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6700
-            ],[
-                'id' => 3,
-                'nev' => 'Balogh Robin',
-                'fizmod' => 'Baptista',
-                'osszeg' => 9990,
-            ],[
-                'id' => 4,
-                'nev' => 'Kathi Béla',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6969,
-            ],[
-                'id' => 5,
-                'nev' => 'Bohos Kornél',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 2000,
-            ],[
-                'id' => 6,
-                'nev' => 'Bitang Vagyok',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 3000
-            ],[
-                'id' => 7,
-                'nev' => 'Elek Kelek',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 4000
-            ],[
-                'id' => 8,
-                'nev' => 'Menő Jenő',
-                'fizmod' => 'Baptista',
-                'osszeg' => 2000,
-            ],[
-                'id' => 9,
-                'nev' => 'Bekap Hatod',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 1500,
-            ],[
-                'id' => 10,
-                'nev' => 'Görcs Ikrek',
-                'fizmod' => 'Tartozás',
-                'osszeg' => 6000,
-            ], [
-                'id' => 11,
-                'nev' => 'Kiss Jenő',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 5000
-            ],[
-                'id' => 12,
-                'nev' => 'Csuhai János',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6700
-            ],[
-                'id' => 13,
-                'nev' => 'Balogh Robin',
-                'fizmod' => 'Baptista',
-                'osszeg' => 9990,
-            ],[
-                'id' => 14,
-                'nev' => 'Kathi Béla',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 6969,
-            ],[
-                'id' => 15,
-                'nev' => 'Bohos Kornél',
-                'fizmod' => 'Készpénz',
-                'osszeg' => 2000,
-            ],[
-                'id' => 16,
-                'nev' => 'Bitang Vagyok',
-                'fizmod' => 'Szépkártya',
-                'osszeg' => 3000
-            ],[
-                'id' => 17,
-                'nev' => 'Elek Kelek',
-                'fizmod' => 'Bankkártya',
-                'osszeg' => 4000
-            ],[
-                'id' => 18,
-                'nev' => 'Menő Jenő',
-                'fizmod' => 'Baptista',
-                'osszeg' => 2000,
-            ]);
+        $parsedEvHet = Helper::parseEvHet($evHet);
+        $ev = intval($parsedEvHet[0]);
+        $het = intval($parsedEvHet[1]);
 
-                
+        $fizetesiModok = \App\FizetesiMod::all()->each(function($fizetesiMod) {
+            $fizetesiMod->setAttribute('osszeg', 0);
+        });
+
+        $megrendeloHetek = \App\MegrendeloHet::with(['megrendelesek.tetel.datum'])
+        ->where('kiszallito_id', $kiszallito->id)
+        ->whereHas('datum', function($query) use($ev, $het) {
+            $query->whereYear('datum', $ev)->where('het', $het);
+        })
+        ->get()
+        ->each(function($megrendeloHet)  use(&$fizetesiModok){
+            $osszeg = $megrendeloHet->megrendelesek->sum(function($megrendeles) {
+                return boolval($megrendeles->feladag) ? $megrendeles->tetel->ar * 0.6 : $megrendeles->tetel->ar;
+            });
+
+            $fizetesiMod = $fizetesiModok->where('nev', $megrendeloHet->fizetesi_mod)->first();
+            $fizetesiMod->osszeg+=$osszeg;
+
+            $megrendeloHet->setAttribute('osszeg', $osszeg);
+        });
+        
+        
+
+/*         return view("nyomtatvanyok.futarHeti", [
+            'megrendeloHetek' => $megrendeloHetek,
+            'ev' => $ev,
+            'het' => $het,
+            'kiszallito' => $kiszallito
+        ]); */
+        
         $pdf =  PDF::loadView("nyomtatvanyok.futarHeti", [
-            'megrendelok' => $megrendelok
+            'megrendeloHetek' => $megrendeloHetek,
+            'ev' => $ev,
+            'het' => $het,
+            'kiszallito' => $kiszallito,
+            'fizetesiModok' => $fizetesiModok,
         ])->setPaper('a4');
 
         return $pdf->stream('futar-heti-.pdf');

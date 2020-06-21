@@ -28,7 +28,7 @@
 
 
     </head>
-    <body style="background-color: none !important; font-family: DejaVu Sans, sans-serif !important;">
+    <body style="background: none !important; font-family: DejaVu Sans, sans-serif !important;">
         @yield('content')
     </body>
 </html>
