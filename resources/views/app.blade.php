@@ -167,11 +167,10 @@
                         Nyomtatványok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->isWeekend() ? \Carbon\Carbon::now()->addDays(7)->startOfWeek()->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
-                        <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti/1/{{\Carbon\Carbon::now()->year.'-'.\Carbon\Carbon::now()->weekOfYear}}">Futár heti</a>
-                        <a class="dropdown-item" href="#">Heti statisztika</a>
-                        <a class="dropdown-item" href="#">Havi statisztika</a>
-                        <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
+                            <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->isWeekend() ? \Carbon\Carbon::now()->addDays(7)->startOfWeek()->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
+                            <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti/1/{{\Carbon\Carbon::now()->year.'-'.\Carbon\Carbon::now()->weekOfYear}}">Futár heti</a>
+                            <a class="dropdown-item" href="{{route('nyomtatvanyok.osszesito', ['kezdete' => \Carbon\Carbon::now()->startOfWeek()->format('Y-m-d'), 'vege' => \Carbon\Carbon::now()->endOfWeek()->format('Y-m-d')])}}">Heti statisztika</a>
+                            <a class="dropdown-item" href="{{route('nyomtatvanyok.osszesito', ['kezdete' => \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d'), 'vege' => \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d')])}}">Havi statisztika</a>
                         </div>
                     </li>
                     <li class="nav-item">

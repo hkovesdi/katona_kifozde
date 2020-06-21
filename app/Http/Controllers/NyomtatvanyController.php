@@ -122,7 +122,43 @@ class NyomtatvanyController extends Controller
             'fizetesiModok' => $fizetesiModok,
         ])->setPaper('a4');
 
-        return $pdf->stream('futar-heti-.pdf');
+        return $pdf->stream('futar-heti-'.$kiszallito->username.'-'.$ev.'-'.$het.'.pdf');
+    }
+
+    public function showOsszesito(String $kezdete, String $vege) 
+    {
+        $kezdete = \Carbon\Carbon::parse($kezdete);
+        $vege = \Carbon\Carbon::parse($vege);
+
+        $osszeg = 0;
+
+        $fizetesiModok = \App\FizetesiMod::all()->each(function($fizetesiMod) {
+            $fizetesiMod->setAttribute('osszeg', 0);
+        });
+
+        $megrendelesek = \App\Megrendeles::with(['tetel.datum', 'megrendeloHet'])
+        ->whereHas('tetel.datum', function($query) use ($kezdete,$vege){
+            $query->whereBetween('datum', [$kezdete->format('Y-m-d'), $vege->format('Y-m-d')]);
+        })
+        ->get()
+        ->each(function($megrendeles) use(&$osszeg, &$fizetesiModok) {
+            $rendelesOsszeg = boolval($megrendeles->feladag) ? $megrendeles->tetel->ar * 0.6 : $megrendeles->tetel->ar;
+            $osszeg+= $rendelesOsszeg;
+            
+            $fizetesiMod = $fizetesiModok->where('nev', $megrendeles->megrendeloHet->fizetesi_mod)->first();
+            $fizetesiMod->osszeg+=$rendelesOsszeg;           
+        })
+        ->groupBy('tetel.tetel_nev');
+
+        $pdf =  PDF::loadView("nyomtatvanyok.osszesito", [
+            'megrendelesek' => $megrendelesek,
+            'kezdete' => $kezdete->format('Y-m-d'),
+            'vege' => $vege->format('Y-m-d'),
+            'fizetesiModok' => $fizetesiModok,
+            'osszeg' => $osszeg,
+        ])->setPaper('a4');
+
+        return $pdf->stream('osszesito-'.$kezdete->format('Y-m-d').'-'.$vege->format('Y-m-d').'.pdf');
     }
 
     

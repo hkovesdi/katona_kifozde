@@ -437,7 +437,7 @@ input[type=number] {
 	border: 1px solid #ccc;
 }
 
-.szakacs-table {
+.osszesito-table {
 	margin-top: 20px;
 	border-collapse: collapse;
 	width: 200px !important;
@@ -446,6 +446,34 @@ input[type=number] {
 	align-items: center;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.osszesito-thead {
+	background: #424242;
+	color: white !important;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid #ccc !important;
+}
+
+.osszesito-thead > tr > th {
+	font-size: 20px !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.osszesito-table > tbody > tr > td {
+	font-size: 15px !important;
+	border-right: 1px solid #ccc;
+	margin: 1,5,5,1px !important;
+	padding: 1,5,5,1px !important;
+	vertical-align: middle !important;
+}
+
+.osszesito-table > tbody > tr {
+	border: 1px solid #ccc !important;
+	margin: 5px !important;
+	padding: 5px !important;
 }
 
 .szakacs-thead {
@@ -492,7 +520,6 @@ input[type=number] {
 	margin-top: 20px;
 	border-collapse: collapse;
 	width: auto !important;
-	font-weight: bold !important;
 	text-align: center;
 	align-items: center;
 	margin-left: 2%;
@@ -506,7 +533,7 @@ input[type=number] {
 }
 
 .futar-thead > tr > th {
-	font-size: 18px !important;
+	font-size: 20px !important;
 	text-align: center;
 	font-weight: bold;
 	padding-right: 10px !important;
@@ -515,7 +542,7 @@ input[type=number] {
 }
 
 .futar-table > tbody > tr > td {
-	font-size: 14px !important;
+	font-size: 18px !important;
 	padding-right: 10px !important;
 	padding-left: 10px !important;
 }

@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
         Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
         Route::get('/nyomtatvanyok/futar-heti/{kiszallito}/{evHet}', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
+        Route::get('/nyomtatvanyok/osszesito/{kezdete}/{vege}', 'NyomtatvanyController@showOsszesito')->name('nyomtatvanyok.osszesito');
         Route::get('/tetelek/{evHet?}', 'TetelController@show')->name('tetelek');
         Route::get('/megrendelok', 'MegrendeloController@show')->name('megrendelok');
         Route::post('/megrendelok/{megrendelo}', 'MegrendeloController@modositas')->name('megrendeloModositas');
