@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Log;
 
 class MegrendelesController extends Controller
 {
@@ -43,31 +44,34 @@ class MegrendelesController extends Controller
             ->orderBy('sorrend', 'asc')
             ->get()
             ->each(function($megrendeloHet) use($emptyMegrendelesTablazat, $ev, $het, $tartozasok, $megrendeloHetek){
-                $megrendelesTablazat = $emptyMegrendelesTablazat;
                 $osszeg = 0;
-                $megrendeloHet->megrendelesek->each(function($megrendeles) use(&$megrendelesTablazat, &$osszeg){
-                    $adag = $megrendeles->feladag ? 'fel' : 'egesz';
-                    $tetel = $megrendeles->tetel;
-                    $tetelAr = $megrendeles->feladag ? $tetel->ar*0.6 : $tetel->ar;
-                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev][$adag]++;
-                    $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] += $tetelAr;
-                    $osszeg+=$tetelAr;
-                });
                 $osszegOsszesito = "";
                 $megrendeloHet->megrendelesek->groupBy('tetel.tetel_nev')
-                ->each(function($megrendeles,$tetelNev) use(&$osszegOsszesito){ //Optimize this
-                    $fel = $megrendeles->where('feladag', true)->count();
-                    $normal = $megrendeles->count()-$fel;
-                    $felAr = $megrendeles->where('feladag', true)->sum('tetel.ar') * 0.6;
-                    $normalAr = $megrendeles->where('feladag', false)->sum('tetel.ar');
-
-                    $osszegOsszesito .= ($fel > 0 ? $fel.' <i>fél</i> ' : "").($normal > 0 ? $normal.' <i>normál</i> ' : "").'<b>'.$tetelNev.'</b> = '.strval($felAr+$normalAr).' Ft <br> ';
+                ->each(function($megrendelesek,$tetelNev) use(&$osszegOsszesito, &$osszeg){
+                    $adatok = array_fill_keys(array('fel','normal','felAr','normalAr'),0);
+                    $megrendelesek->each(function($megrendeles) use(&$adatok, &$osszeg){
+                        $ar = $megrendeles->tetel->ar;
+                        if(boolval($megrendeles->feladag)) {
+                            $adatok['fel']++;
+                            $adatok['felAr']+=$ar * 0.6;
+                        }
+                        else {
+                            $adatok['normal']++;
+                            $adatok['normalAr'] += $ar;
+                        }
+                    });
+                    $osszeg+=$adatok['felAr']+$adatok['normalAr'];
+                    $osszegOsszesito .= ($adatok['fel'] > 0 ? $adatok['fel'].' <i>fél</i> ' : "").($adatok['normal'] > 0 ? $adatok['normal'].' <i>normál</i> ' : "").'<b>'.$tetelNev.'</b> = '.strval($adatok['felAr']+$adatok['normalAr']).' Ft <br> ';
                 });
 
+                if($megrendeloHet->kedvezmeny != 0){
+
+                    $osszegOsszesito.='Össz: <i>'.$osszeg.' Ft </i> - <i>'.$megrendeloHet->kedvezmeny.'% kedvezmény </i> <br>';
+                }
+                $osszeg -=  $osszeg * ($megrendeloHet->kedvezmeny / 100);
                 $osszegOsszesito.='<hr> Végösszeg: <b>'.$osszeg.' Ft </b>';
 
                 $megrendeloHet->setAttribute('osszeg_osszesito',$osszegOsszesito);
-                $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
                 $megrendeloHet->setAttribute('osszeg', $osszeg);
                 
                 if(($megrendeloHet->datum->het < $het || Carbon::parse($megrendeloHet->datum->datum)->year != $ev) && $het <= Carbon::now()->weekOfYear){
@@ -148,6 +152,26 @@ class MegrendelesController extends Controller
             'status' => 'success',
             'message' => 'Sorrend sikeresen módosítva'
         ]);
+    }
+
+    public function kedvezmenyValtoztatas(Request $request, \App\MegrendeloHet $megrendeloHet)
+    {
+        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+            return redirect()->back()->with('failure', ['Más futárhoz tartozó megrendelők kedvezményének módosítására nincs lehetőség']);
+        }
+
+        $kedvezmeny = $request->input('kedvezmeny');
+
+        if($kedvezmeny < 0 || $kedvezmeny > 100 || $kedvezmeny % 1 != 0 || $kedvezmeny === null) 
+        {
+            return redirect()->back()->with('failure', ['Kérem 0 és 100 közötti egész számot adjon meg a kedvezmény értékének!']);
+        }
+
+        $megrendeloHet->update([
+            'kedvezmeny' => $kedvezmeny
+        ]);
+
+        return redirect()->back()->with('success', ['Kedvezmény sikeresen módosítva!']);
     }
 
     /**
@@ -268,6 +292,35 @@ class MegrendelesController extends Controller
         }
 
         return redirect()->back()->with('success', ['Személy sikeresen hozzáadva a héthez']);
+    }
+
+    public function showMegrendelesTable(\App\MegrendeloHet $megrendeloHet) 
+    {
+        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Másik kiszállítóhoz tartozó megrendelés táblázat elérése nem lehetséges'
+            ]);
+        }
+
+        $megrendelesTablazat = Helper::constructEmptyMegrendelesTablazat();
+
+        $megrendeloHet->megrendelesek->each(function($megrendeles) use(&$megrendelesTablazat){
+            $adag = $megrendeles->feladag ? 'fel' : 'egesz';
+            $tetel = $megrendeles->tetel;
+            $tetelAr = $megrendeles->feladag ? $tetel->ar*0.6 : $tetel->ar;
+            $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev][$adag]++;
+            $megrendelesTablazat[$tetel->datum->dayOfWeek][$tetel->tetel_nev]['ar'] += $tetelAr;
+        });
+
+        $megrendeloHet->setAttribute('megrendeles_tablazat', $megrendelesTablazat);
+
+        return view('components.megrendelesek-table', [
+            'megrendeloHet' => $megrendeloHet, 
+            'tetelek' => \App\TetelNev::all(), 
+            'tartozas' => 0
+        ]);
+
     }
 
     private function megrendelesTorles($isFeladag, $adagok, $key, &$currentMegrendelesek)

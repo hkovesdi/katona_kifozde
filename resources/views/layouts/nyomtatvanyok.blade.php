@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
         <link href="css/style.css" rel="stylesheet" />
-        <title>Laravel</title>
+        <title>Kiskakas Vendéglő</title>
 
         <!-- Fonts -->
         <link
@@ -28,7 +28,7 @@
 
 
     </head>
-    <body style="background-color: none !important; font-family: DejaVu Sans, sans-serif !important;">
+    <body style="background: none !important; font-family: DejaVu Sans, sans-serif !important;">
         @yield('content')
     </body>
 </html>

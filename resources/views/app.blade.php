@@ -9,8 +9,8 @@
         <meta name="_token" content="{{ csrf_token() }}">
 
         <link href="{{asset('css/style.css')}}" rel="stylesheet" />
-        <title>Laravel</title>
-        <script src="https://kit.fontawesome.com/6b162f348b.js" crossorigin="anonymous"></script>
+        <title>Kiskakas Vendéglő</title>
+        <script src="{{asset('js/fontawesome.js')}}"></script>
 
 
         <!-- Fonts -->
@@ -151,7 +151,7 @@
                             Futárok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            @foreach(\App\User::where('munkakor', 'Kiszállító')->get() as $kiszallito)
+                            @foreach(\App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Titkárnő')->get() as $kiszallito)
                                 <a class="dropdown-item" href="{{route('megrendelesek', $kiszallito->id)}}">{{$kiszallito->nev}}</a>
                             @endforeach
                         </div>
@@ -167,11 +167,10 @@
                         Nyomtatványok
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->isWeekend() ? \Carbon\Carbon::now()->addDays(7)->startOfWeek()->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
-                        <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti">Futár heti</a>
-                        <a class="dropdown-item" href="#">Heti statisztika</a>
-                        <a class="dropdown-item" href="#">Havi statisztika</a>
-                        <a class="dropdown-item" href="#">Egyedi dátumos statisztika</a>
+                            <a class="dropdown-item {{Route::current()->getName()  == 'szakacs-osszesito' ? "active" : ""}}" href="/nyomtatvanyok/szakacs-osszesito/{{\Carbon\Carbon::now()->isWeekend() ? \Carbon\Carbon::now()->addDays(7)->startOfWeek()->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')}}">Szakács összesitő</a>
+                            <a class="dropdown-item {{Route::current()->getName()  == 'futar-heti' ? "active" : ""}}" href="/nyomtatvanyok/futar-heti/1/{{\Carbon\Carbon::now()->year.'-'.\Carbon\Carbon::now()->weekOfYear}}">Futár heti</a>
+                            <a class="dropdown-item" href="{{route('nyomtatvanyok.osszesito', ['kezdete' => \Carbon\Carbon::now()->startOfWeek()->format('Y-m-d'), 'vege' => \Carbon\Carbon::now()->endOfWeek()->format('Y-m-d')])}}">Heti statisztika</a>
+                            <a class="dropdown-item" href="{{route('nyomtatvanyok.osszesito', ['kezdete' => \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d'), 'vege' => \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d')])}}">Havi statisztika</a>
                         </div>
                     </li>
                     <li class="nav-item">

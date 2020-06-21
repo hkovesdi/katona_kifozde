@@ -17,6 +17,7 @@
 
 <div id="buttons">
     <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
+<button class="btn-basic" onclick="location.href='{{route('nyomtatvanyok.futarHeti', ['kiszallito' => $user, 'evHet' => $ev.'-'.$het])}}'">Futár heti</button>
     @if (Request::get('name'))
     <div id="hozzaadas-btn">
     @else
@@ -114,15 +115,107 @@
 
 
 <script>
+
+    $(document).on('click', '.megrendeles-modal-button', function() {
+        let modal = $($(this).data("target"));
+        let megrendeloHetId = modal.data('megrendelo-het-id');
+        let ajaxTarget = modal.find('.ajax-content');
+        if(!ajaxTarget.hasClass('loaded')) {
+            $.ajax({
+                    type: "GET",
+                    url: window.location.origin+'/megrendeles-table/'+megrendeloHetId,
+                    statusCode: {
+                        500: function() {
+                                Toast.fire({
+                                icon: 'error',
+                                title: 'Váratlan hiba történt, kérem frissítse az oldalt és próbálja újra!'
+                            });
+                        }
+                    },
+                    success: function(data)
+                    {
+                        ajaxTarget.html(data);
+                    },
+                    error: function(data)
+                    {
+                        Toast.fire({
+                            icon: 'error',
+                            title: data.responseJSON.message
+                        });
+                    },
+                });
+        }
+    });
+
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
+        console.log(event)
+        // Get ID
+        let id = [...event.currentTarget[8].classList].find(classElem => classElem.startsWith('fizetve-button-id-')).split('-')[3]
+
+        // Change values
         $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
         $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
         $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? 1 : 0);
+
+        // Set kedvezmeny to disabled megrendelo-het-id-614
+        $('.megrendelo-het-id-' + id).prop('disabled', !$('.megrendelo-het-id-' + id).is(":disabled"));
+    });
+
+    let stateForKedvezmenyClick = -1;
+    $('.kedvezmeny-input').focus(function(e){
+        stateForKedvezmenyClick = e.currentTarget.value;
+    });
+
+    $('.kedvezmeny-input').blur(function(e){
+        let megrendeloHetId = e.currentTarget.classList[1].split('-')[3];
+        if(e.currentTarget.value !== stateForKedvezmenyClick) {
+            document.rememberScroll();
+            $(this.form).submit();
+        }
+    });
+
+    $('.fizetve-modal').click(function(e) {
+        let megrendeloId = [...e.currentTarget.classList].find(element => element.startsWith('fizetve-button-id')).split('-')[3];
+
+        Swal.fire({
+            title: 'Biztos benne?',
+            text: "Ha a hetet fizetettre állítja akkor a hozzá tartozó tételek módosítására nem lesz lehetőség.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Igen',
+            cancelButtonText: 'Mégse'
+        }).then((result) => {
+            if (result.value) {
+                $('.form-id-' + megrendeloId).submit();
+            }
+        })
+    });
+
+    $(document).on('click','.megrendeles-modositas-button', function(e) {
+        e.preventDefault();
+        let megrendeloId = e.currentTarget.classList[3].split('-')[4];
+        Swal.fire({
+            title: 'Biztos benne, hogy módosítja a megrendeléseket?',
+            text: 'Megrendeléseket utólag csak a főnök vagy a titkárnő tud kivenni',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Igen',
+            cancelButtonText: 'Mégse'
+        }).then((result) => {
+            if (result.value) {
+                $('.megrendeles-modositas-id-' + megrendeloId).submit();
+            }
+        });
     });
 
     $('.sortable-table').sortable({
         axis: "y",
         cancel: ".sortable-table tr span",
+        distance: 2,
         helper: function(e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
@@ -144,40 +237,40 @@
 
             let tableRowIds = tableRows.map(x => x.id.split('-')[1])
             let data = {
-                ids: tableRowIds, 
-                ev: <?php echo $ev ?>, 
+                ids: tableRowIds,
+                ev: <?php echo $ev ?>,
                 het: <?php echo $het ?>
             };
-            
-            $.ajax({
-                    type: "POST",
-                    url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,
-                    data: data,
-                    statusCode: {
-                        500: function() {
-                                Toast.fire({
-                                icon: 'error',
-                                title: 'Váratlan hiba történt'
-                            });
-                        }
-                    },
-                    success: function(data)
-                    {
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.message
-                        });
 
-                        $( form ).trigger("ajaxSuccess", data);
-                    },
-                    error: function(data)
-                    {
-                        Toast.fire({
+            $.ajax({
+                type: "POST",
+                url: window.location.origin+'/megrendelo-het-sorrend-modositas/'+<?php echo $user->id ?>,
+                data: data,
+                statusCode: {
+                    500: function() {
+                            Toast.fire({
                             icon: 'error',
-                            title: data.responseJSON.message
+                            title: 'Váratlan hiba történt'
                         });
-                    },
-                });
+                    }
+                },
+                success: function(data)
+                {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    });
+
+                    //$( form ).trigger("ajaxSuccess", data);
+                },
+                error: function(data)
+                {
+                    Toast.fire({
+                        icon: 'error',
+                        title: data.responseJSON.message
+                    });
+                },
+            });
         }
     });
 

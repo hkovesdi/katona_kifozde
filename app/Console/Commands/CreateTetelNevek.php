@@ -49,22 +49,22 @@ class CreateTetelNevek extends Command
                     'nev' => 'B',
                 ],
                 [
+                    'nev' => 'F',
+                ],
+                [
+                    'nev' => 'T',
+                ],
+                [
+                    'nev' => 'L',
+                ],
+                [
                     'nev' => 'A m',
                 ],
                 [
                     'nev' => 'B m',
                 ],
                 [
-                    'nev' => 'L',
-                ],
-                [
-                    'nev' => 'T',
-                ],
-                [
-                    'nev' => 'Db',
-                ],
-                [
-                    'nev' => 'Dz',
+                    'nev' => 'F m',
                 ],
                 [
                     'nev' => 'A1',
@@ -92,6 +92,9 @@ class CreateTetelNevek extends Command
                 ],
                 [
                     'nev' => 'S4',
+                ],
+                [
+                    'nev' => 'Dz',
                 ],
             ];
 
