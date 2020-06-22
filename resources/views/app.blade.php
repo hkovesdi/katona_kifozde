@@ -44,6 +44,10 @@
         <script src="{{asset('js/material.min.js')}}"></script>
 
         <script type="text/javascript">
+        //Force reload the page if loaded via the back button in the browser
+        if(performance.navigation.type == 2){
+            location.reload(true);
+        }
             $(function() {
                 $.ajaxSetup({
                     headers: {

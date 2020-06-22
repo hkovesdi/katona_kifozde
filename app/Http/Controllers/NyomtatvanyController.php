@@ -100,6 +100,7 @@ class NyomtatvanyController extends Controller
             });
 
             $fizetesiMod = $fizetesiModok->where('nev', $megrendeloHet->fizetesi_mod)->first();
+            $osszeg -=  $osszeg * ($megrendeloHet->kedvezmeny / 100);
             $fizetesiMod->osszeg+=$osszeg;
 
             $megrendeloHet->setAttribute('osszeg', $osszeg);
@@ -107,12 +108,13 @@ class NyomtatvanyController extends Controller
         
         
 
-/*         return view("nyomtatvanyok.futarHeti", [
+        return view("nyomtatvanyok.futarHeti", [
             'megrendeloHetek' => $megrendeloHetek,
             'ev' => $ev,
             'het' => $het,
-            'kiszallito' => $kiszallito
-        ]); */
+            'kiszallito' => $kiszallito,
+            'fizetesiModok' => $fizetesiModok,
+        ]);
         
         $pdf =  PDF::loadView("nyomtatvanyok.futarHeti", [
             'megrendeloHetek' => $megrendeloHetek,
@@ -143,6 +145,8 @@ class NyomtatvanyController extends Controller
         ->get()
         ->each(function($megrendeles) use(&$osszeg, &$fizetesiModok) {
             $rendelesOsszeg = boolval($megrendeles->feladag) ? $megrendeles->tetel->ar * 0.6 : $megrendeles->tetel->ar;
+            $rendelesOsszeg -= $megrendeles->megrendeloHet->kedvezmeny/100 * $rendelesOsszeg;
+            
             $osszeg+= $rendelesOsszeg;
             
             $fizetesiMod = $fizetesiModok->where('nev', $megrendeles->megrendeloHet->fizetesi_mod)->first();
