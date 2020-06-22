@@ -333,6 +333,13 @@ body {
 	margin-bottom: 15px;
 }
 
+.futar-heti-container {
+	display: flex;
+	flex-flow: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
 .btn-basic {
 	width: auto;
 	padding: 10px;
@@ -423,6 +430,11 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
 	-moz-appearance: textfield;
+}
+
+.gomb:hover, .gomb:focus, .gomb:active {
+	color: white !important;
+	text-decoration: none !important;
 }
 
 .megrendelo-thead {
