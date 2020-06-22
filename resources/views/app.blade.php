@@ -46,7 +46,7 @@
         <script type="text/javascript">
         //Force reload the page if loaded via the back button in the browser
         if(performance.navigation.type == 2){
-            location.reload(true);
+            location.reload();
         }
             $(function() {
                 $.ajaxSetup({
