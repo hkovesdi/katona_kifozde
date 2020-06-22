@@ -34,12 +34,13 @@
         </table>
     </div>
     @endforeach
-</div>
-    @if(ceil($megrendeloHetek->count()/30)%2 == 0 || ceil($megrendeloHetek->count()/30*30) - $megrendeloHetek->count() < 10)
+    @if(ceil($megrendeloHetek->count()/30)%2 == 0 && ceil($megrendeloHetek->count()/30)*30-$megrendeloHetek->count() < 5)
+        </div>
+        <div>
         <div style="page-break-after: always !important"></div>
     @endif
-    <div class="mt-2">
-        <table class="futar-table table-sm table-striped" style="margin: 20px">
+    <div class="mt-2" style="{{ceil($megrendeloHetek->count()/30)%2 == 1 ? 'float: right;' : ''}}">
+    <table class="futar-table table-sm table-striped" style="margin: 20px;">
             <thead class="futar-thead">
                 <tr>
                     <th>Fizetési mód</th>
@@ -59,5 +60,6 @@
         </table>
         <h3>Összesen: {{$megrendeloHetek->sum('osszeg')}} Ft</h3>
     </div>
+</div>
     @endif
 @stop
