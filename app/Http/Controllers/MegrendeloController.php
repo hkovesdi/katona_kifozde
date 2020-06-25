@@ -54,6 +54,10 @@ class MegrendeloController extends Controller
     {
         $data = $request->only('nev', 'cim', 'tel');
 
+        if(\App\Megrendelo::whereRaw('LOWER(nev) = ?', [strtolower($data['nev'])])->whereRaw('LOWER(szallitasi_cim) = ?', [strtolower($data['cim'])])->exists()){
+            return redirect()->back()->with('failure', ['Már létezik ilyen megrendelő']);
+        }
+
         $megrendelo = \App\Megrendelo::create([
             'nev' => $data['nev'],
             'szallitasi_cim' => $data['cim'],
