@@ -123,7 +123,7 @@ class MegrendelesController extends Controller
 
         $megrendeloHet->delete();
 
-        return redirect()->route('megrendelesek')->with('success', ['Megrendelő sikeresen törölve a hétről!']);
+        return redirect()->back()->with('success', ['Megrendelő sikeresen törölve a hétről!']);
     }
 
     public function sorrendModositas(Request $request, \App\User $user)
