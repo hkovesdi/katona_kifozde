@@ -33,6 +33,11 @@
             </tbody>
         </table>
     </div>
+    @if(($idx+1) % 2 == 0 && $idx+1 < ceil($megrendeloHetek->count()/30))
+        </div>
+        <div style="page-break-after: always !important"></div>
+        <div class="futar-heti-container mr-2 ml-2">
+    @endif
     @endforeach
     @if(ceil($megrendeloHetek->count()/30)%2 == 0 && ceil($megrendeloHetek->count()/30)*30-$megrendeloHetek->count() < 5)
         </div>
