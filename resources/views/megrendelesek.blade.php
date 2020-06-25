@@ -21,9 +21,9 @@
         <a class="btn-basic gomb" href="{{route('nyomtatvanyok.futarHeti', ['kiszallito' => $user, 'evHet' => $ev.'-'.$het])}}" style="">Futár heti</a>
     @endif
     @if (Request::get('name'))
-    <div id="hozzaadas-btn">
+        <div id="hozzaadas-btn">
     @else
-    <div class="input-hide" id="hozzaadas-btn">
+        <div class="input-hide" id="hozzaadas-btn">
     @endif
         <div class="card">
             <div class="card-body">

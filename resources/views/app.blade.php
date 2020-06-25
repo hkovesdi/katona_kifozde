@@ -179,6 +179,11 @@
                     <li class="nav-item">
                         <a href="#" data-toggle="modal" data-target="#newUserModal" class="nav-link">Új felhasználó</a>
                     </li>
+                    @if(Auth::user()->username == 'Admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/log-viewer">Logs</a>
+                        </li>
+                    @endif
                 @else
                     <li class="nav-item">
                         <a class="nav-link {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}" href="{{route('megrendelesek', ['user' => Auth::user()])}}">Futárok</a>
