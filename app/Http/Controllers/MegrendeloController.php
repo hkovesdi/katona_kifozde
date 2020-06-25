@@ -41,6 +41,10 @@ class MegrendeloController extends Controller
     public function modositas(Request $request, \App\Megrendelo $megrendelo) {
         $data = $request->only('nev','cim','tel');
 
+        if($data['nev'] === null || $data['cim'] === null || $data['tel'] === null){
+            return redirect()->back()->with('failure', ['Kérem minden mezőt töltsön ki']);
+        }
+
         $megrendelo->update([
             'nev' => $data['nev'],
             'szallitasi_cim' => $data['cim'],
@@ -57,6 +61,11 @@ class MegrendeloController extends Controller
         if(\App\Megrendelo::whereRaw('LOWER(nev) = ?', [strtolower($data['nev'])])->whereRaw('LOWER(szallitasi_cim) = ?', [strtolower($data['cim'])])->exists()){
             return redirect()->back()->with('failure', ['Már létezik ilyen megrendelő']);
         }
+
+        if($data['nev'] === null || $data['cim'] === null || $data['tel'] === null){
+            return redirect()->back()->with('failure', ['Kérem minden mezőt töltsön ki']);
+        }
+        
 
         $megrendelo = \App\Megrendelo::create([
             'nev' => $data['nev'],
