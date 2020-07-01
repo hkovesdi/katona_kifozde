@@ -1,4 +1,4 @@
-@extends('layouts.nyomtatvanyok') 
+@extends('layouts.nyomtatvanyokHTML') 
 @section('content')
 
 <div style="text-align: center;">
@@ -28,11 +28,11 @@
                 <tr>
 
                     <td scope="col">
-                        {{$tetel->nev}}
+                        {{$tetel['nev']}}
                     </td>
 
                     <td scope="col">
-                        {{$tetel->darab}} db
+                        {{$tetel['darab']}} db
                     </td>
 
                 </tr>
@@ -41,5 +41,21 @@
     </tbody>
 
 </table>
+
+<div  class="mt-5" style="text-align:center">
+    @foreach($megjegyzesek as $megjegyzes)
+        @if($megjegyzes != null)        
+        <div class="megjegyzes">
+            <h4><i class="fas fa-times no-print" style="color: red; cursor:pointer"></i>&nbsp{{$megjegyzes}}</h4>
+        </div>
+        @endif
+    @endforeach
+</div>
+
+<script>
+ $(document).on('click', '.fa-times', function() {
+     $(this).parents('.megjegyzes').hide();
+ });
+</script>
 
 @stop

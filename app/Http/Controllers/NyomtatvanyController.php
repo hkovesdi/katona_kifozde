@@ -23,13 +23,18 @@ class NyomtatvanyController extends Controller
     {
         $tetelNevek = \App\TetelNev::all();
         $parsedDatum = \Carbon\Carbon::parse($datum);
+        $megjegyzesek = \App\MegrendeloHet::whereHas('datum', function($query) use ($datum) {
+            $query->where('datum', \Carbon\Carbon::parse($datum)->startOfWeek());
+        })->pluck('megjegyzes');
+
 
         foreach($tetelNevek as $tetelNev) {
-            $tetelNev['darab'] = $tetelNev->tetelek()->whereHas('datum', function($query) use($parsedDatum){
+            $megrendelesek = $tetelNev->tetelek()->with('megrendelesek')->whereHas('datum', function($query) use($parsedDatum){
                 $query->where('datum', $parsedDatum);
             })->first()
-            ->megrendelesek()
-            ->count();
+            ->megrendelesek;
+
+            $tetelNev['darab'] = $megrendelesek->where('feladag', 0)->count()+$megrendelesek->where('feladag', 1)->count()/2;
         }
 
         $leves=$tetelNevek->where('nev', 'L')->first();
@@ -65,17 +70,11 @@ class NyomtatvanyController extends Controller
 
         $datum = array("datum" => $datum, "het" => $parsedDatum->weekOfYear, "nap" => $parsedDatum->dayOfWeek);
 
-        //PDF::setOptions(['debugCss' => true]);
-        $pdf =  PDF::loadView("nyomtatvanyok.szakacs", [
+        return view("nyomtatvanyok.szakacs", [
+            "megjegyzesek" => $megjegyzesek,
             "tetelek" => $tetelNevekFiltered,
             "datum" => $datum
-        ])->setPaper('a4');
-
-        return $pdf->stream('szakacs-osszesito-'.$parsedDatum.'.pdf');
-      //  return view("nyomtatvanyok.szakacs", [
-          //  "tetelek" => $tetelNevekFiltered,
-          //  "datum" => $datum
-        //]);
+        ]);
     }
 
     public function showFutarHeti(\App\User $kiszallito, String $evHet)
