@@ -1,6 +1,7 @@
 <table role="table" class="main-table">
     <thead role="rowgroup" class="main-thead">
         <tr role="row">
+            <th role="columnheader" class="fejlec-center row-rend">#</th>
             <th role="columnheader" class="fejlec-center row-rend">Törlés</th>
             <th role="columnheader" class="fejlec-center row-rend">Rendelések</th>
             <th role="columnheader" class="fejlec-center row-nev">Név</th>
@@ -24,6 +25,9 @@
             <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
+                    <td role="cell" class="centercell">
+                         <p style="margin: 0px">{{$megrendeloHet->sorrend}}</p>
+                    </td>
                     <td role="cell" class="centercell"><button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></i></td>
                     <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
                         <div class="modal-dialog" role="document">

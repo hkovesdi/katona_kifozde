@@ -184,7 +184,7 @@
     });
 
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
-        console.log(event)
+        //console.log(event)
         // Get ID
         let id = [...event.currentTarget[8].classList].find(classElem => classElem.startsWith('fizetve-button-id-')).split('-')[3]
 
@@ -210,7 +210,7 @@
         }
     });
 
-    $('.fizetve-modal').click(function(e) {
+    $(document).on('click', '.fizetve-modal', function(e) {
         let megrendeloId = [...e.currentTarget.classList].find(element => element.startsWith('fizetve-button-id')).split('-')[3];
 
         Swal.fire({
@@ -265,8 +265,10 @@
         update: function( e, { item } ) {
             let domElements = Array.from($('.sortable-table')[0].children);
             let tableRows = [];
-            domElements.forEach(data => {
+            let idx = 0;
+            domElements.forEach((data) => {
                 if (data.tagName === "TR") {
+                    $(data).children().first().children().first().text(++idx);
                     tableRows.push(data);
                 }
             })
