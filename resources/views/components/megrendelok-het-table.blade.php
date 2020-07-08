@@ -15,7 +15,7 @@
     </thead>
     <tbody role="rowgroup" class="main-tbody sortable-table">
 
-        @foreach($megrendeloHetek as $megrendeloHet)
+        @foreach($megrendeloHetek as $idx => $megrendeloHet)
             <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
                 @csrf
             </form>
@@ -26,7 +26,7 @@
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                     <td role="cell" class="centercell">
-                         <p style="margin: 0px">{{$megrendeloHet->sorrend}}</p>
+                         <p style="margin: 0px">{{$idx+1}}</p>
                     </td>
                     <td role="cell" class="centercell"><button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></i></td>
                     <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
