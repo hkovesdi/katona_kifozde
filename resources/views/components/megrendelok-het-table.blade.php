@@ -1,7 +1,11 @@
 <table role="table" class="main-table">
     <thead role="rowgroup" class="main-thead">
         <tr role="row">
-            <th role="columnheader" class="fejlec-center row-rend">#</th>
+            @if($tartozas)
+                <th role="columnheader" class="fejlec-center row-rend">Hét</th>
+            @else
+                <th role="columnheader" class="fejlec-center row-rend">#</th>
+            @endif
             <th role="columnheader" class="fejlec-center row-rend">Törlés</th>
             <th role="columnheader" class="fejlec-center row-rend">Rendelések</th>
             <th role="columnheader" class="fejlec-center row-nev">Név</th>
@@ -10,26 +14,29 @@
             <th role="columnheader" class="fejlec-center row-fizm">Fizetési mód</th>
             <th role="columnheader" class="fejlec-center row-fizm">Kedvezmény</th>
             <th role="columnheader" class="fejlec-center row-ossz">Összeg</th>
-            <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
+            @if(!$tartozas || Auth::user()->munkakor != 'Kiszállító')
+                <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
+            @endif
         </tr>
     </thead>
-    <tbody role="rowgroup" class="main-tbody sortable-table">
+    <tbody role="rowgroup" class="main-tbody {{$tartozas ? '' : 'sortable-table'}}">
 
         @foreach($megrendeloHetek as $idx => $megrendeloHet)
-            <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
-                @csrf
-            </form>
+                <form method="POST" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user, 'megrendeloHet' => $megrendeloHet])}}">
+                    @csrf
+                </form>
             <form id="kedvezmeny-form-{{$megrendeloHet->id}}" method="post" action="{{route('kedvezmenyValtoztatas', $megrendeloHet)}}">
                 @csrf
             </form>
-            <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
+            <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}} method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                     <td role="cell" class="centercell">
-                         <p style="margin: 0px">{{$idx+1}}</p>
+                         <p style="margin: 0px">{{$tartozas ? $megrendeloHet->datum->het : $idx+1}}</p>
                     </td>
-                    <td role="cell" class="centercell"><button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></i></td>
-                    <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
+                    <td role="cell" class="centercell">
+                        <button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></td>
+                        <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -49,11 +56,14 @@
                           </div>
                         </div>
                       </div>
+                    </td>
                     <td role="cell" class="centercell">
-                        <button class="btn-rend megrendeles-modal-button" 
+                        <button class="btn-rend megrendeles-modal-button {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}" 
+                            {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}
                             data-toggle="modal" 
                             data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal"
-                            type="button">Menüsor
+                            type="button"
+                            >Menüsor
                         </button>
                     </td>
                     <td role="cell" name="nev"><span>{{$megrendeloHet->megrendelo['nev']}}</span></td>
@@ -61,7 +71,7 @@
                     <td role="cell" name="telefonszam"><span>{{$megrendeloHet->megrendelo['telefonszam']}}</span></td>
                     <td role="cell" class="centercell" name="fizetesi-mod">
                         <span>
-                            @if ($megrendeloHet->fizetve_at === null)
+                            @if ($megrendeloHet->fizetve_at === null && (!$tartozas || Auth::user()->munkakor != 'Kiszállító'))
                                 <select name="fizetesi-mod">
                             @else
                                 <select name="fizetesi-mod" disabled>
@@ -77,25 +87,27 @@
                         </span>
                     </td>
                     <td role="cell" class="centercell">
-                        <span><input {{$megrendeloHet->fizetve_at === null ? '' : 'disabled'}} type="number" form="kedvezmeny-form-{{$megrendeloHet->id}}" name="kedvezmeny" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
+                        <span><input {{$megrendeloHet->fizetve_at === null && (!$tartozas || Auth::user()->munkakor != 'Kiszállító') ? '' : 'disabled'}} type="number" form="kedvezmeny-form-{{$megrendeloHet->id}}" name="kedvezmeny" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
                     </td>
                     <td role="cell" class="centercell">
                         <span>
                             <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
                         </span>
                     </td>
-                    <td role="cell" class="centercell">
-                        <span>
-                            <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
-                            <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
-                            @if ($megrendeloHet['fizetve_at'] !== null)
-                            <button type="button" class="fizetve-button-kifizetve fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}" >Fizetve</button>
+                    @if(!$tartozas || Auth::user()->munkakor != 'Kiszállító')
+                        <td role="cell" class="centercell">
+                            <span>
+                                <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
+                                <input type="hidden" name="megrendelo-het-id" value="{{ $megrendeloHet['id'] }}">
+                                @if ($megrendeloHet['fizetve_at'] !== null)
+                                <button type="button" class="fizetve-button-kifizetve fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}">Fizetve</button>
 
-                            @else
-                                <button type="button" class="fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}">Fizetve</button>
-                            @endif
-                        </span>
-                    </td>
+                                @else
+                                    <button type="button" class="fizetve-button fizetve-modal fizetve-button-id-{{$megrendeloHet->id}}" >Fizetve</button>
+                                @endif
+                            </span>
+                        </td>
+                    @endif
                 </tr>
             </form>
         @endforeach

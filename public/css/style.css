@@ -167,6 +167,14 @@ body {
 	cursor: pointer;
 }
 
+.megrendeles-modal-button.disabled,
+.megrendeles-modal-button.disabled:hover,
+.megrendeles-modal-button.disabled:active {
+	background-color: #cccccc !important;
+	color: #666666 !important;
+	cursor: default;
+}
+
 .fizetve-button:hover,
 .fizetve-button:active {
 	background: #300c0c !important;
