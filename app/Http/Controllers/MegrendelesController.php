@@ -86,7 +86,9 @@ class MegrendelesController extends Controller
             'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::all(),
             'user' => $user,
             'megrendeloHetek' => $megrendeloHetek,
-            'tartozasok' => $tartozasok,
+            'tartozasok' => $tartozasok->sortBy(function($megrendeloHet) {
+                return $megrendeloHet->datum->het;
+            }),
             'searchedMegrendelok' => $searchedMegrendelok,
             'het' => $het,
             'ev' => $ev,
