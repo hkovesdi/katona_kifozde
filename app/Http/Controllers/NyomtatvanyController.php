@@ -92,6 +92,7 @@ class NyomtatvanyController extends Controller
         ->whereHas('datum', function($query) use($ev, $het) {
             $query->whereYear('datum', $ev)->where('het', $het);
         })
+        ->orderBy('sorrend')
         ->get()
         ->each(function($megrendeloHet)  use(&$fizetesiModok){
             $osszeg = $megrendeloHet->megrendelesek->sum(function($megrendeles) {

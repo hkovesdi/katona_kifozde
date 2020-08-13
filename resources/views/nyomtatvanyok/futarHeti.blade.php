@@ -1,7 +1,7 @@
 @extends('layouts.nyomtatvanyokHTML') 
 @section('content')
 
-<div style="text-align: center; mt-3">
+<div style="text-align: center;" class="mt-5">
     <div><h3>{{$ev}} - {{$het}}. hét</h3></div>
     <div><h3>{{$kiszallito->nev}}</h3></div>
 </div>
