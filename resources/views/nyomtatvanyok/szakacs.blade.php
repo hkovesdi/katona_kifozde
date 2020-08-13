@@ -1,10 +1,10 @@
 @extends('layouts.nyomtatvanyokHTML') 
 @section('content')
 
-<div style="text-align: center;">
-    <div><h3>{{$datum['datum']}}</h3></div>
-    <div class="mt-1"><h3>{{$datum['het']}}. hét</h3></div>
-    <div class="mt-2"><h3>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h3></div>
+<div style="text-align: center;" class="mt-5">
+    <div><h2>{{$datum['datum']}}</h2></div>
+    <div class="mt-1"><h2>{{$datum['het']}}. hét</h2></div>
+    <div class="mt-2"><h2>{{Helper::getNapFromDayOfWeek($datum['nap'])}}</h2></div>
 </div>
 
 
@@ -45,8 +45,8 @@
 <div  class="mt-5" style="text-align:center">
     @foreach($megjegyzesek as $megjegyzes)
         @if($megjegyzes != null)        
-        <div class="megjegyzes">
-            <h4><i class="fas fa-times no-print" style="color: red; cursor:pointer"></i>&nbsp{{$megjegyzes}}</h4>
+        <div class="megrendelo-megjegyzes">
+            <span><i class="fas fa-times no-print" style="color: red; cursor:pointer"></i>&nbsp{{$megjegyzes}}</span>
         </div>
         @endif
     @endforeach
