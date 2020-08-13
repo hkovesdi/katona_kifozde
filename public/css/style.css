@@ -505,11 +505,11 @@ input[type=number] {
 }
 
 .szakacs-thead > tr > th {
-	font-size: 24px !important;
+	font-size: 28px !important;
 }
 
 .szakacs-table > tbody > tr > td {
-	font-size: 20px !important;
+	font-size: 24px !important;
 	border-right: 1px solid #ccc;
 	margin: 3,5,5,3px !important;
 	padding: 3,5,5,3px !important;
@@ -589,7 +589,8 @@ table tr .page-break {
 }
 
 .megrendelo-megjegyzes {
-	margin-top: 30px;
+    margin-top: 30px;
+    font-size: 24px !important;
 }
 
 .megrendelo-textarea {
