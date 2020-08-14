@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         //$schedule->command('inspire')->everyFiveMinutes()->appendOutputTo('/var/www/inspire');
         $schedule->command('create:datumok --next-week')->hourly()->withoutOverLapping();
         $schedule->command('create:tetelek --next-week')->hourly()->withoutOverlapping();
+        $schedule->command('copy:megrendelo-hetek-next-week')->weeklyOn(2, '4:00')->withoutOverlapping();
     }
 
     /**
