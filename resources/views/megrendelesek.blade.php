@@ -209,12 +209,12 @@
     $(document).on('ajaxSuccess', '.fizetesi-status-modosito-form', function(event) {
         //console.log(event)
         // Get ID
-        let id = [...event.currentTarget[8].classList].find(classElem => classElem.startsWith('fizetve-button-id-')).split('-')[3]
+        let id = [...event.currentTarget[5].classList].find(classElem => classElem.startsWith('fizetve-button-id-')).split('-')[3]
 
         // Change values
-        $(event.currentTarget[8]).toggleClass('fizetve-button-kifizetve');
-        $(event.currentTarget[5]).prop('disabled', !$(event.currentTarget[5]).is(":disabled"));
-        $(event.currentTarget[6]).val( $(event.currentTarget[6]).val() == 0 ? "1" : "0");
+        $(event.currentTarget[5]).toggleClass('fizetve-button-kifizetve');
+        $(event.currentTarget[2]).prop('disabled', !$(event.currentTarget[2]).is(":disabled"));
+        $(event.currentTarget[3]).val( $(event.currentTarget[3]).val() == 0 ? "1" : "0");
 
         // Set kedvezmeny to disabled megrendelo-het-id-614
         $('.megrendelo-het-id-' + id).prop('disabled', !$('.megrendelo-het-id-' + id).is(":disabled"));
