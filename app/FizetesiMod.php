@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $nev
+ * @property bool $active
  * @property string $created_at
  * @property string $updated_at
  * @property Megrendeles[] $megrendelesek
@@ -43,7 +44,7 @@ class FizetesiMod extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nev','created_at', 'updated_at'];
+    protected $fillable = ['nev', 'active', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
