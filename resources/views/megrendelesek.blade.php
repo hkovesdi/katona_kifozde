@@ -15,8 +15,31 @@
     @endif
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="megrendelo-torles-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Megrendelők törlése a hétről</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mt-3">
+          <p style="font-size: 16px">Biztos benne, hogy törölni szeretné a kiválasztott megrendelőket erről a hétről?</p>
+          <p style="font-size: 12px"><i class="fas fa-info-circle"  style="font-size: 15px; color: #6699ff"></i> A megrendelőket csak akkor lehet törölni a hétről, ha nincsen hozzájuk tartozó rendelés a héten.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Mégsem</button>
+          <button type="submit" form="megrendelo-torles-form" class="btn btn-success">Törlés</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<form method="POST" id="megrendelo-torles-form" action="{{route('megrendeloHetTorles', ['user' => $user])}}">@csrf</form>
+
 <div id="buttons">
     <button class="btn-basic" onclick="hozzaadasFunction()">Hozzáadás</button>
+    <button type="button" class="btn-basic" data-toggle="modal" data-target="#megrendelo-torles-modal">Törlés</button>
     @if(Auth::user()->munkakor != 'Kiszállító')
         <a class="btn-basic gomb" href="{{route('nyomtatvanyok.futarHeti', ['kiszallito' => $user, 'evHet' => $ev.'-'.$het])}}" style="">Futár heti</a>
     @endif

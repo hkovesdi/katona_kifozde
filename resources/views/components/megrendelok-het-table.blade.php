@@ -6,7 +6,7 @@
             @else
                 <th role="columnheader" class="fejlec-center row-rend">#</th>
             @endif
-            <th role="columnheader" class="fejlec-center row-rend">Törlés</th>
+            <th role="columnheader" class="fejlec-center row-rend" style="width: fit-content">Törlés</th>
             <th role="columnheader" class="fejlec-center row-rend">Rendelések</th>
             <th role="columnheader" class="fejlec-center row-nev">Név</th>
             <th role="columnheader" class="fejlec-center row-cim">Cim</th>
@@ -35,27 +35,7 @@
                          <p style="margin: 0px">{{$tartozas ? $megrendeloHet->datum->het : $idx+1}}</p>
                     </td>
                     <td role="cell" class="centercell">
-                        <button type="button" class="text-button" data-toggle="modal" data-target="#megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal" style="text-align: center;"><i class="fas fa-user-minus" style="color: red;"></button></td>
-                        <div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-modal">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title">Megrendelő törlése a hétről</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body mt-3">
-                              <p style="font-size: 16px">Biztos benne, hogy törölni szeretné a megrendelőt erről a hétről?</p>
-                              <p style="font-size: 12px"><i class="fas fa-info-circle"  style="font-size: 15px; color: #6699ff"></i> A megrendelőt csak akkor lehet törölni a hétről, ha nincsen hozzá tartozó rendelés a héten.</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-dismiss="modal">Mégsem</button>
-                              <button type="submit" form="megrendelo-{{$megrendeloHet->megrendelo['id']}}-torles-form" class="btn btn-success" {{count($megrendeloHet['megrendelesek']) > 0 ? 'disabled' : ''}}>Törlés</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        <input type="checkbox" name="megrendelo-het[]" value="{{$megrendeloHet->id}}" {{count($megrendeloHet['megrendelesek']) > 0 ? 'disabled' : ''}} form="megrendelo-torles-form">
                     </td>
                     <td role="cell" class="centercell">
                         <button class="btn-rend megrendeles-modal-button {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}" 
@@ -91,7 +71,7 @@
                     </td>
                     <td role="cell" class="centercell">
                         <span>
-                            <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}">{{$megrendeloHet->osszeg}} Ft</a>
+                            <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}" style="white-space: nowrap;">{{$megrendeloHet->osszeg}} Ft</a>
                         </span>
                     </td>
                     @if(!$tartozas || Auth::user()->munkakor != 'Kiszállító')

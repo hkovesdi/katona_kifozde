@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/megrendeles-table/{megrendeloHet}', 'MegrendelesController@showMegrendelesTable')->name('megrendelesTable');
     Route::post('/megrendelo-het/kedvezmeny-modositas/{megrendeloHet}', 'MegrendelesController@kedvezmenyValtoztatas')->name('kedvezmenyValtoztatas');
     Route::post('megrendelo-het-sorrend-modositas/{user}', 'MegrendelesController@sorrendModositas')->name('sorrendModositas');
-    Route::post('megrendelo-het-torles/{user}/{megrendeloHet}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
+    Route::post('megrendelo-het-torles/{user}', 'MegrendelesController@megrendeloHetTorles')->name('megrendeloHetTorles');
     Route::post('/jelszo-valtoztatas', 'UserController@jelszoValtoztatas')->name('jelszoValtoztatas');
     Route::post('/megrendeles-modositas', 'MegrendelesController@modositas')->name('megrendelesModositas');
     Route::post('/megrendelo-letrehozas', 'MegrendeloController@letrehozas')->name('megrendeloLetrehozas');

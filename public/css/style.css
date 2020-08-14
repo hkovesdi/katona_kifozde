@@ -580,6 +580,10 @@ input[type=number] {
 	border: 1px solid #424242 !important;
 }
 
+.futar-table > tbody > tr > td {
+    white-space: nowrap !important;
+}
+
 .flex-container {
 	display: flex;
 }

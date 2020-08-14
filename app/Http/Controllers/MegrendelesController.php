@@ -109,23 +109,25 @@ class MegrendelesController extends Controller
     }
 
 
-    public function megrendeloHetTorles(Request $request, \App\User $user, \App\MegrendeloHet $megrendeloHet) 
+    public function megrendeloHetTorles(Request $request, \App\User $user)
     {   
         if(Auth::user()->munkakor == 'Kiszállító' && $user->id != Auth::user()->id){
             return redirect()->back()->with('failure', ['Más kiszállító alá tartozó megrendelők hetének törlése nem lehetséges!']);
         }
         
-        if(!$megrendeloHet->megrendelesek->isEmpty()) {
-            return redirect()->back()->with('failure', ['A megrendelőt csak akkor lehet törölni a hétről, ha nincsen hozzá tartozó rendelés.']);
+        $megrendeloHetekId = $request->input('megrendelo-het') ?? array();
+
+        foreach($megrendeloHetekId as $megrendeloHetId) {
+            $megrendeloHet = $user->megrendeloHetek()->find(intval($megrendeloHetId));
+
+            if(!$megrendeloHet->megrendelesek->isEmpty()) {
+                return redirect()->back()->with('failure', ['A megrendelőket csak akkor lehet törölni a hétről, ha nincsen hozzájuk tartozó rendelés.']);
+            }
+
+            $megrendeloHet->delete();
         }
 
-        \App\MegrendeloHet::where('het_start_datum_id', $megrendeloHet->het_start_datum_id)
-            ->where('sorrend', '>', $megrendeloHet->sorrend)
-            ->update(['sorrend' => DB::raw('sorrend - 1')]);
-
-        $megrendeloHet->delete();
-
-        return redirect()->back()->with('success', ['Megrendelő sikeresen törölve a hétről!']);
+        return redirect()->back()->with('success', ['Megrendelők sikeresen törölve a hétről!']);
     }
 
     public function sorrendModositas(Request $request, \App\User $user)
