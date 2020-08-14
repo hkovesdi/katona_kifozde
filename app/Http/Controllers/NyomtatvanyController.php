@@ -105,7 +105,10 @@ class NyomtatvanyController extends Controller
 
             $megrendeloHet->setAttribute('osszeg', $osszeg);
         });
-        
+
+        $fizetesiModok = $fizetesiModok->reject(function($fizetesiMod) {
+            return !$fizetesiMod->active && $fizetesiMod->osszeg === 0;
+        });
         
 
         return view("nyomtatvanyok.futarHeti", [
@@ -116,15 +119,6 @@ class NyomtatvanyController extends Controller
             'fizetesiModok' => $fizetesiModok,
         ]);
         
-        $pdf =  PDF::loadView("nyomtatvanyok.futarHeti", [
-            'megrendeloHetek' => $megrendeloHetek,
-            'ev' => $ev,
-            'het' => $het,
-            'kiszallito' => $kiszallito,
-            'fizetesiModok' => $fizetesiModok,
-        ])->setPaper('a4');
-
-        return $pdf->stream('futar-heti-'.$kiszallito->username.'-'.$ev.'-'.$het.'.pdf');
     }
 
     public function showOsszesito(String $kezdete, String $vege) 
@@ -153,6 +147,10 @@ class NyomtatvanyController extends Controller
             $fizetesiMod->osszeg+=$rendelesOsszeg;           
         })
         ->groupBy('tetel.tetel_nev');
+
+        $fizetesiModok = $fizetesiModok->reject(function($fizetesiMod) {
+            return !$fizetesiMod->active && $fizetesiMod->osszeg === 0;
+        });
 
         $pdf =  PDF::loadView("nyomtatvanyok.osszesito", [
             'megrendelesek' => $megrendelesek,

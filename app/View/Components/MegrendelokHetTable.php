@@ -25,7 +25,7 @@ class MegrendelokHetTable extends Component
     public function __construct($megrendeloHetek, $het, $tartozas, $user)
     {
         $this->megrendeloHetek = $megrendeloHetek;
-        $this->fizetesiModok = \App\FizetesiMod::where('nev', '!=', 'Tartozás')->get();
+        $this->fizetesiModok = \App\FizetesiMod::where('nev', '!=', 'Tartozás')->where('active', 1)->get();
         $this->tetelek = \App\TetelNev::all();
         $this->het = $het;
         $this->tartozas = $tartozas;

@@ -63,6 +63,9 @@
                                         <option {{$fizetesiMod->nev == $megrendeloHet->fizetesi_mod ? "selected" : ""}} value="{{$fizetesiMod->nev}}">{{$fizetesiMod->nev}}</option>
                                     @endif
                                 @endforeach
+                                @if($megrendeloHet->fizetve_at !== null && $megrendeloHet->fizetesiMod->active == 0)
+                                    <option selected value="{{$megrendeloHet->fizetesiMod->nev}}">{{$megrendeloHet->fizetesiMod->nev}}</option>
+                                @endif
                             </select>
                         </span>
                     </td>
