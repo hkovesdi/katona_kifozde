@@ -41,7 +41,7 @@
                         <button class="btn-rend megrendeles-modal-button {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}" 
                             {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}
                             data-toggle="modal" 
-                            data-target="#megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal"
+                            data-target="#megrendelo-{{$tartozas == true ? "tartozas-$megrendeloHet->id-" : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal"
                             type="button"
                             >Menüsor
                         </button>
@@ -98,7 +98,7 @@
 </table>
 
 @foreach($megrendeloHetek as $megrendeloHet)
-<div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$tartozas == true ? 'tartozas-' : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" data-megrendelo-het-id="{{$megrendeloHet->id}}">
+<div class="modal" tabindex="-1" role="dialog" id="megrendelo-{{$tartozas == true ? "tartozas-$megrendeloHet->id-" : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal" data-megrendelo-het-id="{{$megrendeloHet->id}}">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
