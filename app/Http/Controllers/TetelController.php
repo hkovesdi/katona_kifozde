@@ -18,7 +18,12 @@ class TetelController extends Controller
         $emptyTetelTablazat = Helper::constructEmptyTetelTablazat();
         
         $tetelek = \App\Tetel::whereHas('datum', function($query) use($ev,$het){
-            $query->whereYear('datum', $ev)->where('het', $het);
+            $query->where(function($query) use($ev, $het){
+                $query->whereYear('datum', $ev)->where('het', $het);
+            })
+            ->orWhere(function($query) use($ev, $het){
+                $query->whereYear('datum', $ev+1)->whereMonth('datum', '01')->where('het', $het);
+            });
         })
         ->get()
         ->each(function($tetel) use (&$emptyTetelTablazat){
@@ -41,7 +46,7 @@ class TetelController extends Controller
     {
         $data = $request->all();
 
-        if($data['ev'] < Carbon::now()->year || $data['het'] < Carbon::now()->weekOfYear) {
+        if($data['ev'] < Carbon::now()->year || ($data['ev'] == \Carbon\Carbon::now()->year && $data['het'] < \Carbon\Carbon::now()->weekOfYear)) {
             return redirect()->back()->with('failure', ['Tétel(ek) árának módosítása visszamenőleg nem lehetséges']);
         }
 
@@ -50,7 +55,12 @@ class TetelController extends Controller
             foreach($tetelek as $tetelNev => $tetel) {
                 $tetelFromDB = \App\Tetel::with('datum')
                 ->whereHas('datum', function($query) use($data){
-                    $query->whereYear('datum', $data['ev'])->where('het', $data['het']);
+                    $query->where(function($query) use($data){
+                        $query->whereYear('datum', $data['ev'])->where('het', $data['het']);
+                    })
+                    ->orWhere(function($query) use($data){
+                        $query->whereYear('datum', $data['ev']+1)->whereMonth('datum', '01')->where('het', $data['het']);
+                    });
                 })
                 ->find($tetel['id']); //maybe check the date in case of ID tampering?
 

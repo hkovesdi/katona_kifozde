@@ -8,11 +8,9 @@
         </a>
     @endif
     <span id="het-text">{{$ev}} - {{$het}}. hét</span>
-    @if($ev < \Carbon\Carbon::now()->year || $het <= \Carbon\Carbon::now()->weekOfYear)
         <a class="baljobbgombA" href="/megrendelesek/{{$user->id}}/{{$het+1 > 53 ? $ev+1 : $ev}}-{{$het+1 > 53 ? 1 : $het+1}}">
             <button type="button" class="baljobbgomb baljobbgombR arrows"><i class="fas fa-arrow-right"></i></button>
         </a>
-    @endif
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="megrendelo-torles-modal">

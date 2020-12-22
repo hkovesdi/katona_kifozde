@@ -17,7 +17,7 @@ class MegrendelesController extends Controller
         $ev = intval($parsedEvHet[0]);
         $het = intval($parsedEvHet[1]);
 
-        if(Auth::user()->munkakor == 'Kiszállító'  && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user))){
+        if(Auth::user()->munkakor == 'Kiszállító'  && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user)) && ($ev != Carbon::now()->year+1 && $het != 1)){
             return redirect('/');
         }
 

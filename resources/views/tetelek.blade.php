@@ -21,7 +21,7 @@
         <div class="card-body">
           <h1 class="card-title">Tételek</h1>
           <div class="table-responsive-xl">
-            @if($ev < \Carbon\Carbon::now()->year || $het < \Carbon\Carbon::now()->weekOfYear)
+            @if($ev < \Carbon\Carbon::now()->year || ($ev == \Carbon\Carbon::now()->year && $het < \Carbon\Carbon::now()->weekOfYear))
                 <p style="font-size: 16px"><i class="fas fa-info-circle"  style="font-size: 21px; color: #6699ff"></i> A tételek árait visszamenőleg nem lehet módosítani</p>
             @endif
             <table class="modified-table table table-striped">
@@ -44,7 +44,7 @@
                                     @foreach($tetelTablazatSor as $tetelNev => $tetelTablazatOszlop)
                                         <td>
                                             <input type="hidden" name="tetelek[{{$napIdx}}][{{$tetelNev}}][id]" value={{$tetelTablazatOszlop['id']}}>
-                                            <input name="tetelek[{{$napIdx}}][{{$tetelNev}}][ar]" class="tetel-table-input" type="number" value={{$tetelTablazatOszlop['ar']}} {{$ev < \Carbon\Carbon::now()->year || $het < \Carbon\Carbon::now()->weekOfYear ? 'disabled' : ''}}>Ft&nbsp;
+                                            <input name="tetelek[{{$napIdx}}][{{$tetelNev}}][ar]" class="tetel-table-input" type="number" value={{$tetelTablazatOszlop['ar']}} {{$ev < \Carbon\Carbon::now()->year || ($ev == \Carbon\Carbon::now()->year && $het < \Carbon\Carbon::now()->weekOfYear) ? 'disabled' : ''}}>Ft&nbsp;
                                         </td>
                                     @endforeach
                             </tr>
@@ -54,7 +54,7 @@
             </table>
         </div>
         <div style="text-align: right">
-            <button class="btn btn-success my-1" form="tetel-ar-modosito-form" type="submit" {{$tetelTablazatOszlop['ar']}} {{$ev < \Carbon\Carbon::now()->year || $het < \Carbon\Carbon::now()->weekOfYear ? 'disabled' : ''}}>Mentés</button>
+            <button class="btn btn-success my-1" form="tetel-ar-modosito-form" type="submit" {{$tetelTablazatOszlop['ar']}} {{$ev < \Carbon\Carbon::now()->year || ($ev == \Carbon\Carbon::now()->year && $het < \Carbon\Carbon::now()->weekOfYear) ? 'disabled' : ''}}>Mentés</button>
         </div>
         </div>
       </div>
