@@ -150,22 +150,24 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav">
                 @if(Auth::user()->munkakor != 'Kiszállító')
-                    <li class="nav-item dropdown {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Futárok
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            @foreach(\App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Titkárnő')->get() as $kiszallito)
-                                <a class="dropdown-item" href="{{route('megrendelesek', $kiszallito->id)}}">{{$kiszallito->nev}}</a>
-                            @endforeach
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Ártábla</a>
-                    </li>
-                    <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
-                        <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
-                    </li>
+                    @if(Auth::user()->munkakor != 'Szakács')
+                        <li class="nav-item dropdown {{Route::current()->getName()  == 'megrendelesek' ? "active" : ""}}">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Futárok
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @foreach(\App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Titkárnő')->orWhere('munkakor', 'Szakács')->get() as $kiszallito)
+                                    <a class="dropdown-item" href="{{route('megrendelesek', $kiszallito->id)}}">{{$kiszallito->nev}}</a>
+                                @endforeach
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{Route::current()->getName()  == 'tetelek' ? "active" : ""}}" href="{{route('tetelek')}}">Ártábla</a>
+                        </li>
+                        <li class="nav-item {{Route::current()->getName()  == 'megrendelok' ? "active" : ""}}">
+                            <a class="nav-link" href="{{route('megrendelok')}}">Megrendelők</a>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Nyomtatványok
@@ -176,9 +178,11 @@
                             <a class="dropdown-item" href="{{route('nyomtatvanyok.osszesito', ['kezdete' => \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d'), 'vege' => \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d')])}}">Havi statisztika</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" data-toggle="modal" data-target="#newUserModal" class="nav-link">Új felhasználó</a>
-                    </li>
+                    @if(Auth::user()->munkakor != 'Szakács')
+                        <li class="nav-item">
+                            <a href="#" data-toggle="modal" data-target="#newUserModal" class="nav-link">Új felhasználó</a>
+                        </li>
+                    @endif
                     @if(Auth::user()->username == 'Admin')
                         <li class="nav-item">
                             <a class="nav-link" href="/log-viewer">Logs</a>
