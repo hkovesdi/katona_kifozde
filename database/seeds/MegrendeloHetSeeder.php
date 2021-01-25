@@ -24,7 +24,7 @@ class MegrendeloHetSeeder extends Seeder
                 $datum = \App\Datum::where('datum', $hetStartDatum->datum)->first();
                 $parsedDatum = \Carbon\Carbon::parse($datum->datum);
                 if((bool)random_int(0,1)){
-                    $futar = \App\User::where('munkakor', 'Kiszállító')->inRandomOrder()->first();
+                    $futar = \App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Szakács')->inRandomOrder()->first();
                     $elozo = \App\MegrendeloHet::where('kiszallito_id', $futar->id)->where('het_start_datum_id', $datum->id)->orderBy('sorrend', 'desc')->first();
                     \App\MegrendeloHet::create([
                         'megrendelo_id' => $megrendelo->id,
