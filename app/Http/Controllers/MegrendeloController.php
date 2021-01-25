@@ -11,7 +11,7 @@ class MegrendeloController extends Controller
 
         $data = [
             'megrendelok' => \App\Megrendelo::orderBy('nev', 'asc')->get(),
-            'kiszallitok' => \App\User::where('munkakor', 'Kiszállító')->get()
+            'kiszallitok' => \App\User::where('munkakor', 'Kiszállító')->orWhere('munkakor', 'Szakács')->get()
         ];
 
         return view('megrendelok', $data);
