@@ -271,35 +271,42 @@ body {
 		white-space: nowrap;
 	}
 
-	.main-tbody td:nth-of-type(1):before {
+    .main-tbody td:nth-of-type(1):before {
+		content: "Hét";
+    }
+    
+	.main-tbody td:nth-of-type(2):before {
 		content: "Törlés";
 	}
 
-	.main-tbody td:nth-of-type(2):before {
+	.main-tbody td:nth-of-type(3):before {
 		content: "Rendelések";
 	}
 
-	.main-tbody td:nth-of-type(3):before {
+	.main-tbody td:nth-of-type(4):before {
 		content: "Név";
 	}
 
-	.main-tbody td:nth-of-type(4):before {
+	.main-tbody td:nth-of-type(5):before {
 		content: "Cim";
 	}
 
-	.main-tbody td:nth-of-type(5):before {
+	.main-tbody td:nth-of-type(6):before {
 		content: "Tel";
 	}
 
-	.main-tbody td:nth-of-type(6):before {
+	.main-tbody td:nth-of-type(7):before {
 		content: "Fizetési mód";
 	}
 
-	.main-tbody td:nth-of-type(7):before {
+	.main-tbody td:nth-of-type(8):before {
 		content: "Összeg";
 	}
 
-	.main-tbody td:nth-of-type(8):before {
+    .main-tbody td:nth-of-type(9):before {
+		content: "Kedvezmény";
+	} 
+	.main-tbody td:nth-of-type(10):before {
 		content: "Fizetett";
 	}
 }
