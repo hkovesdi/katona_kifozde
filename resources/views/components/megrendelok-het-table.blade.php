@@ -14,7 +14,7 @@
             <th role="columnheader" class="fejlec-center row-fizm">Fizetési mód</th>
             <th role="columnheader" class="fejlec-center row-fizm">Kedvezmény</th>
             <th role="columnheader" class="fejlec-center row-ossz">Összeg</th>
-            @if(!$tartozas || Auth::user()->munkakor != 'Kiszállító')
+            @if(!$tartozas || (Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács'))
                 <th role="columnheader" class="fejlec-center row-fiz">Fizetett</th>
             @endif
         </tr>
@@ -28,7 +28,7 @@
             <form id="kedvezmeny-form-{{$megrendeloHet->id}}" method="post" action="{{route('kedvezmenyValtoztatas', $megrendeloHet)}}">
                 @csrf
             </form>
-            <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}} method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
+            <form class="ajax fizetesi-status-modosito-form form-id-{{$megrendeloHet->id}}" {{$tartozas && (Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') ? 'disabled' : ''}} method="post" action="{{route('fizetesiStatuszModositas', $megrendeloHet)}}">
                 @csrf
                 <tr role="row" id="megrendelo-{{$megrendeloHet->megrendelo['id']}}">
                     <td role="cell" class="centercell">
@@ -38,8 +38,8 @@
                         <input type="checkbox" name="megrendelo-het[]" value="{{$megrendeloHet->id}}" {{count($megrendeloHet['megrendelesek']) > 0 ? 'disabled' : ''}} form="megrendelo-torles-form">
                     </td>
                     <td role="cell" class="centercell">
-                        <button class="btn-rend megrendeles-modal-button {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}" 
-                            {{$tartozas && Auth::user()->munkakor == 'Kiszállító' ? 'disabled' : ''}}
+                        <button class="btn-rend megrendeles-modal-button {{$tartozas && (Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') ? 'disabled' : ''}}" 
+                            {{$tartozas && (Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') ? 'disabled' : ''}}
                             data-toggle="modal" 
                             data-target="#megrendelo-{{$tartozas == true ? "tartozas-$megrendeloHet->id-" : 'megrendeles-'}}{{$megrendeloHet->megrendelo['id']}}-modal"
                             type="button"
@@ -51,7 +51,7 @@
                     <td role="cell" name="telefonszam"><span>{{$megrendeloHet->megrendelo['telefonszam']}}</span></td>
                     <td role="cell" class="centercell" name="fizetesi-mod">
                         <span>
-                            @if ($megrendeloHet->fizetve_at === null && (!$tartozas || Auth::user()->munkakor != 'Kiszállító'))
+                            @if ($megrendeloHet->fizetve_at === null && (!$tartozas || (Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács')))
                                 <select name="fizetesi-mod">
                             @else
                                 <select name="fizetesi-mod" disabled>
@@ -70,14 +70,14 @@
                         </span>
                     </td>
                     <td role="cell" class="centercell">
-                        <span><input {{$megrendeloHet->fizetve_at === null && (!$tartozas || Auth::user()->munkakor != 'Kiszállító') ? '' : 'disabled'}} type="number" form="kedvezmeny-form-{{$megrendeloHet->id}}" name="kedvezmeny" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
+                        <span><input {{$megrendeloHet->fizetve_at === null && (!$tartozas || (Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács')) ? '' : 'disabled'}} type="number" form="kedvezmeny-form-{{$megrendeloHet->id}}" name="kedvezmeny" class="kedvezmeny-input megrendelo-het-id-{{$megrendeloHet->id}}" value={{$megrendeloHet['kedvezmeny']}} style="width:33px">%</span>
                     </td>
                     <td role="cell" class="centercell">
                         <span>
                             <a tabindex="0" class="osszeg-osszesito" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="Összeg összesítő" data-content="{{$megrendeloHet->osszeg_osszesito}}" style="white-space: nowrap;">{{$megrendeloHet->osszeg}} Ft</a>
                         </span>
                     </td>
-                    @if(!$tartozas || Auth::user()->munkakor != 'Kiszállító')
+                    @if(!$tartozas || (Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács'))
                         <td role="cell" class="centercell">
                             <span>
                                 <input type="hidden" name="torles" value="{{ $megrendeloHet['fizetve_at'] !== null ? 1 : 0 }}">
