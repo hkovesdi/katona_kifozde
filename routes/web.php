@@ -17,16 +17,18 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('megrendelesek', ['user' => Auth::user()]);
     })->name('home');
 
-    Route::group(['middleware' => 'isNotKiszallito'], function () {
-        Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
-        Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
-        Route::get('/nyomtatvanyok/futar-heti/{kiszallito}/{evHet}', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
-        Route::get('/nyomtatvanyok/osszesito/{kezdete}/{vege}', 'NyomtatvanyController@showOsszesito')->name('nyomtatvanyok.osszesito');
+    Route::group(['middleware' => 'isFonokOrTitkarno'], function () {
         Route::get('/tetelek/{evHet?}', 'TetelController@show')->name('tetelek');
         Route::get('/megrendelok', 'MegrendeloController@show')->name('megrendelok');
         Route::post('/megrendelok/{megrendelo}', 'MegrendeloController@modositas')->name('megrendeloModositas');
         Route::post('/tetel-ar-modositas', 'TetelController@tetelArModositas')->name('tetelArModositas');
         Route::post('/felhasznalo-letrehozas', 'UserController@create')->name('felhasznaloLetrehozas');
+    });
+    Route::group(['middleware' => 'isNotKiszallito'], function() {
+        Route::get('/nyomtatvanyok', 'NyomtatvanyController@show')->name('nyomtatvanyok');
+        Route::get('/nyomtatvanyok/szakacs-osszesito/{datum}', 'NyomtatvanyController@showSzakacsView')->name('nyomtatvanyok.szakacsView');
+        Route::get('/nyomtatvanyok/futar-heti/{kiszallito}/{evHet}', 'NyomtatvanyController@showFutarHeti')->name('nyomtatvanyok.futarHeti');
+        Route::get('/nyomtatvanyok/osszesito/{kezdete}/{vege}', 'NyomtatvanyController@showOsszesito')->name('nyomtatvanyok.osszesito');
     });
     Route::get('/megrendelesek/{user}/{evHet?}', 'MegrendelesController@show')->name('megrendelesek');
     Route::get('/megrendeles-table/{megrendeloHet}', 'MegrendelesController@showMegrendelesTable')->name('megrendelesTable');
