@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class ChangeFutarName extends Command
 {
@@ -39,6 +40,6 @@ class ChangeFutarName extends Command
     public function handle()
     {
         User::where('nev', 'Hunka Virág')->update(['nev' => 'Szalai Richárd']);
-        User::where('nev', 'Wéber Dominik')->update(['nev' => 'Wéber Tamás', 'munkakor' => 'Szakács']);
+        User::where('nev', 'Wéber Dominik')->update(['nev' => 'Wéber Tamás', 'munkakor' => 'Szakács', 'password' => Hash::make('Kiskakas2021')]);
     }
 }
