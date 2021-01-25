@@ -18,6 +18,8 @@ class Munkakor extends Model
      */
     protected $table = 'munkakorok';
 
+    public $timestamps = false;
+
     /**
      * The primary key for the model.
      * 
