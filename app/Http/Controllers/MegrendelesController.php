@@ -17,7 +17,7 @@ class MegrendelesController extends Controller
         $ev = intval($parsedEvHet[0]);
         $het = intval($parsedEvHet[1]);
 
-        if(Auth::user()->munkakor == 'Kiszállító'  && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user)) && ($ev != Carbon::now()->year+1 && $het != 1)){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && ($ev != Carbon::now()->year || ($het != Carbon::now()->weekOfYear && $het != Carbon::now()->weekOfYear+1) || !Auth::user()->is($user))){
             return redirect('/');
         }
 
@@ -83,7 +83,7 @@ class MegrendelesController extends Controller
             });
 
         $data = [
-            'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' ?  collect() : \App\User::all(),
+            'kiszallitok' => Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács' ?  collect() : \App\User::all(),
             'user' => $user,
             'megrendeloHetek' => $megrendeloHetek,
             'tartozasok' => $tartozasok->sortBy(function($megrendeloHet) {
@@ -111,7 +111,7 @@ class MegrendelesController extends Controller
 
     public function megrendeloHetTorles(Request $request, \App\User $user)
     {   
-        if(Auth::user()->munkakor == 'Kiszállító' && $user->id != Auth::user()->id){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && $user->id != Auth::user()->id){
             return redirect()->back()->with('failure', ['Más kiszállító alá tartozó megrendelők hetének törlése nem lehetséges!']);
         }
         
@@ -132,7 +132,7 @@ class MegrendelesController extends Controller
 
     public function sorrendModositas(Request $request, \App\User $user)
     {
-        if(!$user->is(Auth::user()) && Auth::user()->munkakor == 'Kiszállító')
+        if(!$user->is(Auth::user()) && (Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács'))
         {
             return response()->json([
                 'status' => 'failure',
@@ -160,7 +160,7 @@ class MegrendelesController extends Controller
 
     public function kedvezmenyValtoztatas(Request $request, \App\MegrendeloHet $megrendeloHet)
     {
-        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && $megrendeloHet->kiszallito_id != Auth::user()->id){
             return redirect()->back()->with('failure', ['Más futárhoz tartozó megrendelők kedvezményének módosítására nincs lehetőség']);
         }
 
@@ -227,7 +227,7 @@ class MegrendelesController extends Controller
     public function changeFizetesiStatusz(Request $request, \App\MegrendeloHet $megrendeloHet)
     {
         $data = $request->only('megrendelo-het-id', 'torles', 'fizetesi-mod');
-        if(Auth::user()->munkakor == 'Kiszállító' && !Auth::user()->megrendeloHetek->contains($megrendeloHet)){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && !Auth::user()->megrendeloHetek->contains($megrendeloHet)){
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Csak az önhöz tartozó megrendelők fizetési státuszának változtatása lehetséges'
@@ -235,10 +235,10 @@ class MegrendelesController extends Controller
         }
 
         if($data['torles']){
-            if(Auth::user()->munkakor == 'Kiszállító'){
+            if(Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács'){
                 return response()->json([
                     'status' => 'failure',
-                    'message' => 'Fizetési státusz törlése a kiszállítóknak nem lehetséges'
+                    'message' => 'Fizetési státusz törlése '.(auth()->user()->munkakor == 'Szakács' ? 'szakácsnak' : 'kiszállítóknak').' nem lehetséges'
                 ], 403);
             }
 
@@ -267,14 +267,14 @@ class MegrendelesController extends Controller
         $hetStartDatum = \App\Datum::whereYear('datum', $data['ev'])->where('het', $data['het'])->first();
         $megrendeloHet = \App\MegrendeloHet::where('megrendelo_id', $megrendelo->id)->where('het_start_datum_id', $hetStartDatum->id)->first();
 
-        if(Auth::user()->munkakor == 'Kiszállító' && !$user->is(Auth::user())){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && !$user->is(Auth::user())){
             return redirect()->back()->with('failure', ['Más kiszállítókhoz nem lehet megrendelőt hozzáadni']);
         }
 
-        if($megrendeloHet !== null && Auth::user()->munkakor == 'Kiszállító'){
+        if($megrendeloHet !== null && (Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács')){
             return redirect()->back()->with('failure', ['A megrendelőt nem lehet hozzáadni a héthez mert másik futárhoz tartozik']);
         }
-        else if(Auth::user()->munkakor != 'Kiszállító' && $megrendeloHet !== null) {
+        else if((Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács') && $megrendeloHet !== null) {
             $megrendeloHet->update([
                 'kiszallito_id' => $user->id
             ]);
@@ -300,7 +300,7 @@ class MegrendelesController extends Controller
 
     public function showMegrendelesTable(\App\MegrendeloHet $megrendeloHet) 
     {
-        if(Auth::user()->munkakor == 'Kiszállító' && $megrendeloHet->kiszallito_id != Auth::user()->id){
+        if((Auth::user()->munkakor == 'Kiszállító' || auth()->user()->munkakor == 'Szakács') && $megrendeloHet->kiszallito_id != Auth::user()->id){
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Másik kiszállítóhoz tartozó megrendelés táblázat elérése nem lehetséges'
@@ -332,7 +332,7 @@ class MegrendelesController extends Controller
         $adagCount = $currentMegrendelesek->where('feladag', $isFeladag)->count();
 
         if($adagCount > intval($adagok[$key])){
-            if(Auth::user()->munkakor != 'Kiszállító'){
+            if(Auth::user()->munkakor != 'Kiszállító' && auth()->user()->munkakor != 'Szakács'){
                 $currentMegrendelesek->where('feladag', $isFeladag)
                     ->take($adagCount - intval($adagok[$key]))
                     ->each(function($adag) {
