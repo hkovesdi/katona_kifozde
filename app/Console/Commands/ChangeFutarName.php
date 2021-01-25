@@ -39,7 +39,7 @@ class ChangeFutarName extends Command
      */
     public function handle()
     {
-        User::where('nev', 'Hunka Virág')->update(['nev' => 'Szalai Richárd']);
-        User::where('nev', 'Wéber Dominik')->update(['nev' => 'Wéber Tamás', 'munkakor' => 'Szakács', 'password' => Hash::make('Kiskakas2021')]);
+        User::where('nev', 'Hunka Virág')->update(['nev' => 'Szalay Richárd', 'username' => 'szalay.richard', 'password' => Hash::make('Kiskakas123')]);
+        User::where('nev', 'Wéber Dominik')->update(['username' => 'weber.tamas', 'nev' => 'Wéber Tamás', 'munkakor' => 'Szakács', 'password' => Hash::make('Kiskakas2021')]);
     }
 }
