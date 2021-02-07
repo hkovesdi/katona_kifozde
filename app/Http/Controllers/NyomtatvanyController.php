@@ -132,11 +132,12 @@ class NyomtatvanyController extends Controller
             $fizetesiMod->setAttribute('osszeg', 0);
         });
 
-        $megrendelesek = \App\Megrendeles::with(['tetel.datum', 'megrendeloHet'])
+        $megrendelesek = \App\Megrendeles::with(['tetel.datum', 'megrendeloHet:id,kedvezmeny,fizetesi_mod', 'tetel.tetelNev:id,sorrend'])
         ->whereHas('tetel.datum', function($query) use ($kezdete,$vege){
             $query->whereBetween('datum', [$kezdete->format('Y-m-d'), $vege->format('Y-m-d')]);
         })
         ->get()
+        ->sortBy('tetel.tetelNev.sorrend')
         ->each(function($megrendeles) use(&$osszeg, &$fizetesiModok) {
             $rendelesOsszeg = boolval($megrendeles->feladag) ? $megrendeles->tetel->ar * 0.6 : $megrendeles->tetel->ar;
             $rendelesOsszeg -= $megrendeles->megrendeloHet->kedvezmeny/100 * $rendelesOsszeg;
