@@ -40,10 +40,17 @@ class TetelNev extends Model
      */
     public $incrementing = true;
 
+    protected static function booted()
+    {
+        static::addGlobalScope('sorrend', function ($builder) {
+            $builder->orderBy('sorrend', 'asc');
+        });
+    }
+
     /**
      * @var array
      */
-    protected $fillable = ['nev', 'created_at', 'updated_at'];
+    protected $fillable = ['nev', 'sorrend', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
